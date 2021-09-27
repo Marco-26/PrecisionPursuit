@@ -37,9 +37,44 @@ public class GameManager : MonoBehaviour
         SelectGamemode();
         timerIsRunning = true;
     }
+
     private void Update() {
         SelectGamemode();
     }
+
+    void GetGamemode() {
+        if (GameValues.GamemodeSTR == "Timer")
+            gamemode = Gamemode.Timer;
+        if (GameValues.GamemodeSTR == "KillAmount")
+            gamemode = Gamemode.KillAmount;
+    }
+
+    #region gamemodes
+    void TimerGamemode() {
+        DisplayTime(timeRemaining);
+        if (timerIsRunning) {
+            if (timeRemaining > 0) {
+                timeRemaining -= Time.deltaTime;
+            }
+            else {
+                timeRemaining = 0;
+                timerIsRunning = false;
+                //TODO screen telling player game is over
+                Debug.Log("Game over");
+                Quit();
+            }
+        }
+    }
+
+    void KillAmountGamemode() {
+        if (obstacleKillCount >= maxKillCount) {
+            //TODO screen telling player game is over
+            //deactivate timer in this gamemode
+            timer.enabled = false;
+            Quit();
+        }
+    }
+    #endregion
 
     // timer
     void DisplayTime(float timeRemaining) {
@@ -49,34 +84,6 @@ public class GameManager : MonoBehaviour
         timer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
-    #region gamemodeStuff
-    void TimerGamemode() {
-        DisplayTime(timeRemaining);
-        if (timerIsRunning) { 
-            if(timeRemaining > 0) {
-                timeRemaining -= Time.deltaTime;
-            }
-            else {
-                timeRemaining = 0;
-                timerIsRunning = false;
-                Debug.Log("Game over");
-                Quit();
-            }
-        }
-    }
-
-    void KillAmountGamemode() {
-        if(obstacleKillCount >= maxKillCount) {
-            //End the game cause the player reached the max amount
-            //TODO screen telling player game is over
-            Quit();
-        }
-    }
-
-    void GetGamemode() {
-        if (GameValues.GamemodeSTR == "Timer") gamemode = Gamemode.Timer;
-        if (GameValues.GamemodeSTR == "KillAmount") gamemode = Gamemode.KillAmount;
-    }
     void SelectGamemode() {
         GetGamemode();
         switch (gamemode) {
@@ -88,7 +95,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-    #endregion
 
     public static void Quit() {
     #if UNITY_EDITOR
