@@ -19,8 +19,7 @@ public class PlayerGun : MonoBehaviour
             Obstacle target = hit.transform.GetComponent<Obstacle>();
             if (target != null){
                 target.Destroy();
-                obstacleCount++;
-                Debug.Log(obstacleCount);
+                GameManager.instance.obstacleKillCount++; 
             }
         }
     }
