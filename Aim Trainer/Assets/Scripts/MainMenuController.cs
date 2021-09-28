@@ -5,14 +5,22 @@ using UnityEngine.SceneManagement;
 public class MainMenuController : MonoBehaviour
 {
     [SerializeField] private Dropdown dropdown;
+    [SerializeField] private GameObject gamemodes;
+    [SerializeField] private GameObject gamemodeSettings;
 
     // Update is called once per frame
     void Update()
     {
-        GetGamemode();
+        SetGamemode();
     }
 
-    void GetGamemode() {
+    public void OpenGamemodeSettings() {
+        gamemodes.SetActive(false);
+        gamemodeSettings.SetActive(true);
+    }
+
+
+    void SetGamemode() {
         string value = dropdown.options[dropdown.value].text;
         if (value == "Timer") 
             GameValues.GamemodeSTR = "Timer";
@@ -20,7 +28,5 @@ public class MainMenuController : MonoBehaviour
             GameValues.GamemodeSTR = "KillAmount";
     }
 
-    public void Play() {
-        SceneManager.LoadScene("TapPractice");
-    }
+    
 }

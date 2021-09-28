@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -67,10 +65,9 @@ public class GameManager : MonoBehaviour
     }
 
     void KillAmountGamemode() {
+        timer.text = obstacleKillCount.ToString();
         if (obstacleKillCount >= maxKillCount) {
             //TODO screen telling player game is over
-            //deactivate timer in this gamemode
-            timer.enabled = false;
             Quit();
         }
     }
