@@ -8,17 +8,23 @@ public class MainMenuController : MonoBehaviour
     [SerializeField] private GameObject gamemodes;
     [SerializeField] private GameObject gamemodeSettings;
 
-    // Update is called once per frame
     void Update()
     {
         SetGamemode();
     }
 
-    public void OpenGamemodeSettings() {
+    public void OnClick_GamemodeSettings() {
         gamemodes.SetActive(false);
         gamemodeSettings.SetActive(true);
     }
 
+    public void OnClick_Back() {
+        gamemodes.SetActive(true);
+        gamemodeSettings.SetActive(false);
+    }
+    public void OnClick_Play() {
+        SceneManager.LoadScene("HeadshotPractice");
+    }
 
     void SetGamemode() {
         string value = dropdown.options[dropdown.value].text;

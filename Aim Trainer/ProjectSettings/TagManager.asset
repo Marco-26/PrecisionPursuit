@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - BTN_headshot
+  - BTN_motion
   layers:
   - Default
   - TransparentFX
