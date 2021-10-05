@@ -4,15 +4,13 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-
     public int obstacleKillCount; //keep track of how many obstacles player has destroyed
-    int maxKillCount = GameValues.maxKillCount;
 
-    #region timer
-    [SerializeField] private float timeRemaining = 120f;
-    [SerializeField] private Text timer;
+    private int maxKillCount = GameValues.maxKillCount;
+    private float timeRemaining = 120f;
     private bool timerIsRunning = false;
-    #endregion
+
+    [SerializeField] private Text info;
 
     #region Gamemode
     public enum Gamemode {
@@ -64,7 +62,7 @@ public class GameManager : MonoBehaviour
     }
 
     void KillAmountGamemode() {
-        timer.text = obstacleKillCount.ToString();
+        info.text = "Obstacles destroyed: " + obstacleKillCount.ToString();
         if (obstacleKillCount >= maxKillCount) {
             //TODO screen telling player game is over
             Quit();
@@ -77,7 +75,7 @@ public class GameManager : MonoBehaviour
         float minutes = Mathf.FloorToInt(timeRemaining / 60);
         float seconds = Mathf.FloorToInt(timeRemaining % 60);
 
-        timer.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        info.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
     void SelectGamemode() {
