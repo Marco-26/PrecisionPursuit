@@ -4,11 +4,11 @@ using TMPro;
 
 public class ButtonManager : MonoBehaviour
 {
-    [SerializeField] private Button[] buttons;
+    [SerializeField] private Button[] TrainingButtons;
     [SerializeField] private TextMeshProUGUI TrainingHeader;
-
+ 
     private void Update() {
-        foreach (Button btn in buttons) {
+        foreach (Button btn in TrainingButtons) {
             Button choice = btn; // need to store in separate variable to have the right button in the lamda expression
             btn.onClick.AddListener(() => TaskOnClick(choice));
         }
@@ -23,4 +23,9 @@ public class ButtonManager : MonoBehaviour
         }
     }
 
+    // kill amount buttons
+
+    public void OnClick_SetMaxAmount(int amount) {
+        GameValues.maxKillCount = amount;
+    }
 }

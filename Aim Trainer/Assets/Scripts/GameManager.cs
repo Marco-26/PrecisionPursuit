@@ -5,8 +5,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public int obstacleKillCount;
-    public int maxKillCount;
+    public int obstacleKillCount; //keep track of how many obstacles player has destroyed
+    int maxKillCount = GameValues.maxKillCount;
 
     #region timer
     [SerializeField] private float timeRemaining = 120f;
@@ -58,7 +58,6 @@ public class GameManager : MonoBehaviour
                 timeRemaining = 0;
                 timerIsRunning = false;
                 //TODO screen telling player game is over
-                Debug.Log("Game over");
                 Quit();
             }
         }

@@ -2,15 +2,16 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MainMenuController : MonoBehaviour
-{
+public class MainMenuController : MonoBehaviour {
     [SerializeField] private Dropdown dropdown;
+    [SerializeField] private GameObject[] possibleKillAmountLimits;
     [SerializeField] private GameObject gamemodes;
     [SerializeField] private GameObject gamemodeSettings;
 
     void Update()
     {
         SetGamemode();
+        ManageKillAmountOptions();
     }
 
     public void OnClick_GamemodeSettings() {
@@ -24,6 +25,19 @@ public class MainMenuController : MonoBehaviour
     }
     public void OnClick_Play() {
         SceneManager.LoadScene("HeadshotPractice");
+    }
+
+    public void ManageKillAmountOptions() {
+        if(dropdown.value == 0) {
+            for (int i = 0; i < possibleKillAmountLimits.Length; i++) {
+                possibleKillAmountLimits[i].SetActive(false);
+            }
+        }
+        else {
+            for (int i = 0; i < possibleKillAmountLimits.Length; i++) {
+                possibleKillAmountLimits[i].SetActive(true);
+            }
+        }
     }
 
     void SetGamemode() {
