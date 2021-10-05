@@ -422,13 +422,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Timer gamemode = You have to destroy all obstacles before timer runs out.
-
-    Destroy
+  m_text: "Timer gamemode = You have to destroy all obstacles before timer runs out.\nDestroy
     X Amount gamemode = You choose how many obstacles you want to destroy, but no
-    timer.
-
-'
+    timer. NOTE: If you don\xB4t select any option, the default value is 15.\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2749,7 +2745,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 75
+          m_IntArgument: 50
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

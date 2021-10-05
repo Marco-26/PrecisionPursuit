@@ -10,7 +10,14 @@ public class GameManager : MonoBehaviour
     private float timeRemaining = 120f;
     private bool timerIsRunning = false;
 
+    private float startingTime = 3f;
+
     [SerializeField] private Text info;
+    [SerializeField] private Text countdownText;
+
+    // these elements are dependent of can play variable
+    [SerializeField] private GameObject[] objects;
+
 
     #region Gamemode
     public enum Gamemode {
@@ -23,6 +30,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        GameValues.canPlay = false;
+        Application.targetFrameRate = 60;
         if(instance != null) {
             Destroy(gameObject);
         }
@@ -35,6 +44,8 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update() {
+        Debug.Log(GameValues.canPlay);
+        Countdown();
         SelectGamemode();
     }
 
@@ -88,6 +99,17 @@ public class GameManager : MonoBehaviour
                 KillAmountGamemode();
                 break;
         }
+    }
+
+    private void Countdown()
+    {
+        startingTime -= 1 * Time.deltaTime;
+        if(startingTime <= 0)
+        {
+            countdownText.enabled = false;
+            GameValues.canPlay = true; 
+        }
+        countdownText.text = startingTime.ToString("0");
     }
 
     public static void Quit() {

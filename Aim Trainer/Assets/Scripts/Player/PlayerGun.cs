@@ -4,9 +4,8 @@ public class PlayerGun : MonoBehaviour
 {
     [SerializeField] private float range = 100f;
     [SerializeField] private Camera cams;
-    [SerializeField] private int obstacleCount;
 
-    void Update()
+    void FixedUpdate()
     {
         if(Input.GetButtonDown("Fire1")) {
             Shoot();
@@ -21,7 +20,6 @@ public class PlayerGun : MonoBehaviour
             if (target != null){
                 target.Destroy();
                 GameManager.instance.obstacleKillCount++;
-                Debug.Log(GameManager.instance.obstacleKillCount);
             }
         }
     }
