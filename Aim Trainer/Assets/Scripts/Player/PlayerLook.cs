@@ -27,7 +27,7 @@ public class PlayerLook : MonoBehaviour
     }
 
     void SetY() {
-        float t_input = Input.GetAxisRaw("Mouse Y") * ySensitivity * Time.deltaTime;
+        float t_input = Input.GetAxisRaw("Mouse Y") * ySensitivity;
         Quaternion t_adj = Quaternion.AngleAxis(t_input, -Vector3.right);
         Quaternion t_delta = cams.localRotation * t_adj;
 
@@ -36,7 +36,7 @@ public class PlayerLook : MonoBehaviour
         }
     }
     void SetX() {
-        float t_input = Input.GetAxisRaw("Mouse X") * xSensitivity * Time.deltaTime;
+        float t_input = Input.GetAxisRaw("Mouse X") * xSensitivity;
         Quaternion t_adj = Quaternion.AngleAxis(t_input, Vector3.up);
         Quaternion t_delta = player.localRotation * t_adj;
         player.localRotation = t_delta;
