@@ -7,10 +7,8 @@ public class GameManager : MonoBehaviour
     public int obstacleKillCount; //keep track of how many obstacles player has destroyed
 
     private int maxKillCount = GameValues.maxKillCount;
-    private float timeRemaining = 120f;
-    private bool timerIsRunning = false;
-
-    private float startingTime = 3f;
+    [SerializeField]private float timeRemaining;
+    public bool timerIsRunning = false;
 
     [SerializeField] private Text info;
 
@@ -25,8 +23,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        GameValues.canPlay = false;
-        Application.targetFrameRate = 60;
         if(instance != null) {
             Destroy(gameObject);
         }
@@ -34,12 +30,9 @@ public class GameManager : MonoBehaviour
             instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        SelectGamemode();
-        timerIsRunning = true;
     }
 
     private void Update() {
-        Debug.Log(GameValues.canPlay);
         SelectGamemode();
     }
 
