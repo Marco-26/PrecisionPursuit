@@ -1,19 +1,26 @@
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
+using TMPro;
+
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance;
-    public int obstaclesDestroyed; //keep track of how many obstacles player has destroyed
+    //TODO: fazer uma class apenas para o UI, para nao ser o gameManager a tratar de UI
+    public static GameManager instance { get; private set; }
 
-    public int maxKillCount = 5;
-    public bool timerIsRunning = false;
+    [HideInInspector] public int obstaclesDestroyed = 0; //keep track of how many obstacles player has destroyed
+    [HideInInspector] public int totalShots = 0;
+    [HideInInspector] public bool timerIsRunning = false;
+    
+    public int maxKillCount = 20;
 
     [SerializeField] private float timeRemaining;
     [SerializeField] private Text info;
- 
+    [SerializeField] private TextMeshProUGUI accText;
 
-    void Start()
+    void Awake()
     {
         if(instance != null) {
             Destroy(gameObject);
@@ -67,7 +74,13 @@ public class GameManager : MonoBehaviour
         float minutes = Mathf.FloorToInt(timeRemaining / 60);
         float seconds = Mathf.FloorToInt(timeRemaining % 60);
 
-        info.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        info.text = string.Format("{0:00}:{1:00}", minutes, seconds);   
+    }
+
+    void DisplayAccuracy() {
+        if(totalShots <= 0) { return; }
+        float acc = ((float) obstaclesDestroyed / totalShots) * 100;
+        accText.text = Mathf.FloorToInt(acc) + "%";
     }
 
     void SelectGamemode() {
@@ -75,7 +88,7 @@ public class GameManager : MonoBehaviour
         if(gamemode == GameValues.Gamemode.Unselected) {
             return;
         }
-
+        DisplayAccuracy();
         switch (gamemode) {
             case GameValues.Gamemode.TimerBased:
                 TimerGamemode();

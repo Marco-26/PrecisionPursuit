@@ -13,7 +13,7 @@ public class PlayerGun : MonoBehaviour
     }
 
     void Shoot() {
-        GameValues.totalShots++;
+        GameManager.instance.totalShots++;
 
         RaycastHit hit;
         if(Physics.Raycast(cams.transform.position, cams.transform.forward, out hit, range)) {
@@ -22,7 +22,6 @@ public class PlayerGun : MonoBehaviour
             if (target != null){
                 target.Destroy();
                 GameManager.instance.obstaclesDestroyed++;
-                GameValues.hitShots++;
             }
         }
     }

@@ -37,7 +37,6 @@ public class CountdownTimer : MonoBehaviour
         }
         playerGun.enabled = true;
 
-
         GameManager.instance.timerIsRunning = true;
     }
 }

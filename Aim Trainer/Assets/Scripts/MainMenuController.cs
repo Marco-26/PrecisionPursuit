@@ -6,6 +6,12 @@ public class MainMenuController : MonoBehaviour {
     [SerializeField] private Dropdown dropdown;
     [SerializeField] private GameObject[] possibleKillAmountLimits;
     [SerializeField] private GameObject gamemodeSettings;
+    private GameManager gameManager;
+
+    private void Start() {
+        
+        Debug.Log(GameManager.instance);
+    }
 
     void Update()
     {
@@ -40,5 +46,6 @@ public class MainMenuController : MonoBehaviour {
 
     public void OnClick_SetMaxAmount(int amount) {
         GameManager.instance.maxKillCount = amount;
+        Debug.Log(GameManager.instance);
     }
 }
