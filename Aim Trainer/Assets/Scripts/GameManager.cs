@@ -4,22 +4,14 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public int obstacleKillCount; //keep track of how many obstacles player has destroyed
+    public int obstaclesDestroyed; //keep track of how many obstacles player has destroyed
 
-    private int maxKillCount = GameValues.maxKillCount;
-    [SerializeField]private float timeRemaining;
+    public int maxKillCount = 5;
     public bool timerIsRunning = false;
 
+    [SerializeField] private float timeRemaining;
     [SerializeField] private Text info;
-
-    #region Gamemode
-    public enum Gamemode {
-        Timer, 
-        KillAmount
-    }
-
-    public Gamemode gamemode;
-    #endregion
+ 
 
     void Start()
     {
@@ -36,11 +28,13 @@ public class GameManager : MonoBehaviour
         SelectGamemode();
     }
 
-    void GetGamemode() {
-        if (GameValues.GamemodeSTR == "Timer")
-            gamemode = Gamemode.Timer;
-        if (GameValues.GamemodeSTR == "KillAmount")
-            gamemode = Gamemode.KillAmount;
+    private GameValues.Gamemode GetGamemode() {
+        if (GameValues.currentGamemode == GameValues.Gamemode.TimerBased)
+            return GameValues.Gamemode.TimerBased;
+        if (GameValues.currentGamemode == GameValues.Gamemode.TargetBased)
+            return GameValues.Gamemode.TargetBased;
+
+        return GameValues.Gamemode.Unselected;
     }
 
     #region gamemodes
@@ -60,8 +54,8 @@ public class GameManager : MonoBehaviour
     }
 
     void KillAmountGamemode() {
-        info.text = "Obstacles destroyed: " + obstacleKillCount.ToString();
-        if (obstacleKillCount >= maxKillCount) {
+        info.text = "Obstacles destroyed: " + obstaclesDestroyed.ToString();
+        if (obstaclesDestroyed >= maxKillCount) {
             //TODO screen telling player game is over
             Quit();
         }
@@ -77,12 +71,16 @@ public class GameManager : MonoBehaviour
     }
 
     void SelectGamemode() {
-        GetGamemode();
+        GameValues.Gamemode gamemode = GetGamemode();
+        if(gamemode == GameValues.Gamemode.Unselected) {
+            return;
+        }
+
         switch (gamemode) {
-            case Gamemode.Timer:
+            case GameValues.Gamemode.TimerBased:
                 TimerGamemode();
                 break;
-            case Gamemode.KillAmount:
+            case GameValues.Gamemode.TargetBased:
                 KillAmountGamemode();
                 break;
         }

@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 public class MainMenuController : MonoBehaviour {
     [SerializeField] private Dropdown dropdown;
     [SerializeField] private GameObject[] possibleKillAmountLimits;
-    [SerializeField] private GameObject gamemodes;
     [SerializeField] private GameObject gamemodeSettings;
 
     void Update()
@@ -14,20 +13,11 @@ public class MainMenuController : MonoBehaviour {
         ManageKillAmountOptions();
     }
 
-    public void OnClick_GamemodeSettings() {
-        gamemodes.SetActive(false);
-        gamemodeSettings.SetActive(true);
-    }
-
-    public void OnClick_Back() {
-        gamemodes.SetActive(true);
-        gamemodeSettings.SetActive(false);
-    }
     public void OnClick_Play() {
-        SceneManager.LoadScene("HeadshotPractice");
+        SceneManager.LoadScene("Practice");
     }
 
-    public void ManageKillAmountOptions() {
+    private void ManageKillAmountOptions() {
         if(dropdown.value == 0) {
             for (int i = 0; i < possibleKillAmountLimits.Length; i++) {
                 possibleKillAmountLimits[i].SetActive(false);
@@ -40,13 +30,15 @@ public class MainMenuController : MonoBehaviour {
         }
     }
 
-    void SetGamemode() {
+    private void SetGamemode() {
         string value = dropdown.options[dropdown.value].text;
         if (value == "Timer") 
-            GameValues.GamemodeSTR = "Timer";
-        else if (value == "Destroy X obstacles") 
-            GameValues.GamemodeSTR = "KillAmount";
+            GameValues.currentGamemode = GameValues.Gamemode.TimerBased;
+        else if (value == "Destroy X obstacles")
+            GameValues.currentGamemode = GameValues.Gamemode.TargetBased;
     }
 
-    
+    public void OnClick_SetMaxAmount(int amount) {
+        GameManager.instance.maxKillCount = amount;
+    }
 }

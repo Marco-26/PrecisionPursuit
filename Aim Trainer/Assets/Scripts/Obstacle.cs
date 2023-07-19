@@ -10,6 +10,8 @@ public class Obstacle : MonoBehaviour {
 
     public void Destroy() {
         obstacleSpawner.SpawnObstacle();
+        
         Destroy(gameObject);
     }
+
 }
