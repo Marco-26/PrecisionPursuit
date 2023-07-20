@@ -38,14 +38,16 @@ public class MainMenuController : MonoBehaviour {
 
     private void SetGamemode() {
         string value = dropdown.options[dropdown.value].text;
-        if (value == "Timer") 
-            GameValues.currentGamemode = GameValues.Gamemode.TimerBased;
-        else if (value == "Destroy X obstacles")
-            GameValues.currentGamemode = GameValues.Gamemode.TargetBased;
+        if (value == "Timer Based")
+            GameManager.instance.currentGamemode = GameManager.Gamemode.TIMER_BASED;
+        else if (value == "Target Based")
+            GameManager.instance.currentGamemode = GameManager.Gamemode.TARGET_BASED;
+        else {
+            GameManager.instance.currentGamemode = GameManager.Gamemode.UNSELECTED;
+        }
     }
 
     public void OnClick_SetMaxAmount(int amount) {
         GameManager.instance.maxKillCount = amount;
-        Debug.Log(GameManager.instance);
     }
 }

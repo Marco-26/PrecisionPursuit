@@ -7,7 +7,7 @@ public class CountdownTimer : MonoBehaviour
     [SerializeField] private Text countdownDisplay;
     [SerializeField] private int countdownTime;
 
-    [SerializeField] private GameObject[] UIElements;
+    [SerializeField] private GameObject crosshair;
     [SerializeField] private PlayerGun playerGun;
 
     void Start()
@@ -17,10 +17,8 @@ public class CountdownTimer : MonoBehaviour
 
     IEnumerator Countdown() {
         playerGun.enabled = false;
-        foreach (var item in UIElements) {
-            item.SetActive(false);
-        }
-        
+
+        crosshair.SetActive(false);
         
         while (countdownTime > 0) {
             countdownDisplay.text = countdownTime.ToString();
@@ -32,9 +30,8 @@ public class CountdownTimer : MonoBehaviour
         yield return new WaitForSeconds(1);
         countdownDisplay.gameObject.SetActive(false);
 
-        foreach (var item in UIElements) {
-            item.SetActive(true);
-        }
+        crosshair.SetActive(true);
+        
         playerGun.enabled = true;
 
         GameManager.instance.timerIsRunning = true;
