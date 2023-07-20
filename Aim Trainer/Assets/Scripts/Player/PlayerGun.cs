@@ -1,9 +1,23 @@
 using UnityEngine;
+using System;
 
 public class PlayerGun : MonoBehaviour
 {
     [SerializeField] private float range = 150f;
     [SerializeField] private Camera cams;
+    private int totalShotsFired = 0;
+    private int totalShotsHit = 0;
+
+    public event EventHandler<ShotsFiredEventArgs> OnShotsFired;
+    public event EventHandler<ShotsHitEventArgs> OnShotsHit;
+
+    public class ShotsFiredEventArgs : EventArgs{
+        public int totalShotsFired;
+    }
+
+    public class ShotsHitEventArgs : EventArgs {
+        public int totalShotsHit;
+    }
 
     void Update()
     {
@@ -13,7 +27,8 @@ public class PlayerGun : MonoBehaviour
     }
 
     void Shoot() {
-        GameManager.instance.totalShots++;
+        totalShotsFired++;
+        OnShotsFired?.Invoke(this, new ShotsFiredEventArgs() { totalShotsFired = totalShotsFired }); ;
 
         RaycastHit hit;
         if(Physics.Raycast(cams.transform.position, cams.transform.forward, out hit, range)) {
@@ -21,7 +36,8 @@ public class PlayerGun : MonoBehaviour
             Obstacle target = hit.transform.GetComponent<Obstacle>();
             if (target != null){
                 target.Destroy();
-                GameManager.instance.obstaclesDestroyed++;
+                totalShotsHit++;
+                OnShotsHit?.Invoke(this, new ShotsHitEventArgs() { totalShotsHit = totalShotsHit });
             }
         }
     }

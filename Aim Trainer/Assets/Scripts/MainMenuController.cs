@@ -46,8 +46,4 @@ public class MainMenuController : MonoBehaviour {
             GameManager.instance.currentGamemode = GameManager.Gamemode.UNSELECTED;
         }
     }
-
-    public void OnClick_SetMaxAmount(int amount) {
-        GameManager.instance.maxKillCount = amount;
-    }
 }

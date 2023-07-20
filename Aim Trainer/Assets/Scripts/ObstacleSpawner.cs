@@ -5,25 +5,20 @@ using UnityEngine;
 
 public class ObstacleSpawner : MonoBehaviour
 {
-    [SerializeField] private Vector3 size;
-    [SerializeField] private Vector3 position;
     [SerializeField] private GameObject obstacle;
+
     private Vector3 lastObstaclePos = Vector3.zero;
     private Vector3 currObstaclePos = Vector3.zero;
-
+    private const int ZDISTANCE = 5;
+    
     public void SpawnObstacle() {
         lastObstaclePos = currObstaclePos;
-        currObstaclePos = new Vector3(Random.Range(-3, 3), Random.Range(6, 8), Random.Range(6, 8));
+        currObstaclePos = new Vector3(Random.Range(-3, 3), Random.Range(6, 8), ZDISTANCE);
 
         while (lastObstaclePos == currObstaclePos) {
-            currObstaclePos = new Vector3(Random.Range(-3, 3), Random.Range(6, 8), Random.Range(6, 8));
+            currObstaclePos = new Vector3(Random.Range(-3, 3), Random.Range(6, 8), ZDISTANCE);
         }
        
         Instantiate(obstacle, currObstaclePos, Quaternion.identity);
-    }
-
-    private void OnDrawGizmosSelected() {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(position, size);
     }
 }

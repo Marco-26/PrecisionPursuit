@@ -24,7 +24,6 @@ public class UIManager : MonoBehaviour
     }
 
     void DisplayAccuracy() {
-        if (GameManager.instance.totalShots <= 0) { return; }
         accuracyText.text = Mathf.FloorToInt(GameManager.instance.calculateAccuracy()) + "%";
     }
 
@@ -48,8 +47,8 @@ public class UIManager : MonoBehaviour
     }
 
     void UpdatTargetGameMode() {
-        timerText.text = "Obstacles destroyed: " + GameManager.instance.obstaclesDestroyed.ToString();
-        if (GameManager.instance.obstaclesDestroyed >= GameManager.instance.maxKillCount) {
+        timerText.text = "Obstacles destroyed: " + GameManager.instance.totalShotsHit.ToString();
+        if (GameManager.instance.totalShotsHit >= GameManager.instance.totalTargets) {
             //TODO screen telling player game is over
             Quit();
         }
