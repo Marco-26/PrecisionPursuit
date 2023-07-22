@@ -16,22 +16,22 @@ public class UIManager : MonoBehaviour
         HandleSelectedGameMode();
     }
 
-    void DisplayTime(float timeRemaining) {
+    private void DisplayTime(float timeRemaining) {
         float minutes = Mathf.FloorToInt(timeRemaining / 60);
         float seconds = Mathf.FloorToInt(timeRemaining % 60);
 
         timerText.text = string.Format("{0}:{1:00}", minutes, seconds);
     }
 
-    void DisplayAccuracy() {
+    private void DisplayAccuracy() {
         accuracyText.text = Mathf.FloorToInt(GameManager.instance.calculateAccuracy()) + "%";
     }
 
-    void DisplayPoints() {
+    private void DisplayPoints() {
         pointsText.text = Mathf.FloorToInt(GameManager.instance.calculateScore()).ToString();
     }
 
-    void UpdateTimerGameMode() {
+    private void UpdateTimerGameMode() {
         DisplayTime(timeRemaining);
         if (GameManager.instance.timerIsRunning) {
             if (timeRemaining > 0) {
@@ -46,28 +46,30 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void UpdatTargetGameMode() {
-        timerText.text = "Obstacles destroyed: " + GameManager.instance.totalShotsHit.ToString();
+    private void UpdateTargetGameMode() {
+        timerText.text = GameManager.instance.totalShotsHit.ToString() + "/" + GameData.instance.totalTargets;
         if (GameManager.instance.totalShotsHit >= GameManager.instance.totalTargets) {
             //TODO screen telling player game is over
             Quit();
         }
     }
 
-    void HandleSelectedGameMode() {
-        if (GameManager.instance.currentGamemode == Gamemode.UNSELECTED) {
+    private void HandleSelectedGameMode() {
+        if (GameData.instance.currentGamemode == Gamemode.UNSELECTED)
+        {
             return;
         }
 
         DisplayAccuracy();
         DisplayPoints();
 
-        switch (GameManager.instance.currentGamemode) {
+        switch (GameData.instance.currentGamemode)
+        {
             case Gamemode.TIMER_BASED:
                 UpdateTimerGameMode();
                 break;
             case Gamemode.TARGET_BASED:
-                UpdatTargetGameMode();
+                UpdateTargetGameMode();
                 break;
         }
     }

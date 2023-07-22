@@ -20,16 +20,7 @@ public class GameManager : MonoBehaviour {
     private const int BASESCORE = 10;
     private float score = 0;
 
-    public enum Gamemode {
-        TIMER_BASED,
-        TARGET_BASED,
-        UNSELECTED
-    }
-
-    public Gamemode currentGamemode { get; set; } = Gamemode.TIMER_BASED;
-
-
-    void Awake() {
+    private void Awake() {
         if (instance != null) {
             Destroy(this);
         }
@@ -40,7 +31,6 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start(){
-        Debug.Log(totalTargets);
         if(playerGun != null)
         {
             playerGun.OnShotsFired += PlayerGun_OnShotsFired;
