@@ -5,6 +5,7 @@ public class PlayerGun : MonoBehaviour
 {
     [SerializeField] private float range = 150f;
     [SerializeField] private Camera cams;
+    
     private int totalShotsFired = 0;
     private int totalShotsHit = 0;
 
@@ -19,6 +20,7 @@ public class PlayerGun : MonoBehaviour
         public int totalShotsHit;
     }
 
+    //TODO: Calcular a accuracy aqui e mandar um evento para o GameManager ja com isso calculado
     void Update()
     {
         if(Input.GetButtonDown("Fire1")) {

@@ -13,13 +13,10 @@ public class GameManager : MonoBehaviour {
     //TODO: fazer uma class apenas para o UI, para nao ser o gameManager a tratar de UI
     public static GameManager instance { get; private set; }
 
-    private bool timerIsRunning = false;
-
     [SerializeField] private PlayerGun playerGun;
 
     private Gamemode currentGamemode;
 
-    public int totalTargets { get; private set; } = 20;
     public int totalShotsFired { get; private set; } = 0;
     public int totalShotsHit { get; private set; } = 0;
 
@@ -63,14 +60,6 @@ public class GameManager : MonoBehaviour {
 
     public float calculateScore() {
         return score;
-    }
-
-    public void SetTimerIsRunning(bool option) {
-        timerIsRunning = option;
-    }
-
-    public bool isTimerRunning() {
-        return timerIsRunning;
     }
 
     public void SetCurrentGamemode(Gamemode gamemode) {

@@ -1,14 +1,17 @@
 using System.Collections;
 using UnityEngine;
+using System;
 using UnityEngine.UI;
 
 public class CountdownTimer : MonoBehaviour
 {
     [SerializeField] private Text countdownDisplay;
     [SerializeField] private int countdownTime;
-
     [SerializeField] private GameObject crosshair;
     [SerializeField] private PlayerGun playerGun;
+
+    public event EventHandler OnCountdownTimerStopped;
+
 
     void Start()
     {
@@ -35,6 +38,7 @@ public class CountdownTimer : MonoBehaviour
         playerGun.enabled = true;
 
         //TODO: USAR EVENTO
-        GameManager.instance.SetTimerIsRunning(true);
+        //GameManager.instance.SetTimerIsRunning(true);
+        OnCountdownTimerStopped?.Invoke(this, EventArgs.Empty);
     }
 }
