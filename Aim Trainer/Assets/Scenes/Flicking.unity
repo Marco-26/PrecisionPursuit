@@ -1761,7 +1761,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc7cea0ce0a0e0498e8402b0b8f4cbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerIsRunning: 0
   playerGun: {fileID: 331465433}
 --- !u!4 &269989879
 Transform:
@@ -1804,7 +1803,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 269989877}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9e02ae43139c8a4f9b15ba2b333f200, type: 3}
+  m_Script: {fileID: 11500000, guid: 6bba16596522d4e4388ec0fdf6cbfa5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 229817689}
@@ -1839,6 +1838,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7caa2ac5cce2f784c96ee651debef195, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <totalTargets>k__BackingField: 0
+  <currentGamemode>k__BackingField: 2
 --- !u!4 &281921105
 Transform:
   m_ObjectHideFlags: 0

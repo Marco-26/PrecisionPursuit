@@ -18,11 +18,6 @@ public class MainMenuManager : MonoBehaviour{
     }
 
     public void SetGamemode(Gamemode gamemode){
-        GameData.instance.SetGamemode(gamemode);
-    }
-
-    public void SetTotalTargets(int totalTargets)
-    {
-        GameData.instance.SetTotalTargets(totalTargets);
+        GameManager.instance.SetCurrentGamemode(gamemode);
     }
 }

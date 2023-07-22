@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI pointsText;
     
     private void Update() {
-        HandleSelectedGameMode();
+        HandleUI();
     }
 
     private void DisplayTime(float timeRemaining) {
@@ -31,47 +31,24 @@ public class UIManager : MonoBehaviour
         pointsText.text = Mathf.FloorToInt(GameManager.instance.calculateScore()).ToString();
     }
 
-    private void UpdateTimerGameMode() {
+    private void UpdateTimer() {
         DisplayTime(timeRemaining);
-        if (GameManager.instance.timerIsRunning) {
+        if (GameManager.instance.isTimerRunning()) {
             if (timeRemaining > 0) {
                 timeRemaining -= Time.deltaTime;
             }
             else {
                 timeRemaining = 0;
-                GameManager.instance.timerIsRunning = false;
-                //TODO screen telling player game is over
+                GameManager.instance.SetTimerIsRunning(false);
                 Quit();
             }
         }
     }
 
-    private void UpdateTargetGameMode() {
-        timerText.text = GameManager.instance.totalShotsHit.ToString() + "/" + GameData.instance.totalTargets;
-        if (GameManager.instance.totalShotsHit >= GameManager.instance.totalTargets) {
-            //TODO screen telling player game is over
-            Quit();
-        }
-    }
-
-    private void HandleSelectedGameMode() {
-        if (GameData.instance.currentGamemode == Gamemode.UNSELECTED)
-        {
-            return;
-        }
-
+    private void HandleUI() {
         DisplayAccuracy();
         DisplayPoints();
-
-        switch (GameData.instance.currentGamemode)
-        {
-            case Gamemode.TIMER_BASED:
-                UpdateTimerGameMode();
-                break;
-            case Gamemode.TARGET_BASED:
-                UpdateTargetGameMode();
-                break;
-        }
+        UpdateTimer();
     }
 
     public static void Quit() {

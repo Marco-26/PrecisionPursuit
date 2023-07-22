@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 3599c9c12a98cef44ace08e1aac4bf55
   - enabled: 1
-    path: Assets/Scenes/Practice.unity
+    path: Assets/Scenes/Flicking.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
