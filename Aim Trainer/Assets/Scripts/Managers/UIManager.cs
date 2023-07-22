@@ -7,16 +7,21 @@ using static GameManager;
 
 public class UIManager : MonoBehaviour
 {
-    private float timeRemaining = 60;
     [SerializeField] private Text timerText;
     [SerializeField] private TextMeshProUGUI accuracyText;
     [SerializeField] private TextMeshProUGUI pointsText;
+    private Timer timer;
+
+    private void Start() {
+        timer = GetComponent<Timer>();
+    }
     
     private void Update() {
-        HandleSelectedGameMode();
+        HandleUI();
     }
 
-    private void DisplayTime(float timeRemaining) {
+    private void DisplayTime() {
+        float timeRemaining = timer.GetTimeRemaining();
         float minutes = Mathf.FloorToInt(timeRemaining / 60);
         float seconds = Mathf.FloorToInt(timeRemaining % 60);
 
@@ -31,47 +36,10 @@ public class UIManager : MonoBehaviour
         pointsText.text = Mathf.FloorToInt(GameManager.instance.calculateScore()).ToString();
     }
 
-    private void UpdateTimerGameMode() {
-        DisplayTime(timeRemaining);
-        if (GameManager.instance.timerIsRunning) {
-            if (timeRemaining > 0) {
-                timeRemaining -= Time.deltaTime;
-            }
-            else {
-                timeRemaining = 0;
-                GameManager.instance.timerIsRunning = false;
-                //TODO screen telling player game is over
-                Quit();
-            }
-        }
-    }
-
-    private void UpdateTargetGameMode() {
-        timerText.text = GameManager.instance.totalShotsHit.ToString() + "/" + GameData.instance.totalTargets;
-        if (GameManager.instance.totalShotsHit >= GameManager.instance.totalTargets) {
-            //TODO screen telling player game is over
-            Quit();
-        }
-    }
-
-    private void HandleSelectedGameMode() {
-        if (GameData.instance.currentGamemode == Gamemode.UNSELECTED)
-        {
-            return;
-        }
-
+    private void HandleUI() {
         DisplayAccuracy();
         DisplayPoints();
-
-        switch (GameData.instance.currentGamemode)
-        {
-            case Gamemode.TIMER_BASED:
-                UpdateTimerGameMode();
-                break;
-            case Gamemode.TARGET_BASED:
-                UpdateTargetGameMode();
-                break;
-        }
+        DisplayTime();
     }
 
     public static void Quit() {
