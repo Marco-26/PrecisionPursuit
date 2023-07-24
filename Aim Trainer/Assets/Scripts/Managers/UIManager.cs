@@ -29,11 +29,11 @@ public class UIManager : MonoBehaviour
     }
 
     private void DisplayAccuracy() {
-        accuracyText.text = Mathf.FloorToInt(GameManager.instance.calculateAccuracy()) + "%";
+        accuracyText.text = GameManager.Instance.GetAccuracy() + "%";
     }
 
     private void DisplayPoints() {
-        pointsText.text = Mathf.FloorToInt(GameManager.instance.calculateScore()).ToString();
+        pointsText.text = GameManager.Instance.GetScore().ToString();
     }
 
     private void HandleUI() {

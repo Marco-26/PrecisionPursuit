@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UIElements;
 
 public class PlayerGun : MonoBehaviour
 {
@@ -8,39 +10,54 @@ public class PlayerGun : MonoBehaviour
     
     private int totalShotsFired = 0;
     private int totalShotsHit = 0;
+    private float score = 0;
+    private const int BASE_SCORE = 10;
 
-    public event EventHandler<ShotsFiredEventArgs> OnShotsFired;
-    public event EventHandler<ShotsHitEventArgs> OnShotsHit;
 
-    public class ShotsFiredEventArgs : EventArgs{
-        public int totalShotsFired;
+    public event EventHandler<MissFireEventArgs> OnShotsFired;
+    public event EventHandler<HitFireEventArgs> OnShotsHit;
+
+    public class HitFireEventArgs : EventArgs{
+        public float score;
+        public float accuracy;
     }
 
-    public class ShotsHitEventArgs : EventArgs {
-        public int totalShotsHit;
+    public class MissFireEventArgs : EventArgs {
+        public float accuracy;
     }
 
     //TODO: Calcular a accuracy aqui e mandar um evento para o GameManager ja com isso calculado
-    void Update()
-    {
+    private void Update(){
         if(Input.GetButtonDown("Fire1")) {
             Shoot();
         }
     }
 
-    void Shoot() {
+    private void Shoot() {
+        //TODO: So deve calcular score se acertar num target
         totalShotsFired++;
-        OnShotsFired?.Invoke(this, new ShotsFiredEventArgs() { totalShotsFired = totalShotsFired }); ;
+        OnShotsFired?.Invoke(this, new MissFireEventArgs() { accuracy = CalculateAccuracy() }); ;
 
         RaycastHit hit;
         if(Physics.Raycast(cams.transform.position, cams.transform.forward, out hit, range)) {
-            //TODO - contar os tiros acertados e os tiros falhados, para fazer uma média de acerto.
             Obstacle target = hit.transform.GetComponent<Obstacle>();
             if (target != null){
                 target.Destroy();
                 totalShotsHit++;
-                OnShotsHit?.Invoke(this, new ShotsHitEventArgs() { totalShotsHit = totalShotsHit });
+                OnShotsHit?.Invoke(this, new HitFireEventArgs() { score = CalculateScore(), accuracy = CalculateAccuracy() });
             }
         }
+    }
+
+    private float CalculateAccuracy() {
+        if (totalShotsFired <= 0) {
+            return 0;
+        }
+        return ((float)totalShotsHit / totalShotsFired) * 100;
+    }
+
+    private float CalculateScore() {
+        score += (BASE_SCORE * CalculateAccuracy()) / 2;
+        return score;
     }
 }

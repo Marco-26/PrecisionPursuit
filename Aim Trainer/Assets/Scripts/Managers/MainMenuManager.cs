@@ -18,6 +18,6 @@ public class MainMenuManager : MonoBehaviour{
     }
 
     public void SetGamemode(Gamemode gamemode){
-        GameManager.instance.SetCurrentGamemode(gamemode);
+        GameManager.Instance.SetCurrentGamemode(gamemode);
     }
 }

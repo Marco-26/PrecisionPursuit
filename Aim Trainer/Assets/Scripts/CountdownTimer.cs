@@ -13,12 +13,11 @@ public class CountdownTimer : MonoBehaviour
     public event EventHandler OnCountdownTimerStopped;
 
 
-    void Start()
-    {
+    private void Start(){
         StartCoroutine(Countdown());
     }
 
-    IEnumerator Countdown() {
+    private IEnumerator Countdown() {
         playerGun.enabled = false;
 
         crosshair.SetActive(false);

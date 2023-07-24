@@ -10,25 +10,22 @@ public enum Gamemode {
 }
 
 public class GameManager : MonoBehaviour {
-    //TODO: fazer uma class apenas para o UI, para nao ser o gameManager a tratar de UI
-    public static GameManager instance { get; private set; }
+    public static GameManager Instance { get; private set; }
 
     [SerializeField] private PlayerGun playerGun;
 
     private Gamemode currentGamemode;
 
-    public int totalShotsFired { get; private set; } = 0;
-    public int totalShotsHit { get; private set; } = 0;
+    private float playerAccuracy = 0;
+    private float playerScore = 0;
 
-    private const int BASESCORE = 10;
-    private float score = 0;
 
     private void Awake() {
-        if (instance != null) {
+        if (Instance != null) {
             Destroy(this);
         }
         else {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
     }
@@ -41,25 +38,21 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    private void PlayerGun_OnShotsFired(object sender, PlayerGun.ShotsFiredEventArgs e){
-        this.totalShotsFired = e.totalShotsFired;
+    private void PlayerGun_OnShotsFired(object sender, PlayerGun.MissFireEventArgs e){
+        playerAccuracy = e.accuracy;
     }
 
-    private void PlayerGun_OnShotsHit(object sender, PlayerGun.ShotsHitEventArgs e){
-        this.totalShotsHit = e.totalShotsHit;
-        score += (BASESCORE * calculateAccuracy())/2;
-
+    private void PlayerGun_OnShotsHit(object sender, PlayerGun.HitFireEventArgs e){
+        playerScore = e.score;
+        playerAccuracy = e.accuracy;
     }
 
-    public float calculateAccuracy(){
-        if (totalShotsFired <= 0){
-            return 0;
-        }
-        return ((float)totalShotsHit / totalShotsFired) * 100;
+    public int GetAccuracy() {
+        return Mathf.FloorToInt(playerAccuracy);
     }
 
-    public float calculateScore() {
-        return score;
+    public int GetScore() {
+        return Mathf.FloorToInt(playerScore);
     }
 
     public void SetCurrentGamemode(Gamemode gamemode) {
