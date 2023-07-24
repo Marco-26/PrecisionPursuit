@@ -7,9 +7,9 @@ using static GameManager;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private Text timerText;
+    [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI accuracyText;
-    [SerializeField] private TextMeshProUGUI pointsText;
+    [SerializeField] private TextMeshProUGUI scoreText;
     private Timer timer;
 
     private void Start() {
@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
     }
 
     private void DisplayPoints() {
-        pointsText.text = GameManager.Instance.GetScore().ToString();
+        scoreText.text = GameManager.Instance.GetScore().ToString();
     }
 
     private void HandleUI() {

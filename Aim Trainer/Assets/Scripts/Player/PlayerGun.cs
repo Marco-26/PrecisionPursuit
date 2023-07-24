@@ -26,7 +26,6 @@ public class PlayerGun : MonoBehaviour
         public float accuracy;
     }
 
-    //TODO: Calcular a accuracy aqui e mandar um evento para o GameManager ja com isso calculado
     private void Update(){
         if(Input.GetButtonDown("Fire1")) {
             Shoot();
@@ -34,7 +33,6 @@ public class PlayerGun : MonoBehaviour
     }
 
     private void Shoot() {
-        //TODO: So deve calcular score se acertar num target
         totalShotsFired++;
         OnShotsFired?.Invoke(this, new MissFireEventArgs() { accuracy = CalculateAccuracy() }); ;
 
