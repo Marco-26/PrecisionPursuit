@@ -4,3 +4,4 @@
 - Adicionar som.
 - Adicionar modo de treino "Motion Tracking"
 - Adicionar um sprite de uma glock, como no jogo AimLab, e ter uma opção para desativar o sprite.
+- Sistema de crosshair.
