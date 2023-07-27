@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Obstacle : MonoBehaviour {
 
-    ObstacleSpawner obstacleSpawner;
+    private ObstacleSpawner obstacleSpawner;
 
     private void Start() {
         obstacleSpawner = FindObjectOfType<ObstacleSpawner>();

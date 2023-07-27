@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] private PlayerGun playerGun;
 
-    private Gamemode currentGamemode;
+    private Gamemode currentGamemode = Gamemode.MOTION;
 
     private float playerAccuracy = 0;
     private float playerScore = 0;
@@ -54,6 +54,8 @@ public class GameManager : MonoBehaviour {
     public int GetScore() {
         return Mathf.FloorToInt(playerScore);
     }
+
+    public Gamemode GetCurrentGamemode() { return currentGamemode; }
 
     public void SetCurrentGamemode(Gamemode gamemode) {
         currentGamemode = gamemode;
