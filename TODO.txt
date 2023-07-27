@@ -3,5 +3,6 @@
 - Adicionar menu de pausa.
 - Adicionar som.
 - Adicionar modo de treino "Motion Tracking"
+	- Adicionar a logica de quando o obstacle bate na parede tem de voltar na direcao contraria
 - Adicionar um sprite de uma glock, como no jogo AimLab, e ter uma opção para desativar o sprite.
 - Sistema de crosshair.

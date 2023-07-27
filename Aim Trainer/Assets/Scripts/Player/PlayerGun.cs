@@ -13,6 +13,8 @@ public class PlayerGun : MonoBehaviour
     private float score = 0;
     private const int BASE_SCORE = 10;
 
+    [SerializeField]private MovingObstacle movingObstacle;
+
 
     public event EventHandler<MissFireEventArgs> OnShotsFired;
     public event EventHandler<HitFireEventArgs> OnShotsHit;
@@ -26,7 +28,15 @@ public class PlayerGun : MonoBehaviour
         public float accuracy;
     }
 
+    private void Start() {
+    }
+
     private void Update(){
+        if(GameManager.Instance.GetCurrentGamemode() == Gamemode.MOTION) {
+            Track();
+            return;
+        }
+
         if(Input.GetButtonDown("Fire1")) {
             Shoot();
         }
@@ -36,14 +46,24 @@ public class PlayerGun : MonoBehaviour
         totalShotsFired++;
         OnShotsFired?.Invoke(this, new MissFireEventArgs() { accuracy = CalculateAccuracy() }); ;
 
-        RaycastHit hit;
-        if(Physics.Raycast(cams.transform.position, cams.transform.forward, out hit, range)) {
+        if(Physics.Raycast(cams.transform.position, cams.transform.forward, out RaycastHit hit, range)) {
             Obstacle target = hit.transform.GetComponent<Obstacle>();
             if (target != null){
                 target.Destroy();
                 totalShotsHit++;
                 OnShotsHit?.Invoke(this, new HitFireEventArgs() { score = CalculateScore(), accuracy = CalculateAccuracy() });
             }
+        }
+    }
+
+    private void Track() {
+        if (Physics.Raycast(cams.transform.position, cams.transform.forward, out RaycastHit hit, range)) {
+            MovingObstacle target = hit.transform.GetComponent<MovingObstacle>();
+            if (target != null) {
+                target.ChangeColorWhenTracked();
+                return;
+            }
+            movingObstacle.ResetColor();
         }
     }
 

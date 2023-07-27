@@ -2048,6 +2048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 200
   cams: {fileID: 428769384}
+  movingObstacle: {fileID: -3729487616483462243, guid: 68525245aa00c09439ae8834c0312ad3, type: 3}
 --- !u!1 &428769381
 GameObject:
   m_ObjectHideFlags: 0
@@ -2243,7 +2244,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -100}
   m_SizeDelta: {x: 164.1536, y: 104.5899}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &511502947

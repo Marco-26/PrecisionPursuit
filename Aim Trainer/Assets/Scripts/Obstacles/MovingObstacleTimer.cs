@@ -14,7 +14,6 @@ public class MovingObstacleTimer : MonoBehaviour{
 
     private void Start() {
         time = Random.Range(MIN_TIME, MAX_TIME);
-        Debug.Log(time);
     }
 
     private void Update() {
@@ -22,7 +21,6 @@ public class MovingObstacleTimer : MonoBehaviour{
         if(time < 0) {
             time = Random.Range(MIN_TIME, MAX_TIME);
             OnTimeEnd?.Invoke(this, EventArgs.Empty);
-            Debug.Log(time);
         }
     }
 }
