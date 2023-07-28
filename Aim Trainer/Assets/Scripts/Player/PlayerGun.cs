@@ -17,15 +17,11 @@ public class PlayerGun : MonoBehaviour {
 
     private Transform obstacle = null;
 
-    public event EventHandler<MissFireEventArgs> OnShotsFired;
-    public event EventHandler<HitFireEventArgs> OnShotsHit;
+    public event EventHandler<FireEventArgs> OnShotsFired;
+    public event EventHandler OnTrackedObstacle;
 
-    public class HitFireEventArgs : EventArgs{
+    public class FireEventArgs : EventArgs{
         public float score;
-        public float accuracy;
-    }
-
-    public class MissFireEventArgs : EventArgs {
         public float accuracy;
     }
 
@@ -42,14 +38,15 @@ public class PlayerGun : MonoBehaviour {
 
     private void Shoot() {
         totalShotsFired++;
-        OnShotsFired?.Invoke(this, new MissFireEventArgs() { accuracy = CalculateAccuracy() }); ;
+        float tempScore = score;
+        OnShotsFired?.Invoke(this, new FireEventArgs() { score = CalculateScore(false), accuracy = CalculateAccuracy() }) ;
 
         if(Physics.Raycast(cams.transform.position, cams.transform.forward, out RaycastHit hit, range)) {
             Obstacle target = hit.transform.GetComponent<Obstacle>();
             if (target != null){
                 target.Destroy();
                 totalShotsHit++;
-                OnShotsHit?.Invoke(this, new HitFireEventArgs() { score = CalculateScore(), accuracy = CalculateAccuracy() });
+                OnShotsFired?.Invoke(this, new FireEventArgs() { score = CalculateScore(true), accuracy = CalculateAccuracy() });
             }
         }
     }
@@ -95,8 +92,17 @@ public class PlayerGun : MonoBehaviour {
         return 0;
     }
 
-    private float CalculateScore() {
-        score += (BASE_SCORE * CalculateAccuracy()) / 2;
+    private float CalculateScore(bool hit) {
+        if (hit) {
+            score += (BASE_SCORE * CalculateAccuracy()) / 2;
+        } else {
+            if (score <= 0) {
+                return 0;
+            }
+
+            score -= (BASE_SCORE * CalculateAccuracy()) / 4;
+        }
+
         return score;
     }
 }
