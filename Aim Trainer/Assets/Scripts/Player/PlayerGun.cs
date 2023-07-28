@@ -3,18 +3,19 @@ using System;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
 
-public class PlayerGun : MonoBehaviour
-{
+public class PlayerGun : MonoBehaviour {
+    private const int BASE_SCORE = 10;
+
     [SerializeField] private float range = 150f;
     [SerializeField] private Camera cams;
     
     private int totalShotsFired = 0;
     private int totalShotsHit = 0;
+    private float timeTrackingObstacle = 0f;
+    private float timeNotTrackingObstacle = 0f;
     private float score = 0;
-    private const int BASE_SCORE = 10;
 
-    [SerializeField]private MovingObstacle movingObstacle;
-
+    private Transform obstacle = null;
 
     public event EventHandler<MissFireEventArgs> OnShotsFired;
     public event EventHandler<HitFireEventArgs> OnShotsHit;
@@ -28,11 +29,8 @@ public class PlayerGun : MonoBehaviour
         public float accuracy;
     }
 
-    private void Start() {
-    }
-
     private void Update(){
-        if(GameManager.Instance.GetCurrentGamemode() == Gamemode.MOTION) {
+        if(GameManager.Instance.GetCurrentGamemode() == Gamemode.TRACKING) {
             Track();
             return;
         }
@@ -57,21 +55,44 @@ public class PlayerGun : MonoBehaviour
     }
 
     private void Track() {
-        if (Physics.Raycast(cams.transform.position, cams.transform.forward, out RaycastHit hit, range)) {
-            MovingObstacle target = hit.transform.GetComponent<MovingObstacle>();
+        if (obstacle != null) {
+            MovingObstacle target = obstacle.GetComponent<MovingObstacle>();
             if (target != null) {
-                target.ChangeColorWhenTracked();
-                return;
+                target.ResetColor();
             }
-            movingObstacle.ResetColor();
+            obstacle = null;
+        }
+
+        if (Physics.Raycast(cams.transform.position, cams.transform.forward, out RaycastHit hit, range)) {
+            obstacle = hit.transform;
+            if (obstacle != null) {
+                MovingObstacle target = obstacle.GetComponent<MovingObstacle>();
+                if (target != null) {
+                    timeTrackingObstacle += Time.deltaTime;
+                    target.ChangeColorWhenTracked();
+                    return;
+                }
+                timeNotTrackingObstacle += Time.deltaTime;
+            }
         }
     }
 
     private float CalculateAccuracy() {
-        if (totalShotsFired <= 0) {
-            return 0;
+        switch (GameManager.Instance.GetCurrentGamemode()) {
+            case Gamemode.FLICKING:
+                if (totalShotsFired <= 0) {
+                    return 0;
+                }
+                return ((float)totalShotsHit / totalShotsFired) * 100;
+            case Gamemode.TRACKING:
+                float totalTime = timeTrackingObstacle + timeNotTrackingObstacle;
+                if(totalTime <=0) {
+                    return 0;
+                }
+
+                return (timeTrackingObstacle / totalTime) * 100;
         }
-        return ((float)totalShotsHit / totalShotsFired) * 100;
+        return 0;
     }
 
     private float CalculateScore() {

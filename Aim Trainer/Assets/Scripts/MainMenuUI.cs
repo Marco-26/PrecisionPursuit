@@ -5,18 +5,18 @@ using UnityEngine.SceneManagement;
 public class MainMenuController : MonoBehaviour {
 
     [SerializeField] private Button flickingGamemodeButton;
-    [SerializeField] private Button motionGamemodeButton;
+    [SerializeField] private Button TRACKINGGamemodeButton;
 
     private const string FLICKING_GAMEMODE_SCENE = "Flicking";
-    private const string MOTION_GAMEMODE_SCENE = "Motion";
+    private const string TRACKING_GAMEMODE_SCENE = "Tracking";
 
     private void Awake() {
         flickingGamemodeButton.onClick.AddListener(() => {
             SceneManager.LoadScene(FLICKING_GAMEMODE_SCENE);
         });
 
-        motionGamemodeButton.onClick.AddListener(() => {
-            Debug.Log("Motion practice");
+        TRACKINGGamemodeButton.onClick.AddListener(() => {
+            SceneManager.LoadScene(FLICKING_GAMEMODE_SCENE);
         });
     }
 }

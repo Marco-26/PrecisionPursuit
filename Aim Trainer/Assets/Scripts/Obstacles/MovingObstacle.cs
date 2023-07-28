@@ -5,10 +5,13 @@ public class MovingObstacle : MonoBehaviour {
     private int moveSpeed = 1;
     private Transform myTransform;
     private MovingObstacleTimer timer;
-    private Renderer renderer;
+    private Renderer myRenderer;
+
+    private Color trackedColor = Color.blue;
+    private Color defaultColor = Color.red;
 
     private void Start() {
-        renderer = GetComponent<Renderer>();
+        myRenderer = GetComponent<Renderer>();
         myTransform = GetComponent<Transform>();
         
         timer = GetComponent<MovingObstacleTimer>();
@@ -32,10 +35,10 @@ public class MovingObstacle : MonoBehaviour {
     }
 
     public void ChangeColorWhenTracked() {
-        renderer.material.SetColor("_Color", Color.blue);
+        myRenderer.material.SetColor("_Color", trackedColor);
     }
 
     public void ResetColor() {
-        renderer.material.SetColor("_Color", Color.red);
+        myRenderer.material.SetColor("_Color", defaultColor);
     }
 }

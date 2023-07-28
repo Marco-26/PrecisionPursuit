@@ -6,7 +6,7 @@ using TMPro;
 
 public enum Gamemode {
     FLICKING,
-    MOTION
+    TRACKING
 }
 
 public class GameManager : MonoBehaviour {
@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] private PlayerGun playerGun;
 
-    private Gamemode currentGamemode = Gamemode.MOTION;
+    private Gamemode currentGamemode = Gamemode.TRACKING;
 
     private float playerAccuracy = 0;
     private float playerScore = 0;
