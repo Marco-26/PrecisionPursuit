@@ -6,7 +6,7 @@ using TMPro;
 
 public enum Gamemode {
     FLICKING,
-    MOTION
+    TRACKING
 }
 
 public class GameManager : MonoBehaviour {
@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] private PlayerGun playerGun;
 
-    private Gamemode currentGamemode;
+    private Gamemode currentGamemode = Gamemode.TRACKING;
 
     private float playerAccuracy = 0;
     private float playerScore = 0;
@@ -33,16 +33,20 @@ public class GameManager : MonoBehaviour {
     private void Start(){
         if(playerGun != null)
         {
-            playerGun.OnShotsFired += PlayerGun_OnShotsFired;
-            playerGun.OnShotsHit += PlayerGun_OnShotsHit;
+            if(currentGamemode == Gamemode.FLICKING) {
+                playerGun.OnShotsFired += PlayerGun_OnShotsFired;
+                return;
+            }
+            playerGun.OnTrackedObstacle += PlayerGun_OnTrackedObstacle;
         }
     }
 
-    private void PlayerGun_OnShotsFired(object sender, PlayerGun.MissFireEventArgs e){
+    private void PlayerGun_OnTrackedObstacle(object sender, PlayerGun.FireEventArgs e) {
+        playerScore = e.score;
         playerAccuracy = e.accuracy;
     }
 
-    private void PlayerGun_OnShotsHit(object sender, PlayerGun.HitFireEventArgs e){
+    private void PlayerGun_OnShotsFired(object sender, PlayerGun.FireEventArgs e){
         playerScore = e.score;
         playerAccuracy = e.accuracy;
     }
@@ -54,6 +58,8 @@ public class GameManager : MonoBehaviour {
     public int GetScore() {
         return Mathf.FloorToInt(playerScore);
     }
+
+    public Gamemode GetCurrentGamemode() { return currentGamemode; }
 
     public void SetCurrentGamemode(Gamemode gamemode) {
         currentGamemode = gamemode;

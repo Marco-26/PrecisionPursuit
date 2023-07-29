@@ -1,7 +1,20 @@
-- Melhorar o algoritmo de spawnar obstaculos. É preciso verificar as posições dos obstaculos que já estão no jogo antes de spawnar um novo.
-- Melhorar o menu principal.
-- Adicionar menu de pausa.
-- Adicionar som.
-- Adicionar modo de treino "Motion Tracking"
-- Adicionar um sprite de uma glock, como no jogo AimLab, e ter uma opção para desativar o sprite.
+----------- LOGICA -----------
 - Sistema de crosshair.
+- Melhorar o algoritmo de spawnar obstaculos. (Usar uma struct para guardar a posição e uma referência do obstáculo que está nessas posições) 
+- Modo de jogo "Reacao". Basicamente existe uma grid, e um objeto de cada vez aparece e de repente desaparece outra vez.
+
+----------- UI -----------
+- Menu principal.
+- Menu de pausa.
+- Menu de opcoes. (Será aqui que se acede ao menu de mudar crosshair).
+- Health bar do obstaculo que se move consoante o tempo restante.
+
+----------- SOM -----------
+- Som quando dispara.
+- Musica de fundo.
+
+----------- GRAPHICS -----------
+- Adicionar um sprite de uma glock, como no jogo AimLab, e ter uma opção para desativar o sprite.
+
+----------- TEST -----------
+- Modo de treino "Motion Tracking"
