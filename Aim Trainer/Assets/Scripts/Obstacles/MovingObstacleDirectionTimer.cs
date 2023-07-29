@@ -4,8 +4,8 @@ using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
 
-
-public class MovingObstacleTimer : MonoBehaviour{
+public class MovingObstacleDirectionTimer : MonoBehaviour{
+    
     private float time = 0;
     private const int MIN_TIME = 1;
     private const int MAX_TIME = 5;

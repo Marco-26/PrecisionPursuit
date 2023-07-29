@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class ObstacleSpawner : MonoBehaviour
-{
+public class ObstacleSpawner : MonoBehaviour{
+    public static ObstacleSpawner Instance { get; private set; }
+
     [SerializeField] private GameObject obstacle;
     [SerializeField] private GameObject movingObstacle;
     [SerializeField] private CountdownTimer countdownTimer;
@@ -15,6 +16,7 @@ public class ObstacleSpawner : MonoBehaviour
     private const int ZDISTANCE = 5;
 
     private void Awake() {
+        Instance = this;
         countdownTimer.OnCountdownTimerStopped += CountdownTimer_OnCountdownTimerStopped;        
     }
 
@@ -35,6 +37,11 @@ public class ObstacleSpawner : MonoBehaviour
             return;
         }
 
+        if(GameManager.Instance.GetCurrentGamemode() ==Gamemode.FLICKING) { 
+            Instantiate(obstacle, currObstaclePos, Quaternion.identity);
+            return;
+        }
         Instantiate(movingObstacle, currObstaclePos, Quaternion.identity);
+
     }
 }

@@ -18,7 +18,8 @@ public class PlayerGun : MonoBehaviour {
     private Transform obstacle = null;
 
     public event EventHandler<FireEventArgs> OnShotsFired;
-    public event EventHandler OnTrackedObstacle;
+    public event EventHandler<FireEventArgs> OnTrackedObstacle;
+        
 
     public class FireEventArgs : EventArgs{
         public float score;
@@ -67,9 +68,12 @@ public class PlayerGun : MonoBehaviour {
                 if (target != null) {
                     timeTrackingObstacle += Time.deltaTime;
                     target.ChangeColorWhenTracked();
+                    OnTrackedObstacle?.Invoke(this, new FireEventArgs { accuracy = CalculateAccuracy(), score = CalculateScore(true) });
                     return;
                 }
                 timeNotTrackingObstacle += Time.deltaTime;
+                OnTrackedObstacle?.Invoke(this, new FireEventArgs { accuracy = CalculateAccuracy(), score = CalculateScore(false) });
+
             }
         }
     }
@@ -94,15 +98,25 @@ public class PlayerGun : MonoBehaviour {
 
     private float CalculateScore(bool hit) {
         if (hit) {
-            score += (BASE_SCORE * CalculateAccuracy()) / 2;
+            if(GameManager.Instance.GetCurrentGamemode() == Gamemode.FLICKING) {
+                score += (BASE_SCORE * CalculateAccuracy()) / 2;
+                return score;
+            }
+
+            score += (CalculateAccuracy()) / 10;
+            return score;
         } else {
             if (score <= 0) {
                 return 0;
             }
 
-            score -= (BASE_SCORE * CalculateAccuracy()) / 4;
-        }
+            if (GameManager.Instance.GetCurrentGamemode() == Gamemode.FLICKING) {
+                score -= (BASE_SCORE * CalculateAccuracy()) / 4;
+                return score;
+            }
 
-        return score;
+            score -= (CalculateAccuracy()) / 15;
+            return score;
+        }
     }
 }

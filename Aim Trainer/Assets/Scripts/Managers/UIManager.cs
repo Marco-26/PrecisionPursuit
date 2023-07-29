@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
     }
 
     private void DisplayAccuracy() {
-        accuracyText.text = GameManager.Instance.GetAccuracy() + "%";
+        accuracyText.text = GameManager.Instance.GetAccuracy().ToString();
     }
 
     private void DisplayPoints() {

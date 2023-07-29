@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] private PlayerGun playerGun;
 
-    private Gamemode currentGamemode = Gamemode.FLICKING;
+    private Gamemode currentGamemode = Gamemode.TRACKING;
 
     private float playerAccuracy = 0;
     private float playerScore = 0;
@@ -33,8 +33,17 @@ public class GameManager : MonoBehaviour {
     private void Start(){
         if(playerGun != null)
         {
-            playerGun.OnShotsFired += PlayerGun_OnShotsFired;
+            if(currentGamemode == Gamemode.FLICKING) {
+                playerGun.OnShotsFired += PlayerGun_OnShotsFired;
+                return;
+            }
+            playerGun.OnTrackedObstacle += PlayerGun_OnTrackedObstacle;
         }
+    }
+
+    private void PlayerGun_OnTrackedObstacle(object sender, PlayerGun.FireEventArgs e) {
+        playerScore = e.score;
+        playerAccuracy = e.accuracy;
     }
 
     private void PlayerGun_OnShotsFired(object sender, PlayerGun.FireEventArgs e){

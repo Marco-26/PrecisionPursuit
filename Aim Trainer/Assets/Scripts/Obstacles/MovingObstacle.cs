@@ -2,25 +2,32 @@ using UnityEngine;
 
 public class MovingObstacle : MonoBehaviour {
 
-    private int moveSpeed = 1;
+    private int moveSpeed;
     private Transform myTransform;
-    private MovingObstacleTimer timer;
+    private MovingObstacleDirectionTimer directionTimer;
+    private MovingObstacleDestroyTimer destroyTimer;
     private Renderer myRenderer;
 
     private Color trackedColor = Color.blue;
     private Color defaultColor = Color.red;
 
     private void Start() {
+        moveSpeed = Random.Range(1, 5);
         myRenderer = GetComponent<Renderer>();
         myTransform = GetComponent<Transform>();
-        
-        timer = GetComponent<MovingObstacleTimer>();
-        if (timer != null) {
-            timer.OnTimeEnd += Timer_OnTimeEnd;
-        }
+        directionTimer = GetComponent<MovingObstacleDirectionTimer>();
+        destroyTimer = GetComponent <MovingObstacleDestroyTimer>();
+
+        directionTimer.OnTimeEnd += DirectionTimer_OnTimeEnd;
+        destroyTimer.OnDestroy += DestroyTimer_OnDestroy;
     }
 
-    private void Timer_OnTimeEnd(object sender, System.EventArgs e) {
+    private void DestroyTimer_OnDestroy(object sender, System.EventArgs e) {
+        Destroy(this.gameObject);
+        ObstacleSpawner.Instance.SpawnObstacle();
+    }
+
+    private void DirectionTimer_OnTimeEnd(object sender, System.EventArgs e) {
         moveSpeed *= -1;
     }
 
