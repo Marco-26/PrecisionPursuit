@@ -1754,6 +1754,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerGun: {fileID: 331465433}
+  gamemodeSettings: {fileID: 11400000, guid: 93b131890c10cef4982e2678ad656626, type: 2}
 --- !u!4 &269989879
 Transform:
   m_ObjectHideFlags: 0
