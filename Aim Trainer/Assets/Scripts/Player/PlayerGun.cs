@@ -103,7 +103,7 @@ public class PlayerGun : MonoBehaviour {
                 return score;
             }
 
-            score += (CalculateAccuracy()) / 10;
+            score += (CalculateAccuracy()) / 15;
             return score;
         } else {
             if (score <= 0) {
@@ -115,7 +115,7 @@ public class PlayerGun : MonoBehaviour {
                 return score;
             }
 
-            score -= (CalculateAccuracy()) / 15;
+            score -= (CalculateAccuracy()) / 40;
             return score;
         }
     }

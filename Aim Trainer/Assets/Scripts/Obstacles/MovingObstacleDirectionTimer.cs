@@ -8,7 +8,7 @@ public class MovingObstacleDirectionTimer : MonoBehaviour{
     
     private float time = 0;
     private const int MIN_TIME = 1;
-    private const int MAX_TIME = 5;
+    private const int MAX_TIME = 4;
 
     public event EventHandler OnTimeEnd;
 
@@ -18,7 +18,7 @@ public class MovingObstacleDirectionTimer : MonoBehaviour{
 
     private void Update() {
         time -= Time.deltaTime;
-        if(time < 0) {
+        if(time <= 0) {
             time = Random.Range(MIN_TIME, MAX_TIME);
             OnTimeEnd?.Invoke(this, EventArgs.Empty);
         }

@@ -1,7 +1,8 @@
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
 public class MovingObstacle : MonoBehaviour {
-
+    
     private int moveSpeed;
     private Transform myTransform;
     private MovingObstacleDirectionTimer directionTimer;
@@ -23,12 +24,16 @@ public class MovingObstacle : MonoBehaviour {
     }
 
     private void DestroyTimer_OnDestroy(object sender, System.EventArgs e) {
-        Destroy(this.gameObject);
+        Destroy(gameObject);
         ObstacleSpawner.Instance.SpawnObstacle();
     }
 
+    private void OnTriggerEnter(Collider other) {
+        ReverseDirection();
+    }
+
     private void DirectionTimer_OnTimeEnd(object sender, System.EventArgs e) {
-        moveSpeed *= -1;
+        ReverseDirection();
     }
 
     private void Update() {
@@ -48,4 +53,9 @@ public class MovingObstacle : MonoBehaviour {
     public void ResetColor() {
         myRenderer.material.SetColor("_Color", defaultColor);
     }
+
+    private void ReverseDirection() {
+        moveSpeed *= -1;
+    }
+
 }

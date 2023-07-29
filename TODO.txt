@@ -1,8 +1,7 @@
 ----------- LOGICA -----------
-- Adicionar modo de treino "Motion Tracking"
-	- Adicionar a logica de quando o obstacle bate na parede tem de voltar na direcao contraria
 - Sistema de crosshair.
 - Melhorar o algoritmo de spawnar obstaculos. (Usar uma struct para guardar a posição e uma referência do obstáculo que está nessas posições) 
+- Modo de jogo "Reacao". Basicamente existe uma grid, e um objeto de cada vez aparece e de repente desaparece outra vez.
 
 ----------- UI -----------
 - Menu principal.
@@ -14,5 +13,8 @@
 - Som quando dispara.
 - Musica de fundo.
 
------------ GRAPHICS-----------
+----------- GRAPHICS -----------
 - Adicionar um sprite de uma glock, como no jogo AimLab, e ter uma opção para desativar o sprite.
+
+----------- TEST -----------
+- Modo de treino "Motion Tracking"
