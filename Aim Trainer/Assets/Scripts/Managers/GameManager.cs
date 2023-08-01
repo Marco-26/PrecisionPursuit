@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start(){
+        Grid grid = new Grid();
         if(playerGun != null)
         {
             if(currentGamemode == Gamemode.FLICKING) {

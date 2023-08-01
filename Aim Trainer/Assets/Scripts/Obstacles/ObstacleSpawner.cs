@@ -39,5 +39,11 @@ public class ObstacleSpawner : MonoBehaviour{
         Instantiate(movingObstacle, currObstaclePos, Quaternion.identity);
     }
 
+    public Obstacle SpawnTest(int x, int y) {
+        Instantiate(obstacle, new Vector3(x, y, ZDISTANCE), Quaternion.identity);
+        obstacle.SetActive(false);
+        return obstacle.GetComponent<Obstacle>();
+    }
+
 }
 
