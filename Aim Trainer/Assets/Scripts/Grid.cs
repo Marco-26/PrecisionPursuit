@@ -22,16 +22,16 @@ public class Grid{
         gridArray[x, y] = null;
     }
 
-    public void GetPosition(Transform target, out int x, out int y) {
-        for(int i = 0; i < gridArray.GetLength(0); i++) {
-            for(int j = 0; j < gridArray.GetLength(1); j++) {
-                if (gridArray[i, j].Equals(target)){
-                    y = j;
-                }
+    public void PrintGrid() {
+        Debug.Log("----------------------------------------------------------------------------");
+
+        for (int i = 0;  i < gridArray.GetLength(0); i++) {
+            for(int j = 0;  j < gridArray.GetLength(1); j++) {
+                Debug.Log("Posicao x: " + i + ", Posicao y: " + j + ", Ocupado: " + gridArray[i,j]);
             }
         }
-        x = -1;
-        y = -1;
+        Debug.Log("----------------------------------------------------------------------------");
+
     }
 
     public Transform GetValue(int x,int y) {

@@ -46,10 +46,8 @@ public class ObstacleSpawner : MonoBehaviour{
     }
 
     public void SpawnTest() {
-        int x, y;
-
-        x = Random.Range(0, grid.GetWidth());
-        y = Random.Range(0, grid.GetHeight());
+        int x = Random.Range(0, grid.GetWidth());
+        int y = Random.Range(0, grid.GetHeight());
 
         Transform temp = grid.GetValue(x, y);
         
@@ -59,11 +57,16 @@ public class ObstacleSpawner : MonoBehaviour{
             temp = grid.GetValue(x, y);
         }
 
-        obstacle.GetComponent<Obstacle>().SetPosition(new Vector2Int(x, y));
-        
         grid.SetValue(x, y, obstacle);
         Instantiate(obstacle, new Vector3(x, y, ZDISTANCE), Quaternion.identity);
     }
 
+    public void RemoveFromGrid(int x, int y) {
+        grid.ClearValue(x, y);
+    }
+
+    public void PrintGridArray() {
+        grid.PrintGrid();
+    }
 }
 
