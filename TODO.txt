@@ -1,6 +1,5 @@
 ----------- LOGICA -----------
-- Melhorar o algoritmo de spawnar obstaculos. (Usar uma struct para guardar a posição e uma referência do obstáculo que está nessas posições) 
-- Modo de jogo "Reacao". Basicamente existe uma grid, e um objeto de cada vez aparece e de repente desaparece outra vez.
+- Melhorar o algoritmo de spawnar obstaculos.
 - Sistema de crosshair.
 
 ----------- UI -----------
