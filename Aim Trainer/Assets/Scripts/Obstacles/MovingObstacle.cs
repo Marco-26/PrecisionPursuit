@@ -25,7 +25,7 @@ public class MovingObstacle : MonoBehaviour {
 
     private void DestroyTimer_OnDestroy(object sender, System.EventArgs e) {
         Destroy(gameObject);
-        ObstacleSpawner.Instance.SpawnObstacle();
+        GridManager.Instance.SpawnObstacle();
     }
 
     private void OnTriggerEnter(Collider other) {

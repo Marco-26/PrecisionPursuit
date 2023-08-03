@@ -1,4 +1,5 @@
 ----------- LOGICA -----------
+- Os obstaculos que se movem devem se destruir com base em vida e nao em tempo
 - Melhorar o algoritmo de spawnar obstaculos.
 - Sistema de crosshair.
 

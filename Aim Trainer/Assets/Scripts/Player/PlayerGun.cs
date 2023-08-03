@@ -38,7 +38,6 @@ public class PlayerGun : MonoBehaviour {
     }
 
     private void Shoot() {
-        ObstacleSpawner.Instance.PrintGridArray();
         totalShotsFired++;
         float tempScore = score;
         OnShotsFired?.Invoke(this, new FireEventArgs() { score = CalculateScore(false), accuracy = CalculateAccuracy() }) ;

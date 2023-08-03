@@ -20,8 +20,8 @@ public class Obstacle : MonoBehaviour {
     }
 
     public void Destroy() {
-        ObstacleSpawner.Instance.SpawnTest();
-        ObstacleSpawner.Instance.RemoveFromGrid(x, y);
+        GridManager.Instance.SpawnObstacle();
+        GridManager.Instance.RemoveFromGrid(x, y);
         Destroy(gameObject);
     }
 

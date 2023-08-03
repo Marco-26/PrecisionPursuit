@@ -1,17 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering;
 
 public class Grid{
 
     private Transform[,] gridArray;
     private int width;
     private int height;
+    private Vector2Int offset;
 
     public Grid() {
-        width = 3; height = 3;
+        offset = new Vector2Int(0, 2);
+        width = 4; height = 6;
         gridArray = new Transform[width, height];
+    }
+    public Transform GetValue(int x, int y) {
+        return gridArray[x, y];
     }
 
     public void SetValue(int x, int y, Transform target) {
@@ -22,22 +24,16 @@ public class Grid{
         gridArray[x, y] = null;
     }
 
-    public void PrintGrid() {
-        Debug.Log("----------------------------------------------------------------------------");
-
-        for (int i = 0;  i < gridArray.GetLength(0); i++) {
-            for(int j = 0;  j < gridArray.GetLength(1); j++) {
+    public void PrintGridArray() {
+        for (int i = offset.x;  i < gridArray.GetLength(0); i++) {
+            for(int j = offset.y;  j < gridArray.GetLength(1); j++) {
                 Debug.Log("Posicao x: " + i + ", Posicao y: " + j + ", Ocupado: " + gridArray[i,j]);
             }
         }
-        Debug.Log("----------------------------------------------------------------------------");
-
     }
-
-    public Transform GetValue(int x,int y) {
-        return gridArray[x, y];
-    }
-
+    
     public int GetWidth() { return width; }
     public int GetHeight() { return height;}
+
+    public Vector2Int GetOffset() { return offset; }
 }
