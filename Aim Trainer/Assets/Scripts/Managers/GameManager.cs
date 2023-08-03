@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private PlayerGun playerGun;
     [SerializeField] private GameModeSettings gamemodeSettings;
 
-    private Gamemode currentGamemode = Gamemode.NULL;
+    private Gamemode currentGamemode = Gamemode.FLICKING;
 
     private float playerAccuracy = 0;
     private float playerScore = 0;
@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start(){
-        if(playerGun != null)
+        if (playerGun != null)
         {
             if(currentGamemode == Gamemode.FLICKING) {
                 playerGun.OnShotsFired += PlayerGun_OnShotsFired;
