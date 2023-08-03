@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class GridManager : MonoBehaviour{
+public class GridManager : MonoBehaviour {
     public static GridManager Instance { get; private set; }
 
     [SerializeField] private Transform obstacle;
@@ -11,18 +11,15 @@ public class GridManager : MonoBehaviour{
     [SerializeField] private CountdownTimer countdownTimer;
 
     private const int MAX_TARGETS = 3;
-    private const int Z_DISTANCE = 5;
 
-    private Grid grid;
+    private GridMap grid;
 
     private void Awake() {
         Instance = this;
-        
-        countdownTimer.OnCountdownTimerStopped += CountdownTimer_OnCountdownTimerStopped;        
-    }
+        grid = GetComponent<GridMap>();
 
-    private void Start() {
-        grid = new Grid();
+
+        countdownTimer.OnCountdownTimerStopped += CountdownTimer_OnCountdownTimerStopped;        
     }
 
     private void CountdownTimer_OnCountdownTimerStopped(object sender, System.EventArgs e) {
@@ -46,11 +43,11 @@ public class GridManager : MonoBehaviour{
         grid.SetValue(x, y, obstacle);
 
         if (GameManager.Instance.GetCurrentGamemode() == Gamemode.FLICKING) {
-            Instantiate(obstacle, new Vector3(x,y, Z_DISTANCE), Quaternion.identity);
+            Instantiate(obstacle, new Vector3(x,y, GridMap.Z_DISTANCE), Quaternion.identity);
             return;
         }
 
-        Instantiate(movingObstacle, new Vector3(x, y, Z_DISTANCE), Quaternion.identity);
+        Instantiate(movingObstacle, new Vector3(x, y, GridMap.Z_DISTANCE), Quaternion.identity);
     }
 
     public void RemoveFromGrid(int x, int y) {
@@ -61,7 +58,7 @@ public class GridManager : MonoBehaviour{
         for (int x = grid.GetOffset().x; x < grid.GetWidth(); x++) {
             for (int y = grid.GetOffset().y; y < grid.GetHeight(); y++) {
                 grid.SetValue(x, y, obstacle);
-                Instantiate(obstacle, new Vector3(x, y, Z_DISTANCE), Quaternion.identity);
+                Instantiate(obstacle, new Vector3(x, y, GridMap.Z_DISTANCE), Quaternion.identity);
             }
         }
     }
