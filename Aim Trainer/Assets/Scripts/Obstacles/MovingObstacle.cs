@@ -5,21 +5,19 @@ public class MovingObstacle : MonoBehaviour {
     
     private int moveSpeed;
     private Transform myTransform;
-    private MovingObstacleDirectionTimer directionTimer;
     private MovingObstacleDestroyTimer destroyTimer;
     private Renderer myRenderer;
+    private bool isBeingTracked = false;
 
     private Color trackedColor = Color.blue;
     private Color defaultColor = Color.red;
 
     private void Start() {
-        moveSpeed = Random.Range(1, 5);
+        moveSpeed = Random.Range(2, 5);
         myRenderer = GetComponent<Renderer>();
         myTransform = GetComponent<Transform>();
-        directionTimer = GetComponent<MovingObstacleDirectionTimer>();
         destroyTimer = GetComponent <MovingObstacleDestroyTimer>();
 
-        directionTimer.OnTimeEnd += DirectionTimer_OnTimeEnd;
         destroyTimer.OnDestroy += DestroyTimer_OnDestroy;
     }
 
@@ -32,11 +30,8 @@ public class MovingObstacle : MonoBehaviour {
         ReverseDirection();
     }
 
-    private void DirectionTimer_OnTimeEnd(object sender, System.EventArgs e) {
-        ReverseDirection();
-    }
-
     private void Update() {
+        Debug.Log(isBeingTracked);
         Vector2 inputVector = new Vector2(0, 0);
 
         inputVector.x += 1;
@@ -46,11 +41,11 @@ public class MovingObstacle : MonoBehaviour {
         myTransform.position += moveVector * moveSpeed * Time.deltaTime;
     }
 
-    public void ChangeColorWhenTracked() {
+    private void ChangeColorWhenTracked() {
         myRenderer.material.SetColor("_Color", trackedColor);
     }
 
-    public void ResetColor() {
+    private void ResetColor() {
         myRenderer.material.SetColor("_Color", defaultColor);
     }
 
@@ -58,4 +53,17 @@ public class MovingObstacle : MonoBehaviour {
         moveSpeed *= -1;
     }
 
+    public void SetIsBeingTracked() {
+        ChangeColorWhenTracked();
+        isBeingTracked = true;
+    }
+
+    public void SetIsNotBeingTracked() {
+        ResetColor();
+        isBeingTracked = false;
+    }
+
+    public bool GetIsBeingTracked() {
+        return isBeingTracked;
+    }
 }
