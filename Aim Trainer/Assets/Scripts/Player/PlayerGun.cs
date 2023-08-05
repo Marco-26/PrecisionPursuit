@@ -15,6 +15,8 @@ public class PlayerGun : MonoBehaviour {
     private float timeNotTrackingObstacle = 0f;
     private float score = 0;
 
+    private float timeSinceLastAttack = 0f;
+
     private Transform obstacle = null;
 
     public event EventHandler<FireEventArgs> OnShotsFired;
