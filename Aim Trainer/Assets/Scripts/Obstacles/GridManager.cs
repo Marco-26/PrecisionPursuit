@@ -13,6 +13,7 @@ public class GridManager : MonoBehaviour {
     private const int MAX_TARGETS = 3;
 
     private GridMap grid;
+    private Vector3Int spawnPos = Vector3Int.zero;
 
     private void Awake() {
         Instance = this;
@@ -23,31 +24,31 @@ public class GridManager : MonoBehaviour {
     }
 
     private void CountdownTimer_OnCountdownTimerStopped(object sender, System.EventArgs e) {
-        for (int i = 0; i < MAX_TARGETS; i++) {
-            SpawnObstacle();
-        }
+        SpawnObstacle();
     }
 
     public void SpawnObstacle() {
-        int x = Random.Range(0, grid.GetWidth());
-        int y = Random.Range(grid.GetOffset().y, grid.GetHeight());
+        Vector3 lastSpawnPos = spawnPos;
+        spawnPos.z = GridMap.Z_DISTANCE;
+        spawnPos.x = Random.Range(0, grid.GetWidth());
+        spawnPos.y = Random.Range(grid.GetOffset().y, grid.GetHeight());
 
-        Transform temp = grid.GetValue(x, y);
-        
-        while (temp != null) {
-            x = Random.Range(0, grid.GetWidth());
-            y = Random.Range(grid.GetOffset().y, grid.GetHeight());
-            temp = grid.GetValue(x, y);
+        Transform temp = grid.GetValue(spawnPos.x, spawnPos.y);
+
+        while (temp != null || lastSpawnPos.y == spawnPos.y) {
+            spawnPos.x = Random.Range(0, grid.GetWidth());
+            spawnPos.y = Random.Range(grid.GetOffset().y, grid.GetHeight());
+            temp = grid.GetValue(spawnPos.x, spawnPos.y);
         }
 
-        grid.SetValue(x, y, obstacle);
-
         if (GameManager.Instance.GetCurrentGamemode() == Gamemode.FLICKING) {
-            Instantiate(obstacle, new Vector3(x,y, GridMap.Z_DISTANCE), Quaternion.identity);
+            grid.SetValue(spawnPos.x, spawnPos.y, obstacle);
+            Instantiate(obstacle, spawnPos, Quaternion.identity);
             return;
         }
 
-        Instantiate(movingObstacle, new Vector3(x, y, GridMap.Z_DISTANCE), Quaternion.identity);
+        grid.SetValue(spawnPos.x, spawnPos.y, movingObstacle);
+        Instantiate(movingObstacle, spawnPos, Quaternion.identity);
     }
 
     public void RemoveFromGrid(int x, int y) {

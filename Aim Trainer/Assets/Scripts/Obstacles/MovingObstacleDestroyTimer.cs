@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 public class MovingObstacleDestroyTimer : MonoBehaviour{
     private const int TIMER_MIN = 3;
-    private const int TIMER_MAX = 7;
+    private const int TIMER_MAX = 5;
     private float timer;
 
     public event EventHandler OnDestroy;

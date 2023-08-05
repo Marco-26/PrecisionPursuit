@@ -58,7 +58,7 @@ public class PlayerGun : MonoBehaviour {
         if (obstacle != null) {
             MovingObstacle target = obstacle.GetComponent<MovingObstacle>();
             if (target != null) {
-                target.ResetColor();
+                target.SetIsNotBeingTracked();
             }
             obstacle = null;
         }
@@ -69,7 +69,7 @@ public class PlayerGun : MonoBehaviour {
                 MovingObstacle target = obstacle.GetComponent<MovingObstacle>();
                 if (target != null) {
                     timeTrackingObstacle += Time.deltaTime;
-                    target.ChangeColorWhenTracked();
+                    target.SetIsBeingTracked();
                     OnTrackedObstacle?.Invoke(this, new FireEventArgs { accuracy = CalculateAccuracy(), score = CalculateScore(true) });
                     return;
                 }
