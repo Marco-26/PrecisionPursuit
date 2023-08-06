@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static GameManager;
 
@@ -11,23 +13,22 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI accuracyText;
     [SerializeField] private TextMeshProUGUI scoreText;
 
-    [SerializeField] private GameObject additionalOptionsContainer;
-    [SerializeField] private TextMeshProUGUI highscoreText;
-    [SerializeField] private TextMeshProUGUI gamemodeText;
+    [SerializeField] private GameObject gameOverScreen;
+    [SerializeField] private TextMeshProUGUI scoreTextGameOver;
+    [SerializeField] private TextMeshProUGUI accuracyTextGameOver;
+    [SerializeField] private Button restartButton;
+    [SerializeField] private Button mainMenuButton;
     
-    private Timer timer;
     [SerializeField] private bool aditionalOptions;
 
+    private Timer timer;
+
     private void Start() {
+        gameOverScreen.SetActive(false);
         timer = GetComponent<Timer>();
 
-        if (!aditionalOptions) {
-            additionalOptionsContainer.SetActive(false);
-        } else {
-            additionalOptionsContainer.SetActive(true);
-            highscoreText.text = GameManager.Instance.GetPlayerHighscore().ToString();
-            gamemodeText.text = GameManager.Instance.GetCurrentGamemode().ToString();
-        }
+        GameManager.Instance.OnGameEnd += GameManager_OnGameEnd;
+        HandleButtonListeners();
     }
     
     private void Update() {
@@ -54,6 +55,25 @@ public class UIManager : MonoBehaviour
         DisplayAccuracy();
         DisplayPoints();
         DisplayTime();
+    }
+
+    private void HandleButtonListeners() {
+        restartButton.onClick.AddListener(() => {
+            gameOverScreen.SetActive(false);
+            GameManager.Instance.RestartGame();
+        });
+
+        mainMenuButton.onClick.AddListener(() => {
+            gameOverScreen.SetActive(false);
+            SceneManager.LoadScene("MainMenu");
+        });
+    }
+
+    private void GameManager_OnGameEnd(object sender, EventArgs e) {
+        gameOverScreen.SetActive(true);
+        scoreTextGameOver.text = "Score: " + GameManager.Instance.GetScore().ToString();
+        accuracyTextGameOver.text = "Accuracy: " + GameManager.Instance.GetAccuracy().ToString()+"%";
+        GameManager.Instance.PauseGame();
     }
 
     public static void Quit() {
