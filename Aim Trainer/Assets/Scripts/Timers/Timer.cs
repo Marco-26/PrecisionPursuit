@@ -21,7 +21,6 @@ public class Timer : MonoBehaviour{
         isRunning = true;
     }
 
-
     private void Update() {
         if (isRunning) {
             UpdateTimer();
@@ -35,7 +34,6 @@ public class Timer : MonoBehaviour{
             isRunning = false;
         }
     }
-
 
     public float GetTimeRemaining() {
         return timeRemaining;
