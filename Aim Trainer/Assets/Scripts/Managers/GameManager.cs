@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
@@ -15,25 +16,28 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] private PlayerGun playerGun;
     [SerializeField] private GameModeSettings gamemodeSettings;
+    [SerializeField] private Timer timer;
 
     private Gamemode currentGamemode = Gamemode.FLICKING;
 
     private float playerAccuracy = 0;
     private float playerScore = 0;
+    private float playerHighscore = 0;
+
+    private bool gameEnded = false;
 
 
     private void Awake() {
-        if (Instance != null) {
-            Destroy(this);
-        }
-        else {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+        Instance = this;
         currentGamemode = gamemodeSettings.chosenGamemode;
     }
 
-    private void Start(){
+    private void Start() {
+        SaveManager.Instance.Load(currentGamemode);
+        playerHighscore = SaveManager.Instance.GetSavedHighscore();
+
+        timer.OnTimerEnd += Timer_OnTimerEnd;
+
         if (playerGun != null)
         {
             if(currentGamemode == Gamemode.FLICKING) {
@@ -54,6 +58,14 @@ public class GameManager : MonoBehaviour {
         playerAccuracy = e.accuracy;
     }
 
+    private void Timer_OnTimerEnd(object sender, EventArgs e) {
+        gameEnded = true;
+        if(playerScore > playerHighscore) {
+            SaveManager.Instance.Save(currentGamemode, playerScore);
+        }
+        Debug.Log("New Highscore: " + SaveManager.Instance.GetSavedHighscore());
+    }
+
     public int GetAccuracy() {
         return Mathf.FloorToInt(playerAccuracy);
     }
@@ -63,6 +75,8 @@ public class GameManager : MonoBehaviour {
     }
 
     public Gamemode GetCurrentGamemode() { return currentGamemode; }
+
+    public float GetPlayerHighscore() { return  playerHighscore; }
 
     public void SetCurrentGamemode(Gamemode gamemode) {
         currentGamemode = gamemode;

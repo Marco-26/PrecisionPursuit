@@ -4,12 +4,13 @@ using System;
 using UnityEngine;
 
 public class Timer : MonoBehaviour{
-
-    private float timeRemaining = 60;
+    [SerializeField] private float timeRemaining = 60;
     private bool isRunning = false;
 
-   private CountdownTimer countdownTimer;
+    private CountdownTimer countdownTimer;
     
+    public event EventHandler OnTimerEnd;
+
     private void Start() {
         countdownTimer = GetComponent<CountdownTimer>();
         if(countdownTimer != null) {
@@ -30,13 +31,14 @@ public class Timer : MonoBehaviour{
     private void UpdateTimer() {
         timeRemaining -= Time.deltaTime;
         if (timeRemaining <= 0) {
+            Debug.Log("Acabou tempo"); 
             timeRemaining = 0;
             isRunning = false;
+            OnTimerEnd.Invoke(this, EventArgs.Empty);
         }
     }
 
     public float GetTimeRemaining() {
         return timeRemaining;
     }
-
 }

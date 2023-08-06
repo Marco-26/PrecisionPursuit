@@ -14,9 +14,6 @@ public class PlayerGun : MonoBehaviour {
     private float timeTrackingObstacle = 0f;
     private float timeNotTrackingObstacle = 0f;
     private float score = 0;
-
-    private float timeSinceLastAttack = 0f;
-
     private Transform obstacle = null;
 
     public event EventHandler<FireEventArgs> OnShotsFired;
@@ -75,7 +72,6 @@ public class PlayerGun : MonoBehaviour {
                 }
                 timeNotTrackingObstacle += Time.deltaTime;
                 OnTrackedObstacle?.Invoke(this, new FireEventArgs { accuracy = CalculateAccuracy(), score = CalculateScore(false) });
-
             }
         }
     }

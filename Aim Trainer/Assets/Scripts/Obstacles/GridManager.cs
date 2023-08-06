@@ -19,7 +19,6 @@ public class GridManager : MonoBehaviour {
         Instance = this;
         grid = GetComponent<GridMap>();
 
-
         countdownTimer.OnCountdownTimerStopped += CountdownTimer_OnCountdownTimerStopped;        
     }
 

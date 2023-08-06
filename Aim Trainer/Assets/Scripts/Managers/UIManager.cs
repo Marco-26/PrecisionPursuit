@@ -10,10 +10,24 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI accuracyText;
     [SerializeField] private TextMeshProUGUI scoreText;
+
+    [SerializeField] private GameObject additionalOptionsContainer;
+    [SerializeField] private TextMeshProUGUI highscoreText;
+    [SerializeField] private TextMeshProUGUI gamemodeText;
+    
     private Timer timer;
+    [SerializeField] private bool aditionalOptions;
 
     private void Start() {
         timer = GetComponent<Timer>();
+
+        if (!aditionalOptions) {
+            additionalOptionsContainer.SetActive(false);
+        } else {
+            additionalOptionsContainer.SetActive(true);
+            highscoreText.text = GameManager.Instance.GetPlayerHighscore().ToString();
+            gamemodeText.text = GameManager.Instance.GetCurrentGamemode().ToString();
+        }
     }
     
     private void Update() {

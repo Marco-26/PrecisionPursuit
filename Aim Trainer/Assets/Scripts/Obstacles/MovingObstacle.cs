@@ -14,7 +14,7 @@ public class MovingObstacle : MonoBehaviour {
     private bool isBeingTracked = false;
 
     private void Start() {
-        moveSpeed = Random.Range(1, 5);
+        moveSpeed = Random.Range(2, 5);
         myRenderer = GetComponent<Renderer>();
         myTransform = GetComponent<Transform>();
         destroyTimer = GetComponent <MovingObstacleDestroyTimer>();

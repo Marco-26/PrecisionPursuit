@@ -36,8 +36,6 @@ public class CountdownTimer : MonoBehaviour
         
         playerGun.enabled = true;
 
-        //TODO: USAR EVENTO
-        //GameManager.instance.SetTimerIsRunning(true);
         OnCountdownTimerStopped?.Invoke(this, EventArgs.Empty);
     }
 }
