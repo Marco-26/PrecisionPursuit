@@ -1,5 +1,4 @@
 ----------- LOGICA -----------
-- Quando o utilizador consegue um novo highscore, dizer isso no gameOver.
 - Sistema de crosshair.
 
 ----------- UI -----------
