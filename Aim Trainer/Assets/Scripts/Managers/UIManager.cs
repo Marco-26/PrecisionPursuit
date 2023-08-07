@@ -9,25 +9,43 @@ using static GameManager;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("In Game UI")]
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI accuracyText;
     [SerializeField] private TextMeshProUGUI scoreText;
 
+    [Header("Game Over UI")]
     [SerializeField] private GameObject gameOverScreen;
+    [SerializeField] private GameObject recordBeatenMessage;
     [SerializeField] private TextMeshProUGUI scoreTextGameOver;
     [SerializeField] private TextMeshProUGUI accuracyTextGameOver;
     [SerializeField] private Button restartButton;
     [SerializeField] private Button mainMenuButton;
-    
+
+    [Header("Additional Options UI")]
     [SerializeField] private bool aditionalOptions;
+    [SerializeField] private GameObject additionalOptionsContainer;
+    [SerializeField] private TextMeshProUGUI highscoreText;
+    [SerializeField] private TextMeshProUGUI gamemodeText;
 
     private Timer timer;
 
     private void Start() {
         gameOverScreen.SetActive(false);
+        recordBeatenMessage.SetActive(false);
+
         timer = GetComponent<Timer>();
 
         GameManager.Instance.OnGameEnd += GameManager_OnGameEnd;
+        
+        if (!aditionalOptions) {
+            additionalOptionsContainer.SetActive(false);
+        } else {
+            additionalOptionsContainer.SetActive(true);
+            highscoreText.text = GameManager.Instance.GetPlayerHighscore().ToString();
+            gamemodeText.text = GameManager.Instance.GetCurrentGamemode().ToString();
+        }
+        
         HandleButtonListeners();
     }
     
@@ -71,9 +89,11 @@ public class UIManager : MonoBehaviour
 
     private void GameManager_OnGameEnd(object sender, EventArgs e) {
         gameOverScreen.SetActive(true);
+        if (GameManager.Instance.isHighscoreBeaten()) {
+            recordBeatenMessage.SetActive(true);
+        }
         scoreTextGameOver.text = "Score: " + GameManager.Instance.GetScore().ToString();
         accuracyTextGameOver.text = "Accuracy: " + GameManager.Instance.GetAccuracy().ToString()+"%";
-        GameManager.Instance.PauseGame();
     }
 
     public static void Quit() {

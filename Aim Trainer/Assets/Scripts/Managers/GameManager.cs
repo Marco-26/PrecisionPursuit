@@ -34,11 +34,12 @@ public class GameManager : MonoBehaviour {
     private void Awake() {
         Instance = this;
         currentGamemode = gamemodeSettings.chosenGamemode;
+        
+        SaveManager.Load(currentGamemode, out playerHighscore);
+        Debug.Log(playerHighscore);
     }
 
     private void Start() {
-        SaveManager.Instance.Load(currentGamemode);
-        playerHighscore = SaveManager.Instance.GetSavedHighscore();
         timer.OnTimerEnd += Timer_OnTimerEnd;
 
         if (playerGun != null)
@@ -63,9 +64,10 @@ public class GameManager : MonoBehaviour {
 
     private void Timer_OnTimerEnd(object sender, EventArgs e) {
         gameEnded = true;
-        if(playerScore > playerHighscore) {
-            SaveManager.Instance.Save(currentGamemode, playerScore);
+        if(isHighscoreBeaten()) {
+            SaveManager.Save(currentGamemode, playerScore);
         }
+        PauseGame();
         OnGameEnd?.Invoke(this, EventArgs.Empty);
     }
 
@@ -108,5 +110,9 @@ public class GameManager : MonoBehaviour {
 
     public PlayerGun GetPlayerGun() {
         return playerGun;
+    }
+
+    public bool isHighscoreBeaten() {
+        return playerScore > playerHighscore;
     }
 }
