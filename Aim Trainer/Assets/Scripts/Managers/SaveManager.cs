@@ -2,16 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SaveManager : MonoBehaviour{
-    public static SaveManager Instance { get; private set; }
+public static class SaveManager {
 
-    private float savedHighscore;
-
-    private void Awake() {
-        Instance = this;
-    }
-
-    public void Load(Gamemode gamemode) {
+    public static void Load(Gamemode gamemode, out float savedHighscore) {
         if(gamemode == Gamemode.FLICKING) {
             savedHighscore = PlayerPrefs.GetFloat("flickingGamemodeHighscore", 0);
             return;
@@ -19,17 +12,12 @@ public class SaveManager : MonoBehaviour{
         savedHighscore = PlayerPrefs.GetFloat("targetingGamemodeHighscore", 0);
     }
 
-    public void Save(Gamemode gamemode, float highscoreRecord) {
-        savedHighscore = highscoreRecord;
+    public static void Save(Gamemode gamemode, float highscoreRecord) {
         if (gamemode == Gamemode.FLICKING) {
             PlayerPrefs.SetFloat("flickingGamemodeHighscore", highscoreRecord);
         } else {
             PlayerPrefs.SetFloat("targetingGamemodeHighscore", highscoreRecord);
         }
         PlayerPrefs.Save();
-    }
-
-    public float GetSavedHighscore() {
-        return savedHighscore;
     }
 }

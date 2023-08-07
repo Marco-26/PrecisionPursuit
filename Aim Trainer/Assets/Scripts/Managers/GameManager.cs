@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
@@ -15,7 +16,9 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private PlayerGun playerGun;
+    [SerializeField] private PlayerLook playerLook;
     [SerializeField] private GameModeSettings gamemodeSettings;
+    [SerializeField] private CountdownTimer countdownTimer;
     [SerializeField] private Timer timer;
 
     private Gamemode currentGamemode = Gamemode.FLICKING;
@@ -26,16 +29,17 @@ public class GameManager : MonoBehaviour {
 
     private bool gameEnded = false;
 
+    public event EventHandler OnGameEnd;
 
     private void Awake() {
         Instance = this;
         currentGamemode = gamemodeSettings.chosenGamemode;
+        
+        SaveManager.Load(currentGamemode, out playerHighscore);
+        Debug.Log(playerHighscore);
     }
 
     private void Start() {
-        SaveManager.Instance.Load(currentGamemode);
-        playerHighscore = SaveManager.Instance.GetSavedHighscore();
-
         timer.OnTimerEnd += Timer_OnTimerEnd;
 
         if (playerGun != null)
@@ -60,10 +64,11 @@ public class GameManager : MonoBehaviour {
 
     private void Timer_OnTimerEnd(object sender, EventArgs e) {
         gameEnded = true;
-        if(playerScore > playerHighscore) {
-            SaveManager.Instance.Save(currentGamemode, playerScore);
+        if(isHighscoreBeaten()) {
+            SaveManager.Save(currentGamemode, playerScore);
         }
-        Debug.Log("New Highscore: " + SaveManager.Instance.GetSavedHighscore());
+        PauseGame();
+        OnGameEnd?.Invoke(this, EventArgs.Empty);
     }
 
     public int GetAccuracy() {
@@ -76,9 +81,38 @@ public class GameManager : MonoBehaviour {
 
     public Gamemode GetCurrentGamemode() { return currentGamemode; }
 
-    public float GetPlayerHighscore() { return  playerHighscore; }
+    public float GetPlayerHighscore() { return playerHighscore; }
 
     public void SetCurrentGamemode(Gamemode gamemode) {
         currentGamemode = gamemode;
+    }
+
+    public void PauseGame() {
+        Time.timeScale = 0f;
+        playerGun.enabled = false;
+        playerLook.enabled = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void UnpauseGame() {
+        Time.timeScale = 1f;
+        playerGun.enabled = true;
+        playerLook.enabled = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    public void RestartGame() {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public PlayerGun GetPlayerGun() {
+        return playerGun;
+    }
+
+    public bool isHighscoreBeaten() {
+        return playerScore > playerHighscore;
     }
 }

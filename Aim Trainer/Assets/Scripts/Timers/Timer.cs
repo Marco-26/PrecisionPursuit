@@ -31,7 +31,6 @@ public class Timer : MonoBehaviour{
     private void UpdateTimer() {
         timeRemaining -= Time.deltaTime;
         if (timeRemaining <= 0) {
-            Debug.Log("Acabou tempo"); 
             timeRemaining = 0;
             isRunning = false;
             OnTimerEnd.Invoke(this, EventArgs.Empty);
