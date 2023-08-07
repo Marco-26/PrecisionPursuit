@@ -1,14 +1,10 @@
 ----------- LOGICA -----------
-- Os obstaculos que se movem devem se destruir com base em vida e nao em tempo
-- Melhorar o algoritmo de spawnar obstaculos.
 - Sistema de crosshair.
-- Organizar projeto e usar namespaces.
 
 ----------- UI -----------
 - Menu principal.
 - Menu de pausa.
 - Menu de opcoes. (Será aqui que se acede ao menu de mudar crosshair).
-- Health bar do obstaculo que se move consoante o tempo restante.
 
 ----------- SOM -----------
 - Som quando dispara.

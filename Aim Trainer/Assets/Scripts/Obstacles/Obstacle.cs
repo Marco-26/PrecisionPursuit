@@ -24,5 +24,4 @@ public class Obstacle : MonoBehaviour {
         GridManager.Instance.RemoveFromGrid(x, y);
         Destroy(gameObject);
     }
-
 }

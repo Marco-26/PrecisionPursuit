@@ -8,17 +8,19 @@ public class CountdownTimer : MonoBehaviour
     [SerializeField] private Text countdownDisplay;
     [SerializeField] private int countdownTime;
     [SerializeField] private GameObject crosshair;
-    [SerializeField] private PlayerGun playerGun;
 
     public event EventHandler OnCountdownTimerStopped;
 
-
     private void Start(){
+        StartCountdown();
+    }
+
+    public void StartCountdown() {
         StartCoroutine(Countdown());
     }
 
     private IEnumerator Countdown() {
-        playerGun.enabled = false;
+        GameManager.Instance.GetPlayerGun().enabled = false;
 
         crosshair.SetActive(false);
         
@@ -33,11 +35,9 @@ public class CountdownTimer : MonoBehaviour
         countdownDisplay.gameObject.SetActive(false);
 
         crosshair.SetActive(true);
-        
-        playerGun.enabled = true;
 
-        //TODO: USAR EVENTO
-        //GameManager.instance.SetTimerIsRunning(true);
+        GameManager.Instance.GetPlayerGun().enabled = true;
+
         OnCountdownTimerStopped?.Invoke(this, EventArgs.Empty);
     }
 }
