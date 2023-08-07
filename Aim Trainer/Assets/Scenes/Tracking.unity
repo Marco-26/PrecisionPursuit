@@ -2175,7 +2175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerGun: {fileID: 331465433}
   playerLook: {fileID: 331465432}
-  gamemodeSettings: {fileID: 11400000, guid: 93b131890c10cef4982e2678ad656626, type: 2}
+  gameSettings: {fileID: 11400000, guid: 2b0d735b91be82a4a9acffb0e2912d03, type: 2}
   countdownTimer: {fileID: 1612352169}
   timer: {fileID: 1612352168}
 --- !u!4 &269989879
@@ -2607,7 +2607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &435742351
 RectTransform:
   m_ObjectHideFlags: 0

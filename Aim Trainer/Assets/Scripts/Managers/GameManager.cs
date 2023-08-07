@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] private PlayerGun playerGun;
     [SerializeField] private PlayerLook playerLook;
-    [SerializeField] private GameModeSettings gamemodeSettings;
+    [SerializeField] private GameSettignsSO gameSettings;
     [SerializeField] private CountdownTimer countdownTimer;
     [SerializeField] private Timer timer;
 
@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour {
 
     private void Awake() {
         Instance = this;
-        currentGamemode = gamemodeSettings.chosenGamemode;
+        currentGamemode = gameSettings.chosenGamemode;
         
         SaveManager.Load(currentGamemode, out playerHighscore);
         Debug.Log(playerHighscore);

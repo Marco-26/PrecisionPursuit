@@ -7,7 +7,7 @@ public class MainMenuController : MonoBehaviour {
 
     [SerializeField] private Button flickingGamemodeButton;
     [SerializeField] private Button trackingGamemodeButton;
-    [SerializeField] private GameModeSettings gamemodeSettings;
+    [SerializeField] private GameSettignsSO gameSettings;
 
     private const string FLICKING_GAMEMODE_SCENE = "Flicking";
     private const string TRACKING_GAMEMODE_SCENE = "Tracking";
@@ -15,12 +15,12 @@ public class MainMenuController : MonoBehaviour {
     private void Awake() {
         flickingGamemodeButton.onClick.AddListener(() => {
             SceneManager.LoadScene(FLICKING_GAMEMODE_SCENE);
-            gamemodeSettings.chosenGamemode = Gamemode.FLICKING;
+            gameSettings.chosenGamemode = Gamemode.FLICKING;
         });
 
         trackingGamemodeButton.onClick.AddListener(() => {
             SceneManager.LoadScene(TRACKING_GAMEMODE_SCENE);
-            gamemodeSettings.chosenGamemode = Gamemode.TRACKING;
+            gameSettings.chosenGamemode = Gamemode.TRACKING;
         });
     }
 }
