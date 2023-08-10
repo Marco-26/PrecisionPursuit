@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI accuracyText;
     [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private Image crosshair;
+    [SerializeField] private RectTransform crosshair;
 
     [Header("Game Over UI")]
     [SerializeField] private GameObject gameOverScreen;
@@ -69,8 +69,9 @@ public class UIManager : MonoBehaviour
         HandleUI();
     }
 
-    public void ChangeCrosshairUI(Sprite newCrosshair) {
-        crosshair.sprite = newCrosshair;
+    public void ChangeCrosshairUI(Sprite newCrosshair, int width, int height) {
+        crosshair.sizeDelta = new Vector2 (width, height);
+        crosshair.GetComponent<Image>().sprite = newCrosshair;
     }
 
     public void ShowOptionsMenu() {

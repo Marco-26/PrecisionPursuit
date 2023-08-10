@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: SmallCrosshair
   m_EditorClassIdentifier: 
   crosshairImage: {fileID: 21300000, guid: 07960e22a928d98428f94cfa2329d54e, type: 3}
+  width: 30
+  height: 30

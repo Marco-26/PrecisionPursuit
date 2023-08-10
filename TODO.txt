@@ -1,5 +1,5 @@
 ----------- LOGICA -----------
-- Sistema de crosshair.
+- Sistema de crosshair. (Falta sistema de save. Em espera)
 
 ----------- UI -----------
 - Menu principal.
