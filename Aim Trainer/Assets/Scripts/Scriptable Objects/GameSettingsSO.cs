@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(menuName ="ScriptableObjects/GameSettingsSO")]
 public class GameSettignsSO : ScriptableObject{
     public Gamemode chosenGamemode;
-    public CrosshairTypeSO currentCrosshair;
+    public ECrosshairTypes currentCrosshair;
 }

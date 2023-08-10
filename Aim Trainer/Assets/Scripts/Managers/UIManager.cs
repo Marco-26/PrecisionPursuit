@@ -9,10 +9,13 @@ using static GameManager;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance { get; private set; }  
+
     [Header("In Game UI")]
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI accuracyText;
     [SerializeField] private TextMeshProUGUI scoreText;
+    [SerializeField] private Image crosshair;
 
     [Header("Game Over UI")]
     [SerializeField] private GameObject gameOverScreen;
@@ -28,9 +31,22 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI highscoreText;
     [SerializeField] private TextMeshProUGUI gamemodeText;
 
+    [Header("Options UI")]
+    [SerializeField]  private GameObject options;
+    [SerializeField]  private Button optionsMenuResumeButton;
+
     private Timer timer;
 
+    private void Awake() {
+        Instance = this;
+
+        optionsMenuResumeButton.onClick.AddListener(() => {
+            GameManager.Instance.TogglePauseGame();
+        });
+    }
+
     private void Start() {
+        options.SetActive(false);
         gameOverScreen.SetActive(false);
         recordBeatenMessage.SetActive(false);
 
@@ -51,6 +67,18 @@ public class UIManager : MonoBehaviour
     
     private void Update() {
         HandleUI();
+    }
+
+    public void ChangeCrosshairUI(Sprite newCrosshair) {
+        crosshair.sprite = newCrosshair;
+    }
+
+    public void ShowOptionsMenu() {
+        options.SetActive(true);
+    }
+
+    public void HideOptionsMenu() {
+        options.SetActive(false);
     }
 
     private void DisplayTime() {
@@ -96,6 +124,7 @@ public class UIManager : MonoBehaviour
         accuracyTextGameOver.text = "Accuracy: " + GameManager.Instance.GetAccuracy().ToString()+"%";
     }
 
+    
     public static void Quit() {
     #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;

@@ -5,5 +5,5 @@ using UnityEngine.UI;
 
 [CreateAssetMenu(menuName = "ScriptableObjects/Crosshair")]
 public class CrosshairTypeSO : ScriptableObject{
-    public Image crosshairImage;
+    public Sprite crosshairImage;
 }

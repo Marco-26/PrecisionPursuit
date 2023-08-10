@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c14f6a689d04f2489af1b325cb038a5, type: 3}
-  m_Name: CrosshairTypeList
+  m_Name: CrosshairTypeListSO
   m_EditorClassIdentifier: 
   crosshairTypeList:
   - {fileID: 11400000, guid: c10581bc688f81340b8d204577920972, type: 2}
   - {fileID: 11400000, guid: 51d78c44f9d22754680131e0c2a702ef, type: 2}
+  - {fileID: 11400000, guid: b74c8868f2c6abd41828d609d57adabd, type: 2}

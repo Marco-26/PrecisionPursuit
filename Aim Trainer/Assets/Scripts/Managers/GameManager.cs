@@ -26,8 +26,7 @@ public class GameManager : MonoBehaviour {
     private float playerAccuracy = 0;
     private float playerScore = 0;
     private float playerHighscore = 0;
-
-    private bool gameEnded = false;
+    private bool isGamePaused = false;
 
     public event EventHandler OnGameEnd;
 
@@ -36,7 +35,6 @@ public class GameManager : MonoBehaviour {
         currentGamemode = gameSettings.chosenGamemode;
         
         SaveManager.Load(currentGamemode, out playerHighscore);
-        Debug.Log(playerHighscore);
     }
 
     private void Start() {
@@ -46,10 +44,16 @@ public class GameManager : MonoBehaviour {
         {
             if(currentGamemode == Gamemode.FLICKING) {
                 playerGun.OnShotsFired += PlayerGun_OnShotsFired;
-                return;
+            } else {
+                playerGun.OnTrackedObstacle += PlayerGun_OnTrackedObstacle;
             }
-            playerGun.OnTrackedObstacle += PlayerGun_OnTrackedObstacle;
+
+            playerGun.OnPauseKeyPressed += PlayerGun_OnPauseKeyPressed;
         }
+    }
+
+    private void PlayerGun_OnPauseKeyPressed(object sender, EventArgs e) {
+        TogglePauseGame();
     }
 
     private void PlayerGun_OnTrackedObstacle(object sender, PlayerGun.FireEventArgs e) {
@@ -63,7 +67,6 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Timer_OnTimerEnd(object sender, EventArgs e) {
-        gameEnded = true;
         if(isHighscoreBeaten()) {
             SaveManager.Save(currentGamemode, playerScore);
         }
@@ -85,6 +88,17 @@ public class GameManager : MonoBehaviour {
 
     public void SetCurrentGamemode(Gamemode gamemode) {
         currentGamemode = gamemode;
+    }
+
+    public void TogglePauseGame() {
+        isGamePaused = !isGamePaused;
+        if (isGamePaused) {
+            UIManager.Instance.ShowOptionsMenu();
+            PauseGame();
+        } else {
+            UIManager.Instance.HideOptionsMenu();
+            UnpauseGame();
+        }
     }
 
     public void PauseGame() {
