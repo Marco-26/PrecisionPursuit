@@ -18,6 +18,7 @@ public class PlayerGun : MonoBehaviour {
 
     public event EventHandler<FireEventArgs> OnShotsFired;
     public event EventHandler<FireEventArgs> OnTrackedObstacle;
+    public event EventHandler OnPauseKeyPressed;
         
 
     public class FireEventArgs : EventArgs{
@@ -26,6 +27,10 @@ public class PlayerGun : MonoBehaviour {
     }
 
     private void Update(){
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            OnPauseKeyPressed?.Invoke(this, EventArgs.Empty);
+        }
+
         if(GameManager.Instance.GetCurrentGamemode() == Gamemode.TRACKING) {
             Track();
             return;
