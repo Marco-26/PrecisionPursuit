@@ -23,7 +23,9 @@ public class GridManager : MonoBehaviour {
     }
 
     private void CountdownTimer_OnCountdownTimerStopped(object sender, System.EventArgs e) {
-        SpawnObstacle();
+        for(int i = 0; i < MAX_TARGETS; i++) {
+            SpawnObstacle();
+        }
     }
 
     public void SpawnObstacle() {
