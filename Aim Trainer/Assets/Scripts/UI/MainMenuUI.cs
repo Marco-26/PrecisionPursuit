@@ -9,6 +9,7 @@ public class MainMenuController : MonoBehaviour {
     [SerializeField] private Button trackingGamemodeButton;
     [SerializeField] private Button playButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button backButton;
 
     [SerializeField] private GameObject mainMenuUI;
     [SerializeField] private GameObject selectGamemodeUI;
@@ -31,6 +32,11 @@ public class MainMenuController : MonoBehaviour {
 
         trackingGamemodeButton.onClick.AddListener(() => {
             Application.Quit();
+        });
+
+        backButton.onClick.AddListener(() => {
+            mainMenuUI.SetActive(true);
+            selectGamemodeUI.SetActive(false);
         });
     }
 
