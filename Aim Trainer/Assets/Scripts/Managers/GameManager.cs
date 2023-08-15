@@ -12,12 +12,16 @@ public enum Gamemode {
     NULL
 }
 
+public enum GamemodeScenes {
+    Flicking,
+    Tracking
+}
+
 public class GameManager : MonoBehaviour {
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private PlayerGun playerGun;
     [SerializeField] private PlayerLook playerLook;
-    [SerializeField] private GameSettignsSO gameSettings;
     [SerializeField] private CountdownTimer countdownTimer;
     [SerializeField] private Timer timer;
 
@@ -32,12 +36,14 @@ public class GameManager : MonoBehaviour {
 
     private void Awake() {
         Instance = this;
-        currentGamemode = gameSettings.chosenGamemode;
+        currentGamemode = SaveManager.GetChosenGamemode();
         
         SaveManager.Load(currentGamemode, out playerHighscore);
     }
 
     private void Start() {
+        UnpauseGame();
+
         timer.OnTimerEnd += Timer_OnTimerEnd;
 
         if (playerGun != null)

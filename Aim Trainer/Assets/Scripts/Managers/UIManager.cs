@@ -34,15 +34,12 @@ public class UIManager : MonoBehaviour
     [Header("Options UI")]
     [SerializeField]  private GameObject options;
     [SerializeField]  private Button optionsMenuResumeButton;
+    [SerializeField]  private Button optionsMenuQuitButton;
 
     private Timer timer;
 
     private void Awake() {
         Instance = this;
-
-        optionsMenuResumeButton.onClick.AddListener(() => {
-            GameManager.Instance.TogglePauseGame();
-        });
     }
 
     private void Start() {
@@ -112,6 +109,14 @@ public class UIManager : MonoBehaviour
 
         mainMenuButton.onClick.AddListener(() => {
             gameOverScreen.SetActive(false);
+            SceneManager.LoadScene("MainMenu");
+        });
+
+        optionsMenuResumeButton.onClick.AddListener(() => {
+            GameManager.Instance.TogglePauseGame();
+        });
+
+        optionsMenuQuitButton.onClick.AddListener(() => {
             SceneManager.LoadScene("MainMenu");
         });
     }
