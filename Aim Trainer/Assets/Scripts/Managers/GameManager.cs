@@ -42,6 +42,8 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Start() {
+        UnpauseGame();
+
         timer.OnTimerEnd += Timer_OnTimerEnd;
 
         if (playerGun != null)
