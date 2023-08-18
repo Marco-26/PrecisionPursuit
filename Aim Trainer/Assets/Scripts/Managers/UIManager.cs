@@ -31,11 +31,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI highscoreText;
     [SerializeField] private TextMeshProUGUI gamemodeText;
 
-    [Header("Options UI")]
-    [SerializeField]  private GameObject options;
-    [SerializeField]  private Button optionsMenuResumeButton;
-    [SerializeField]  private Button optionsMenuQuitButton;
-
     private Timer timer;
 
     private void Awake() {
@@ -43,7 +38,6 @@ public class UIManager : MonoBehaviour
     }
 
     private void Start() {
-        options.SetActive(false);
         gameOverScreen.SetActive(false);
         recordBeatenMessage.SetActive(false);
 
@@ -69,14 +63,6 @@ public class UIManager : MonoBehaviour
     public void ChangeCrosshairUI(Sprite newCrosshair, int width, int height) {
         crosshair.sizeDelta = new Vector2 (width, height);
         crosshair.GetComponent<Image>().sprite = newCrosshair;
-    }
-
-    public void ShowOptionsMenu() {
-        options.SetActive(true);
-    }
-
-    public void HideOptionsMenu() {
-        options.SetActive(false);
     }
 
     private void DisplayTime() {
@@ -109,14 +95,6 @@ public class UIManager : MonoBehaviour
 
         mainMenuButton.onClick.AddListener(() => {
             gameOverScreen.SetActive(false);
-            SceneManager.LoadScene("MainMenu");
-        });
-
-        optionsMenuResumeButton.onClick.AddListener(() => {
-            GameManager.Instance.TogglePauseGame();
-        });
-
-        optionsMenuQuitButton.onClick.AddListener(() => {
             SceneManager.LoadScene("MainMenu");
         });
     }

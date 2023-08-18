@@ -99,10 +99,10 @@ public class GameManager : MonoBehaviour {
     public void TogglePauseGame() {
         isGamePaused = !isGamePaused;
         if (isGamePaused) {
-            UIManager.Instance.ShowOptionsMenu();
+            OptionsUI.Instance.ShowOptionsMenu();
             PauseGame();
         } else {
-            UIManager.Instance.HideOptionsMenu();
+            OptionsUI.Instance.HideOptionsMenu();
             UnpauseGame();
         }
     }
