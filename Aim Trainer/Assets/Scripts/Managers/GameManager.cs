@@ -21,8 +21,8 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private PlayerGun playerGun;
+    [SerializeField] private PlayerInput playerInput;
     [SerializeField] private PlayerLook playerLook;
-    [SerializeField] private CountdownTimer countdownTimer;
     [SerializeField] private Timer timer;
 
     private Gamemode currentGamemode = Gamemode.FLICKING;
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour {
                 playerGun.OnTrackedObstacle += PlayerGun_OnTrackedObstacle;
             }
 
-            playerGun.OnPauseKeyPressed += PlayerGun_OnPauseKeyPressed;
+            playerInput.OnPauseKeyPressed += PlayerGun_OnPauseKeyPressed;
         }
     }
 
