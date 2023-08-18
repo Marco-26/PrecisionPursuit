@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static SoundManager;
 
 public class SoundManager : MonoBehaviour{
     public static SoundManager Instance;
@@ -10,7 +11,8 @@ public class SoundManager : MonoBehaviour{
 
     public enum Sound {
         WeaponShoot,
-        ObstacleHit
+        ObstacleHit,
+        MenuButtonHover
     }
 
     private void Awake() {
@@ -21,11 +23,18 @@ public class SoundManager : MonoBehaviour{
         soundAudioClipDictionary = new Dictionary<Sound, AudioClip>();
 
         foreach(Sound sound in System.Enum.GetValues(typeof(Sound))) {
+            Debug.Log(sound.ToString());
             soundAudioClipDictionary[sound] = Resources.Load<AudioClip>(sound.ToString());
         }
     }
 
     public void PlaySound(Sound sound) {
+        _audioSource.volume = 0.1f;
         _audioSource.PlayOneShot(soundAudioClipDictionary[sound]);
+    }
+
+    public void PlayButtonHoverSound() {
+        _audioSource.volume = 1.0f;
+        _audioSource.PlayOneShot(soundAudioClipDictionary[Sound.MenuButtonHover]);
     }
 }
