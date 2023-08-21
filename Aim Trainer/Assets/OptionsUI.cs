@@ -7,6 +7,7 @@ using TMPro;
 
 public class OptionsUI : MonoBehaviour{
 
+    private float maxSliderValue = 100.0f;
     public static OptionsUI Instance;
 
     [SerializeField] private CrosshairTypeListSO crosshairTypeList;
@@ -14,11 +15,16 @@ public class OptionsUI : MonoBehaviour{
     [SerializeField] private Button crosshairMediumBtn;
     [SerializeField] private Button crosshairLargeBtn;
 
+    [SerializeField] private TextMeshProUGUI XAxisSensitivitySliderPercentage;
+    [SerializeField] private TextMeshProUGUI YAxisSensitivitySliderPercentage;
+    [SerializeField] private TextMeshProUGUI GunSoundsSliderPercentage;
+    [SerializeField] private TextMeshProUGUI MenuSoundsSliderPercentage;
+
     private void Awake() {
         Instance = this; 
     }
 
-    void Start(){
+    private void Start(){
         gameObject.SetActive(false);
 
         transform.Find("resumeBtn").GetComponent<Button>().onClick.AddListener(() => {
@@ -30,6 +36,26 @@ public class OptionsUI : MonoBehaviour{
         });
 
         HandleCrosshairButtons();
+    }
+
+    public void ManipulateXAxisSensitivitySliderPercentage(float value) {
+        float final = value * maxSliderValue;
+        XAxisSensitivitySliderPercentage.text = final.ToString("0") + "%";
+    }
+
+    public void ManipulateYAxisSensitivitySliderPercentage(float value) {
+        float final = value * maxSliderValue;
+        YAxisSensitivitySliderPercentage.text = final.ToString("0") + "%";
+    }
+
+    public void ManipulateGunSoundsSliderPercentage(float value) {
+        float final = value * maxSliderValue;
+        GunSoundsSliderPercentage.text = final.ToString("0") + "%";
+    }
+
+    public void ManipulateMenuSoundsSliderPercentage(float value) {
+        float final = value * maxSliderValue;
+        MenuSoundsSliderPercentage.text = final.ToString("0") + "%";
     }
 
     public void ShowOptionsMenu() {
