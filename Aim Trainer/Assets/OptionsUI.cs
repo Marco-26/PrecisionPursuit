@@ -10,10 +10,10 @@ public class OptionsUI : MonoBehaviour{
     public static OptionsUI Instance;
 
     [SerializeField] private CrosshairTypeListSO crosshairTypeList;
-
     [SerializeField] private Button crosshairSmallBtn;
     [SerializeField] private Button crosshairMediumBtn;
     [SerializeField] private Button crosshairLargeBtn;
+
     private void Awake() {
         Instance = this; 
     }
@@ -30,11 +30,7 @@ public class OptionsUI : MonoBehaviour{
         });
 
         HandleCrosshairButtons();
-
-
     }
-
-    
 
     public void ShowOptionsMenu() {
         gameObject.SetActive(true);
