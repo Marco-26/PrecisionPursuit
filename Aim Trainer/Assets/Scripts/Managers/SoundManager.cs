@@ -15,10 +15,13 @@ public class SoundManager : MonoBehaviour{
         MenuButtonHover
     }
 
+    private float defaultAudioVolume = 0.5f;
+
     private void Awake() {
         Instance = this;
 
         _audioSource = GetComponent<AudioSource>();
+        _audioSource.volume = defaultAudioVolume;
 
         soundAudioClipDictionary = new Dictionary<Sound, AudioClip>();
 
@@ -29,12 +32,15 @@ public class SoundManager : MonoBehaviour{
     }
 
     public void PlaySound(Sound sound) {
-        //_audioSource.volume = 0.1f;
         _audioSource.PlayOneShot(soundAudioClipDictionary[sound]);
     }
 
     public void PlayButtonHoverSound() {
-        //_audioSource.volume = 1.0f;
         _audioSource.PlayOneShot(soundAudioClipDictionary[Sound.MenuButtonHover]);
+    }
+
+    public void ChangeVolume(float audioLevel) {
+        Debug.Log("New audio level: " + audioLevel);
+        _audioSource.volume = audioLevel;
     }
 }

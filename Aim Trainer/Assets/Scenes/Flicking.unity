@@ -1284,6 +1284,17 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!114 &1149716073 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 985286269646606372, guid: b1ec0a7ad49b3ae4eac6e3eaaf7621fa, type: 3}
+  m_PrefabInstance: {fileID: 967590143}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1204850063 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5673565129963694718, guid: b1ec0a7ad49b3ae4eac6e3eaaf7621fa, type: 3}
@@ -1618,6 +1629,7 @@ MonoBehaviour:
   soundEffectsSliderPercentage: {fileID: 1532076494}
   xAxisSensitivitySlider: {fileID: 967590144}
   yAxisSensitivitySlider: {fileID: 626821500}
+  soundEffectsSlider: {fileID: 1149716073}
 --- !u!114 &1727874995 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 581909030296177348, guid: b1ec0a7ad49b3ae4eac6e3eaaf7621fa, type: 3}
@@ -1639,7 +1651,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1501140835298552458, guid: d4ea1c336708b394996ea966dbf1d12a, type: 3}
       propertyPath: m_Volume
-      value: 1
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2317953017612916834, guid: d4ea1c336708b394996ea966dbf1d12a, type: 3}
       propertyPath: m_RootOrder
