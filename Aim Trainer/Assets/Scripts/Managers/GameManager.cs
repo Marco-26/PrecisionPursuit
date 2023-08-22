@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private PlayerLook playerLook;
     [SerializeField] private Timer timer;
+    [SerializeField] private CountdownTimer countdownTimer;
 
     private Gamemode currentGamemode = Gamemode.FLICKING;
 
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour {
     private float playerScore = 0;
     private float playerHighscore = 0;
     private bool isGamePaused = false;
+    private bool isGameStarted = false;
 
     public event EventHandler OnGameEnd;
 
@@ -44,6 +46,7 @@ public class GameManager : MonoBehaviour {
         UnpauseGame();
 
         timer.OnTimerEnd += Timer_OnTimerEnd;
+        countdownTimer.OnCountdownTimerStopped += CountdownTimer_OnTimerEnd;
 
         if (playerGun != null)
         {
@@ -77,6 +80,10 @@ public class GameManager : MonoBehaviour {
         }
         PauseGame();
         OnGameEnd?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void CountdownTimer_OnTimerEnd(object sender, EventArgs e) {
+        isGameStarted = true;
     }
 
     public int GetAccuracy() {
@@ -116,10 +123,15 @@ public class GameManager : MonoBehaviour {
 
     public void UnpauseGame() {
         Time.timeScale = 1f;
-        playerGun.enabled = true;
-        playerLook.enabled = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        playerLook.enabled = true;
+
+        if (!isGameStarted) {
+            return;
+        }
+        
+        playerGun.enabled = true;
     }
 
     public void RestartGame() {

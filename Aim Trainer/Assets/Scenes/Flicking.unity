@@ -167,6 +167,7 @@ MonoBehaviour:
   playerInput: {fileID: 434362253}
   playerLook: {fileID: 1359587806}
   timer: {fileID: 760807757}
+  countdownTimer: {fileID: 760807758}
 --- !u!4 &269989879
 Transform:
   m_ObjectHideFlags: 0
@@ -502,7 +503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 675405866429853509, guid: b1ec0a7ad49b3ae4eac6e3eaaf7621fa, type: 3}
       propertyPath: countdownTime
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 797374269785415447, guid: b1ec0a7ad49b3ae4eac6e3eaaf7621fa, type: 3}
       propertyPath: m_AnchorMax.y
