@@ -7,20 +7,41 @@ public class MainMenuController : MonoBehaviour {
 
     [SerializeField] private Button flickingGamemodeButton;
     [SerializeField] private Button trackingGamemodeButton;
-    [SerializeField] private GameModeSettings gamemodeSettings;
+    [SerializeField] private Button playButton;
+    [SerializeField] private Button quitButton;
+    [SerializeField] private Button backButton;
 
-    private const string FLICKING_GAMEMODE_SCENE = "Flicking";
-    private const string TRACKING_GAMEMODE_SCENE = "Tracking";
+    [SerializeField] private GameObject mainMenuUI;
+    [SerializeField] private GameObject selectGamemodeUI;
 
     private void Awake() {
         flickingGamemodeButton.onClick.AddListener(() => {
-            SceneManager.LoadScene(FLICKING_GAMEMODE_SCENE);
-            gamemodeSettings.chosenGamemode = Gamemode.FLICKING;
+            SceneManager.LoadScene(GamemodeScenes.Flicking.ToString());
+            SaveManager.SaveChosenGamemode(Gamemode.FLICKING);
         });
 
         trackingGamemodeButton.onClick.AddListener(() => {
-            SceneManager.LoadScene(TRACKING_GAMEMODE_SCENE);
-            gamemodeSettings.chosenGamemode = Gamemode.TRACKING;
+            SceneManager.LoadScene(GamemodeScenes.Tracking.ToString());
+            SaveManager.SaveChosenGamemode(Gamemode.TRACKING);
         });
+
+        playButton.onClick.AddListener(() => {
+            mainMenuUI.SetActive(false);
+            selectGamemodeUI.SetActive(true);
+        });
+
+        trackingGamemodeButton.onClick.AddListener(() => {
+            Application.Quit();
+        });
+
+        backButton.onClick.AddListener(() => {
+            mainMenuUI.SetActive(true);
+            selectGamemodeUI.SetActive(false);
+        });
+    }
+
+    private void Start() {
+        mainMenuUI.SetActive(true);
+        selectGamemodeUI.SetActive(false);
     }
 }

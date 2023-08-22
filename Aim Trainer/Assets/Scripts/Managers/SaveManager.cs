@@ -20,4 +20,15 @@ public static class SaveManager {
         }
         PlayerPrefs.Save();
     }
+
+    public static void SaveChosenGamemode(Gamemode gamemode) {
+        PlayerPrefs.SetString("gamemode", gamemode.ToString());
+    }
+
+    public static Gamemode GetChosenGamemode() {
+        if(PlayerPrefs.GetString("gamemode") == "FLICKING") {
+            return Gamemode.FLICKING;
+        }
+        return Gamemode.TRACKING;
+    }
 }

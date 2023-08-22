@@ -3,21 +3,36 @@ using UnityEngine;
 public class PlayerLook : MonoBehaviour
 {
     public static bool cursorLock = true;
+    
     [SerializeField] private Transform player;
     [SerializeField] private Transform cams;
-
-    [SerializeField] private float xSensitivity;
-    [SerializeField] private float ySensitivity;
     [SerializeField] private float maxAngle;
 
     private Quaternion camCenter;
+    private float xSensitivity;
+    private float ySensitivity;
+    private int sensitivityMultiplier = 3;
+    private float defaultSensitivityValue = 0.5f;
 
     void Start()
     {
+        xSensitivity = defaultSensitivityValue * sensitivityMultiplier;
+        ySensitivity = defaultSensitivityValue * sensitivityMultiplier;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         camCenter = cams.localRotation;
+
+        PlayerInput.Instance.OnSensitivityChanged += PlayerInput_OnSensitivityChanged;
     }
+
+    private void PlayerInput_OnSensitivityChanged(object sender, PlayerInput.SensitivityArgs e) {
+        xSensitivity = e.newSensitivity.x * sensitivityMultiplier;
+        ySensitivity = e.newSensitivity.y * sensitivityMultiplier;
+
+        Debug.Log("Nova sensibilidade: X: " +  xSensitivity + " Y: "+  ySensitivity);
+    }
+
 
     void Update()
     {

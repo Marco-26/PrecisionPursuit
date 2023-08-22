@@ -32,6 +32,7 @@ public class PlayerGun : MonoBehaviour {
         }
 
         if(Input.GetButtonDown("Fire1")) {
+            SoundManager.Instance.PlaySound(SoundManager.Sound.WeaponShoot);
             Shoot();
         }
     }
@@ -44,6 +45,7 @@ public class PlayerGun : MonoBehaviour {
         if(Physics.Raycast(cams.transform.position, cams.transform.forward, out RaycastHit hit, range)) {
             Obstacle target = hit.transform.GetComponent<Obstacle>();
             if (target != null){
+                SoundManager.Instance.PlaySound(SoundManager.Sound.ObstacleHit);
                 target.Destroy();
                 totalShotsHit++;
                 OnShotsFired?.Invoke(this, new FireEventArgs() { score = CalculateScore(true), accuracy = CalculateAccuracy() });

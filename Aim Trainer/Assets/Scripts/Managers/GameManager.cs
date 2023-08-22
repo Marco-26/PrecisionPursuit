@@ -12,44 +12,56 @@ public enum Gamemode {
     NULL
 }
 
+public enum GamemodeScenes {
+    Flicking,
+    Tracking
+}
+
 public class GameManager : MonoBehaviour {
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private PlayerGun playerGun;
+    [SerializeField] private PlayerInput playerInput;
     [SerializeField] private PlayerLook playerLook;
-    [SerializeField] private GameModeSettings gamemodeSettings;
-    [SerializeField] private CountdownTimer countdownTimer;
     [SerializeField] private Timer timer;
+    [SerializeField] private CountdownTimer countdownTimer;
 
     private Gamemode currentGamemode = Gamemode.FLICKING;
 
     private float playerAccuracy = 0;
     private float playerScore = 0;
     private float playerHighscore = 0;
-
-    private bool gameEnded = false;
+    private bool isGamePaused = false;
+    private bool isGameStarted = false;
 
     public event EventHandler OnGameEnd;
 
     private void Awake() {
         Instance = this;
-        currentGamemode = gamemodeSettings.chosenGamemode;
         
         SaveManager.Load(currentGamemode, out playerHighscore);
-        Debug.Log(playerHighscore);
     }
 
     private void Start() {
+        UnpauseGame();
+
         timer.OnTimerEnd += Timer_OnTimerEnd;
+        countdownTimer.OnCountdownTimerStopped += CountdownTimer_OnTimerEnd;
 
         if (playerGun != null)
         {
             if(currentGamemode == Gamemode.FLICKING) {
                 playerGun.OnShotsFired += PlayerGun_OnShotsFired;
-                return;
+            } else {
+                playerGun.OnTrackedObstacle += PlayerGun_OnTrackedObstacle;
             }
-            playerGun.OnTrackedObstacle += PlayerGun_OnTrackedObstacle;
+
+            playerInput.OnPauseKeyPressed += PlayerGun_OnPauseKeyPressed;
         }
+    }
+
+    private void PlayerGun_OnPauseKeyPressed(object sender, EventArgs e) {
+        TogglePauseGame();
     }
 
     private void PlayerGun_OnTrackedObstacle(object sender, PlayerGun.FireEventArgs e) {
@@ -63,12 +75,15 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Timer_OnTimerEnd(object sender, EventArgs e) {
-        gameEnded = true;
         if(isHighscoreBeaten()) {
             SaveManager.Save(currentGamemode, playerScore);
         }
         PauseGame();
         OnGameEnd?.Invoke(this, EventArgs.Empty);
+    }
+
+    private void CountdownTimer_OnTimerEnd(object sender, EventArgs e) {
+        isGameStarted = true;
     }
 
     public int GetAccuracy() {
@@ -87,6 +102,17 @@ public class GameManager : MonoBehaviour {
         currentGamemode = gamemode;
     }
 
+    public void TogglePauseGame() {
+        isGamePaused = !isGamePaused;
+        if (isGamePaused) {
+            OptionsUI.Instance.ShowOptionsMenu();
+            PauseGame();
+        } else {
+            OptionsUI.Instance.HideOptionsMenu();
+            UnpauseGame();
+        }
+    }
+
     public void PauseGame() {
         Time.timeScale = 0f;
         playerGun.enabled = false;
@@ -97,10 +123,15 @@ public class GameManager : MonoBehaviour {
 
     public void UnpauseGame() {
         Time.timeScale = 1f;
-        playerGun.enabled = true;
-        playerLook.enabled = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        playerLook.enabled = true;
+
+        if (!isGameStarted) {
+            return;
+        }
+        
+        playerGun.enabled = true;
     }
 
     public void RestartGame() {
