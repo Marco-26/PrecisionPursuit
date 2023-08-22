@@ -7,7 +7,6 @@ using TMPro;
 
 public class OptionsUI : MonoBehaviour{
 
-    private float maxSliderValue = 100.0f;
     public static OptionsUI Instance;
 
     [SerializeField] private CrosshairTypeListSO crosshairTypeList;
@@ -15,10 +14,15 @@ public class OptionsUI : MonoBehaviour{
     [SerializeField] private Button crosshairMediumBtn;
     [SerializeField] private Button crosshairLargeBtn;
 
-    [SerializeField] private TextMeshProUGUI XAxisSensitivitySliderPercentage;
-    [SerializeField] private TextMeshProUGUI YAxisSensitivitySliderPercentage;
-    [SerializeField] private TextMeshProUGUI GunSoundsSliderPercentage;
-    [SerializeField] private TextMeshProUGUI MenuSoundsSliderPercentage;
+    [SerializeField] private TextMeshProUGUI xAxisSensitivitySliderPercentage;
+    [SerializeField] private TextMeshProUGUI yAxisSensitivitySliderPercentage;
+    [SerializeField] private TextMeshProUGUI soundEffectsSliderPercentage;
+
+    [SerializeField] private Slider xAxisSensitivitySlider;
+    [SerializeField] private Slider yAxisSensitivitySlider;
+
+    private float minSliderValue = 0.1f;
+    private float maxSliderValue = 100.0f;
 
     private void Awake() {
         Instance = this; 
@@ -27,7 +31,13 @@ public class OptionsUI : MonoBehaviour{
     private void Start(){
         gameObject.SetActive(false);
 
+        xAxisSensitivitySlider.value  = minSliderValue;
+        yAxisSensitivitySlider.value = minSliderValue;
+        xAxisSensitivitySliderPercentage.text = minSliderValue.ToString() + "%";
+        yAxisSensitivitySliderPercentage.text = minSliderValue.ToString() + "%";
+        
         transform.Find("resumeBtn").GetComponent<Button>().onClick.AddListener(() => {
+            SetSensitivityBasedOnSlider();
             GameManager.Instance.TogglePauseGame();
         });
 
@@ -40,22 +50,17 @@ public class OptionsUI : MonoBehaviour{
 
     public void ManipulateXAxisSensitivitySliderPercentage(float value) {
         float final = value * maxSliderValue;
-        XAxisSensitivitySliderPercentage.text = final.ToString("0") + "%";
+        xAxisSensitivitySliderPercentage.text = final.ToString("0") + "%";
     }
 
     public void ManipulateYAxisSensitivitySliderPercentage(float value) {
         float final = value * maxSliderValue;
-        YAxisSensitivitySliderPercentage.text = final.ToString("0") + "%";
+        yAxisSensitivitySliderPercentage.text = final.ToString("0") + "%";
     }
 
-    public void ManipulateGunSoundsSliderPercentage(float value) {
+    public void ManipulateSoundEffectsSliderPercentage(float value) {
         float final = value * maxSliderValue;
-        GunSoundsSliderPercentage.text = final.ToString("0") + "%";
-    }
-
-    public void ManipulateMenuSoundsSliderPercentage(float value) {
-        float final = value * maxSliderValue;
-        MenuSoundsSliderPercentage.text = final.ToString("0") + "%";
+        soundEffectsSliderPercentage.text = final.ToString("0") + "%";
     }
 
     public void ShowOptionsMenu() {
@@ -76,5 +81,9 @@ public class OptionsUI : MonoBehaviour{
         crosshairLargeBtn.onClick.AddListener(() => {
             UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[2].crosshairImage, crosshairTypeList.crosshairTypeList[2].width, crosshairTypeList.crosshairTypeList[2].height);
         });
+    }
+
+    private void SetSensitivityBasedOnSlider() {
+        PlayerInput.Instance.SetSensitivity(new Vector2(xAxisSensitivitySlider.value, yAxisSensitivitySlider.value));
     }
 }
