@@ -12,7 +12,7 @@ public class PlayerLook : MonoBehaviour
     private float xSensitivity;
     private float ySensitivity;
     private int sensitivityMultiplier = 3;
-    private float defaultSensitivityValue = 0.1f;
+    private float defaultSensitivityValue = 0.5f;
 
     void Start()
     {

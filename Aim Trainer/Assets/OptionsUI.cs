@@ -21,8 +21,8 @@ public class OptionsUI : MonoBehaviour{
     [SerializeField] private Slider xAxisSensitivitySlider;
     [SerializeField] private Slider yAxisSensitivitySlider;
 
-    private float minSliderValue = 0.1f;
-    private float maxSliderValue = 100.0f;
+    private float minSliderValue = .5f;
+    private float maxSliderValue = 1f;
 
     private void Awake() {
         Instance = this; 
@@ -31,8 +31,8 @@ public class OptionsUI : MonoBehaviour{
     private void Start(){
         gameObject.SetActive(false);
 
-        xAxisSensitivitySlider.value  = minSliderValue;
-        yAxisSensitivitySlider.value = minSliderValue;
+        xAxisSensitivitySlider.value  = minSliderValue ;
+        yAxisSensitivitySlider.value = minSliderValue ;
         xAxisSensitivitySliderPercentage.text = minSliderValue.ToString() + "%";
         yAxisSensitivitySliderPercentage.text = minSliderValue.ToString() + "%";
         

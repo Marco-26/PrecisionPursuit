@@ -36,7 +36,6 @@ public class GameManager : MonoBehaviour {
 
     private void Awake() {
         Instance = this;
-        currentGamemode = SaveManager.GetChosenGamemode();
         
         SaveManager.Load(currentGamemode, out playerHighscore);
     }
