@@ -29,12 +29,12 @@ public class SoundManager : MonoBehaviour{
     }
 
     public void PlaySound(Sound sound) {
-        _audioSource.volume = 0.1f;
+        //_audioSource.volume = 0.1f;
         _audioSource.PlayOneShot(soundAudioClipDictionary[sound]);
     }
 
     public void PlayButtonHoverSound() {
-        _audioSource.volume = 1.0f;
+        //_audioSource.volume = 1.0f;
         _audioSource.PlayOneShot(soundAudioClipDictionary[Sound.MenuButtonHover]);
     }
 }
