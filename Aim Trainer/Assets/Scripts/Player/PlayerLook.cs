@@ -1,9 +1,8 @@
 using UnityEngine;
 
-public class PlayerLook : MonoBehaviour
-{
+public class PlayerLook : MonoBehaviour {
     public static bool cursorLock = true;
-    
+
     [SerializeField] private Transform player;
     [SerializeField] private Transform cams;
     [SerializeField] private float maxAngle;
@@ -14,6 +13,10 @@ public class PlayerLook : MonoBehaviour
     private int sensitivityMultiplier = 3;
     private float defaultSensitivityValue = 0.5f;
 
+    private void Awake() {
+        PlayerInput.Instance.OnSensitivityChanged += PlayerInput_OnSensitivityChanged;
+    }
+
     void Start()
     {
         xSensitivity = defaultSensitivityValue * sensitivityMultiplier;
@@ -23,7 +26,6 @@ public class PlayerLook : MonoBehaviour
         Cursor.visible = false;
         camCenter = cams.localRotation;
 
-        PlayerInput.Instance.OnSensitivityChanged += PlayerInput_OnSensitivityChanged;
     }
 
     private void PlayerInput_OnSensitivityChanged(object sender, PlayerInput.SensitivityArgs e) {

@@ -32,16 +32,11 @@ public class OptionsUI : MonoBehaviour{
     private void Start(){
         gameObject.SetActive(false);
 
-        xAxisSensitivitySlider.value  = defaultSliderValue;
-        yAxisSensitivitySlider.value = defaultSliderValue;
-        soundEffectsSlider.value = defaultSliderValue;
-        ManipulateXAxisSensitivitySliderPercentage(defaultSliderValue);
-        ManipulateYAxisSensitivitySliderPercentage(defaultSliderValue);
-        ManipulateSoundEffectsSliderPercentage(defaultSliderValue);
-        
         transform.Find("resumeBtn").GetComponent<Button>().onClick.AddListener(() => {
             SetSensitivityBasedOnSlider();
             SetAudioBasedOnSlider();
+            SaveManager.Instance.SavePlayerPreferences(soundEffectsSlider.value, new Vector2(xAxisSensitivitySlider.value, yAxisSensitivitySlider.value));
+            
             GameManager.Instance.TogglePauseGame();
         });
 
@@ -53,18 +48,24 @@ public class OptionsUI : MonoBehaviour{
     }
 
     public void ManipulateXAxisSensitivitySliderPercentage(float value) {
-        float final = value * 100;
+        float final = value * maxSliderValue;
         xAxisSensitivitySliderPercentage.text = final.ToString("0") + "%";
     }
 
     public void ManipulateYAxisSensitivitySliderPercentage(float value) {
-        float final = value * 100;
+        float final = value * maxSliderValue;
         yAxisSensitivitySliderPercentage.text = final.ToString("0") + "%";
     }
 
     public void ManipulateSoundEffectsSliderPercentage(float value) {
-        float final = value * 100;
+        float final = value * maxSliderValue;
         soundEffectsSliderPercentage.text = final.ToString("0") + "%";
+    }
+
+    public void ChangeSlidersValues(float sensitivityX, float sensitivityY, float soundEffectsVolume) {
+        xAxisSensitivitySlider.value = sensitivityX;
+        yAxisSensitivitySlider.value = sensitivityY;
+        soundEffectsSlider.value = soundEffectsVolume;
     }
 
     public void ShowOptionsMenu() {

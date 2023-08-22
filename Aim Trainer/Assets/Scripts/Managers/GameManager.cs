@@ -38,8 +38,6 @@ public class GameManager : MonoBehaviour {
 
     private void Awake() {
         Instance = this;
-        
-        SaveManager.Load(currentGamemode, out playerHighscore);
     }
 
     private void Start() {
@@ -75,9 +73,6 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Timer_OnTimerEnd(object sender, EventArgs e) {
-        if(isHighscoreBeaten()) {
-            SaveManager.Save(currentGamemode, playerScore);
-        }
         PauseGame();
         OnGameEnd?.Invoke(this, EventArgs.Empty);
     }

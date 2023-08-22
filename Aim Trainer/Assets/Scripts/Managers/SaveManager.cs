@@ -2,23 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class SaveManager {
+public class SaveManager : MonoBehaviour {
 
-    public static void Load(Gamemode gamemode, out float savedHighscore) {
-        if(gamemode == Gamemode.FLICKING) {
-            savedHighscore = PlayerPrefs.GetFloat("flickingGamemodeHighscore", 0);
-            return;
-        }
-        savedHighscore = PlayerPrefs.GetFloat("targetingGamemodeHighscore", 0);
+    public static SaveManager Instance { get; private set; }
+    
+    private void Awake() {
+        Instance = this;
     }
 
-    public static void Save(Gamemode gamemode, float highscoreRecord) {
-        if (gamemode == Gamemode.FLICKING) {
-            PlayerPrefs.SetFloat("flickingGamemodeHighscore", highscoreRecord);
-        } else {
-            PlayerPrefs.SetFloat("targetingGamemodeHighscore", highscoreRecord);
+    private void Start() {
+        LoadPlayerPreferences();
+    }
+
+    public void LoadPlayerPreferences() {
+        if(PlayerPrefs.GetFloat("soundEffectsVolume") == null) {
+            Debug.Log("No saves found");
+            return;
         }
-        PlayerPrefs.Save();
+
+        Vector2 storedSensitivity = new Vector2(PlayerPrefs.GetFloat("sensitivityX"), PlayerPrefs.GetFloat("sensitivityY"));
+        float storeSoundEffectsVolume = PlayerPrefs.GetFloat("soundEffectsVolume");
+
+        PlayerInput.Instance.SetSensitivity(storedSensitivity);
+        SoundManager.Instance.ChangeVolume(storeSoundEffectsVolume);
+
+        OptionsUI.Instance.ChangeSlidersValues(storedSensitivity.x, storedSensitivity.y, storeSoundEffectsVolume);
+    }
+
+    public void SavePlayerPreferences(float soundEffectsVolume, Vector2 sensitivity) {
+        PlayerPrefs.SetFloat("soundEffectsVolume", soundEffectsVolume);
+        PlayerPrefs.SetFloat("sensitivityX", sensitivity.x);
+        PlayerPrefs.SetFloat("sensitivityY", sensitivity.y);
     }
 
     public static void SaveChosenGamemode(Gamemode gamemode) {
