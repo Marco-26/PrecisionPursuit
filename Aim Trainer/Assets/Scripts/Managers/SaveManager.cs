@@ -49,14 +49,11 @@ public class SaveManager : MonoBehaviour {
         return PlayerPrefs.HasKey("soundEffectsVolume");
     }
 
-    public static void SaveChosenGamemode(Gamemode gamemode) {
-        PlayerPrefs.SetString("gamemode", gamemode.ToString());
-    }
-
-    public static Gamemode GetChosenGamemode() {
+    public Gamemode LoadGamemodePref() {
         if(PlayerPrefs.GetString("gamemode") == "FLICKING") {
-            return Gamemode.FLICKING;
+            return Gamemode.GRIDSHOT;
         }
-        return Gamemode.TRACKING;
+
+        return Gamemode.NULL;
     }
 }

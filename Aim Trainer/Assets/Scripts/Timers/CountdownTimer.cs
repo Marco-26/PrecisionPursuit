@@ -21,7 +21,6 @@ public class CountdownTimer : MonoBehaviour
 
     private IEnumerator Countdown() {
         GameManager.Instance.GetPlayerGun().enabled = false;
-
         crosshair.SetActive(false);
         
         while (countdownTime > 0) {

@@ -5,8 +5,8 @@ using System;
 
 public class MainMenuController : MonoBehaviour {
 
-    [SerializeField] private Button flickingGamemodeButton;
-    [SerializeField] private Button trackingGamemodeButton;
+    [SerializeField] private Button gridshotGamemodeButton;
+    [SerializeField] private Button motionshotGamemodeButton;
     [SerializeField] private Button playButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private Button backButton;
@@ -15,14 +15,14 @@ public class MainMenuController : MonoBehaviour {
     [SerializeField] private GameObject selectGamemodeUI;
 
     private void Awake() {
-        flickingGamemodeButton.onClick.AddListener(() => {
-            SceneManager.LoadScene(GamemodeScenes.Flicking.ToString());
-            SaveManager.SaveChosenGamemode(Gamemode.FLICKING);
+        gridshotGamemodeButton.onClick.AddListener(() => {
+            SceneManager.LoadScene(GamemodeScenes.Gridshot.ToString());
+            PlayerPrefs.SetString("gamemode", Gamemode.GRIDSHOT.ToString());
         });
 
-        trackingGamemodeButton.onClick.AddListener(() => {
-            SceneManager.LoadScene(GamemodeScenes.Tracking.ToString());
-            SaveManager.SaveChosenGamemode(Gamemode.TRACKING);
+        motionshotGamemodeButton.onClick.AddListener(() => {
+            SceneManager.LoadScene(GamemodeScenes.Motionshot.ToString());
+            PlayerPrefs.SetString("gamemode", Gamemode.MOTION_SHOT.ToString());
         });
 
         playButton.onClick.AddListener(() => {
@@ -30,18 +30,28 @@ public class MainMenuController : MonoBehaviour {
             selectGamemodeUI.SetActive(true);
         });
 
-        trackingGamemodeButton.onClick.AddListener(() => {
-            Application.Quit();
-        });
-
         backButton.onClick.AddListener(() => {
             mainMenuUI.SetActive(true);
             selectGamemodeUI.SetActive(false);
+        });
+
+        quitButton.onClick.AddListener(() => {
+            Quit();
         });
     }
 
     private void Start() {
         mainMenuUI.SetActive(true);
         selectGamemodeUI.SetActive(false);
+    }
+
+    public static void Quit() {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#elif UNITY_WEBPLAYER
+                 Application.OpenURL(webplayerQuitURL);
+#else
+                 Application.Quit();
+#endif
     }
 }

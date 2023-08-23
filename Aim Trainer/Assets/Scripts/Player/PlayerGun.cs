@@ -26,7 +26,7 @@ public class PlayerGun : MonoBehaviour {
     }
 
     private void Update(){
-        if(GameManager.Instance.GetCurrentGamemode() == Gamemode.TRACKING) {
+        if(GameManager.Instance.GetCurrentGamemode() == Gamemode.MOTION_SHOT) {
             Track();
             return;
         }
@@ -80,12 +80,12 @@ public class PlayerGun : MonoBehaviour {
 
     private float CalculateAccuracy() {
         switch (GameManager.Instance.GetCurrentGamemode()) {
-            case Gamemode.FLICKING:
+            case Gamemode.GRIDSHOT:
                 if (totalShotsFired <= 0) {
                     return 0;
                 }
                 return ((float)totalShotsHit / totalShotsFired) * 100;
-            case Gamemode.TRACKING:
+            case Gamemode.MOTION_SHOT:
                 float totalTime = timeTrackingObstacle + timeNotTrackingObstacle;
                 if(totalTime <=0) {
                     return 0;
@@ -98,7 +98,7 @@ public class PlayerGun : MonoBehaviour {
 
     private float CalculateScore(bool hit) {
         if (hit) {
-            if(GameManager.Instance.GetCurrentGamemode() == Gamemode.FLICKING) {
+            if(GameManager.Instance.GetCurrentGamemode() == Gamemode.GRIDSHOT) {
                 score += (BASE_SCORE * CalculateAccuracy()) / 2;
                 return score;
             }
@@ -110,7 +110,7 @@ public class PlayerGun : MonoBehaviour {
                 return 0;
             }
 
-            if (GameManager.Instance.GetCurrentGamemode() == Gamemode.FLICKING) {
+            if (GameManager.Instance.GetCurrentGamemode() == Gamemode.GRIDSHOT) {
                 score -= (BASE_SCORE * CalculateAccuracy()) / 4;
                 return score;
             }

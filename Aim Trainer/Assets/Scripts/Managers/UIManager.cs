@@ -128,22 +128,10 @@ public class UIManager : MonoBehaviour
 
     private void GameManager_OnGameEnd(object sender, EventArgs e) {
         gameOverScreen.SetActive(true);
-        if (GameManager.Instance.isHighscoreBeaten()) {
+        if (GameManager.Instance.IsHighscoreBeaten()) {
             recordBeatenMessage.SetActive(true);
         }
         scoreTextGameOver.text = "Score: " + GameManager.Instance.GetScore().ToString();
         accuracyTextGameOver.text = "Accuracy: " + GameManager.Instance.GetAccuracy().ToString()+"%";
     }
-
-    
-    public static void Quit() {
-    #if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-    #elif UNITY_WEBPLAYER
-                 Application.OpenURL(webplayerQuitURL);
-    #else
-                 Application.Quit();
-    #endif
-    }
-
 }

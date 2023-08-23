@@ -7,14 +7,14 @@ using UnityEditor;
 using TMPro;
 
 public enum Gamemode {
-    FLICKING,
-    TRACKING,
+    GRIDSHOT,
+    MOTION_SHOT,
     NULL
 }
 
 public enum GamemodeScenes {
-    Flicking,
-    Tracking
+    Gridshot,
+    Motionshot
 }
 
 public enum CrosshairType {
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private Timer timer;
     [SerializeField] private CountdownTimer countdownTimer;
 
-    private Gamemode currentGamemode = Gamemode.FLICKING;
+    private Gamemode currentGamemode = Gamemode.GRIDSHOT;
 
     private float playerAccuracy = 0;
     private float playerScore = 0;
@@ -52,9 +52,11 @@ public class GameManager : MonoBehaviour {
         timer.OnTimerEnd += Timer_OnTimerEnd;
         countdownTimer.OnCountdownTimerStopped += CountdownTimer_OnTimerEnd;
 
+        currentGamemode = SaveManager.Instance.LoadGamemodePref();
+
         if (playerGun != null)
         {
-            if(currentGamemode == Gamemode.FLICKING) {
+            if(currentGamemode == Gamemode.GRIDSHOT) {
                 playerGun.OnShotsFired += PlayerGun_OnShotsFired;
             } else {
                 playerGun.OnTrackedObstacle += PlayerGun_OnTrackedObstacle;
@@ -144,7 +146,7 @@ public class GameManager : MonoBehaviour {
         return playerGun;
     }
 
-    public bool isHighscoreBeaten() {
+    public bool IsHighscoreBeaten() {
         return playerScore > playerHighscore;
     }
 }
