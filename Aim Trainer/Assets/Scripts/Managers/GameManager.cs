@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour {
         countdownTimer.OnCountdownTimerStopped += CountdownTimer_OnTimerEnd;
 
         currentGamemode = SaveManager.Instance.LoadGamemodePref();
+        Debug.Log(currentGamemode);
 
         if (playerGun != null)
         {

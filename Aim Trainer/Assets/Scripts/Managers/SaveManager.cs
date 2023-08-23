@@ -50,7 +50,7 @@ public class SaveManager : MonoBehaviour {
     }
 
     public Gamemode LoadGamemodePref() {
-        if(PlayerPrefs.GetString("gamemode") == "FLICKING") {
+        if(PlayerPrefs.GetString("gamemode") == Gamemode.GRIDSHOT.ToString()) {
             return Gamemode.GRIDSHOT;
         }
 

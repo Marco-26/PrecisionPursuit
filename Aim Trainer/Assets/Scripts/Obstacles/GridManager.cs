@@ -42,7 +42,7 @@ public class GridManager : MonoBehaviour {
             temp = grid.GetValue(spawnPos.x, spawnPos.y);
         }
 
-        if (GameManager.Instance.GetCurrentGamemode() == Gamemode.GRIDSHOT) {
+        if (GameManager.Instance.GetCurrentGamemode() == Gamemode.GRIDSHOT) { 
             grid.SetValue(spawnPos.x, spawnPos.y, obstacle);
             Instantiate(obstacle, spawnPos, Quaternion.identity);
             return;

@@ -1985,8 +1985,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28957ab705480d047ac4b81f3402646e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridshotGamemodeButton: {fileID: 0}
-  motionshotGamemodeButton: {fileID: 0}
+  gridshotGamemodeButton: {fileID: 1323776174}
+  motionshotGamemodeButton: {fileID: 524517446}
   playButton: {fileID: 1223182340}
   quitButton: {fileID: 1857531380}
   backButton: {fileID: 288911459}
