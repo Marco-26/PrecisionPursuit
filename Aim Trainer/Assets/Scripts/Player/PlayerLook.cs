@@ -31,8 +31,6 @@ public class PlayerLook : MonoBehaviour {
     private void PlayerInput_OnSensitivityChanged(object sender, PlayerInput.SensitivityArgs e) {
         xSensitivity = e.newSensitivity.x * sensitivityMultiplier;
         ySensitivity = e.newSensitivity.y * sensitivityMultiplier;
-
-        Debug.Log("Nova sensibilidade: X: " +  xSensitivity + " Y: "+  ySensitivity);
     }
 
 

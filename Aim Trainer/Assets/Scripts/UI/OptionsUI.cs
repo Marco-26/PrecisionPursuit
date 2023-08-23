@@ -22,7 +22,6 @@ public class OptionsUI : MonoBehaviour{
     [SerializeField] private Slider yAxisSensitivitySlider;
     [SerializeField] private Slider soundEffectsSlider;
 
-    private float defaultSliderValue = .5f;
     private float maxSliderValue = 100f;
 
     private void Awake() {

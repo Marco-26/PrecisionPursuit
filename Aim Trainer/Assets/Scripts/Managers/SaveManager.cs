@@ -16,7 +16,7 @@ public class SaveManager : MonoBehaviour {
     }
 
     public void LoadPlayerPreferences() {
-        if(PlayerPrefs.GetFloat("soundEffectsVolume") == null) {
+        if(!HasPlayerPrefsSave()) {
             Debug.Log("No saves found");
             return;
         }
@@ -31,6 +31,8 @@ public class SaveManager : MonoBehaviour {
         UIManager.Instance.ChangeCrosshairUIByType(crosshairType);
 
         OptionsUI.Instance.ChangeSlidersValues(storedSensitivity.x, storedSensitivity.y, storeSoundEffectsVolume);
+
+        Debug.Log("Loaded Player Prefs");
     }
 
     public void SavePlayerPreferences(float soundEffectsVolume, Vector2 sensitivity, CrosshairType crosshairType) {
@@ -38,6 +40,13 @@ public class SaveManager : MonoBehaviour {
         PlayerPrefs.SetFloat("sensitivityX", sensitivity.x);
         PlayerPrefs.SetFloat("sensitivityY", sensitivity.y);
         PlayerPrefs.SetString("crosshairType", crosshairType.ToString());
+
+        PlayerPrefs.Save();
+        Debug.Log("Saved player prefs");
+    }
+
+    public bool HasPlayerPrefsSave() {
+        return PlayerPrefs.HasKey("soundEffectsVolume");
     }
 
     public static void SaveChosenGamemode(Gamemode gamemode) {

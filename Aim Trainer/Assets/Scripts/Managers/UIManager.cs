@@ -45,6 +45,10 @@ public class UIManager : MonoBehaviour
         gameOverScreen.SetActive(false);
         recordBeatenMessage.SetActive(false);
 
+        if (!SaveManager.Instance.HasPlayerPrefsSave()) {
+            currentCrosshair = crosshairTypeList.crosshairTypeList[0];
+        }
+
         timer = GetComponent<Timer>();
 
         GameManager.Instance.OnGameEnd += GameManager_OnGameEnd;
