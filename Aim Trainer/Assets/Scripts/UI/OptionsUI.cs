@@ -35,7 +35,7 @@ public class OptionsUI : MonoBehaviour{
         transform.Find("resumeBtn").GetComponent<Button>().onClick.AddListener(() => {
             SetSensitivityBasedOnSlider();
             SetAudioBasedOnSlider();
-            SaveManager.Instance.SavePlayerPreferences(soundEffectsSlider.value, new Vector2(xAxisSensitivitySlider.value, yAxisSensitivitySlider.value));
+            SaveManager.Instance.SavePlayerPreferences(soundEffectsSlider.value, new Vector2(xAxisSensitivitySlider.value, yAxisSensitivitySlider.value), UIManager.Instance.GetCurrentCrosshairType());
             
             GameManager.Instance.TogglePauseGame();
         });
@@ -78,13 +78,13 @@ public class OptionsUI : MonoBehaviour{
 
     private void HandleCrosshairButtons() {
         crosshairSmallBtn.onClick.AddListener(() => {
-            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[0].crosshairImage, crosshairTypeList.crosshairTypeList[0].width, crosshairTypeList.crosshairTypeList[0].height);
+            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[0]);
         });
         crosshairMediumBtn.onClick.AddListener(() => {
-            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[1].crosshairImage, crosshairTypeList.crosshairTypeList[1].width, crosshairTypeList.crosshairTypeList[1].height);
+            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[1]);
         });
         crosshairLargeBtn.onClick.AddListener(() => {
-            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[2].crosshairImage, crosshairTypeList.crosshairTypeList[2].width, crosshairTypeList.crosshairTypeList[2].height);
+            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[2]);
         });
     }
 

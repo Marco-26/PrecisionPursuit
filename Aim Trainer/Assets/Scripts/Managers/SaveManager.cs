@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class SaveManager : MonoBehaviour {
 
@@ -22,17 +23,21 @@ public class SaveManager : MonoBehaviour {
 
         Vector2 storedSensitivity = new Vector2(PlayerPrefs.GetFloat("sensitivityX"), PlayerPrefs.GetFloat("sensitivityY"));
         float storeSoundEffectsVolume = PlayerPrefs.GetFloat("soundEffectsVolume");
+        string crosshairTypeString = PlayerPrefs.GetString("crosshairType");
+        Enum.TryParse(crosshairTypeString, out CrosshairType crosshairType);
 
         PlayerInput.Instance.SetSensitivity(storedSensitivity);
         SoundManager.Instance.ChangeVolume(storeSoundEffectsVolume);
+        UIManager.Instance.ChangeCrosshairUIByType(crosshairType);
 
         OptionsUI.Instance.ChangeSlidersValues(storedSensitivity.x, storedSensitivity.y, storeSoundEffectsVolume);
     }
 
-    public void SavePlayerPreferences(float soundEffectsVolume, Vector2 sensitivity) {
+    public void SavePlayerPreferences(float soundEffectsVolume, Vector2 sensitivity, CrosshairType crosshairType) {
         PlayerPrefs.SetFloat("soundEffectsVolume", soundEffectsVolume);
         PlayerPrefs.SetFloat("sensitivityX", sensitivity.x);
         PlayerPrefs.SetFloat("sensitivityY", sensitivity.y);
+        PlayerPrefs.SetString("crosshairType", crosshairType.ToString());
     }
 
     public static void SaveChosenGamemode(Gamemode gamemode) {

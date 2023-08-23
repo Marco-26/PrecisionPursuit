@@ -15,7 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI accuracyText;
     [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private RectTransform crosshair;
+    [SerializeField] private RectTransform crosshairSprite;
 
     [Header("Game Over UI")]
     [SerializeField] private GameObject gameOverScreen;
@@ -31,7 +31,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI highscoreText;
     [SerializeField] private TextMeshProUGUI gamemodeText;
 
+
+    [SerializeField] private CrosshairTypeListSO crosshairTypeList;
+
     private Timer timer;
+    private CrosshairTypeSO currentCrosshair;
 
     private void Awake() {
         Instance = this;
@@ -60,9 +64,28 @@ public class UIManager : MonoBehaviour
         HandleUI();
     }
 
-    public void ChangeCrosshairUI(Sprite newCrosshair, int width, int height) {
-        crosshair.sizeDelta = new Vector2 (width, height);
-        crosshair.GetComponent<Image>().sprite = newCrosshair;
+    public void ChangeCrosshairUI(CrosshairTypeSO crosshair) {
+        currentCrosshair = crosshair;
+        crosshairSprite.sizeDelta = new Vector2 (currentCrosshair.width, currentCrosshair.height);
+        crosshairSprite.GetComponent<Image>().sprite = currentCrosshair.sprite;
+    }
+
+    public void ChangeCrosshairUIByType(CrosshairType crosshairType) {
+        switch (crosshairType) {
+            case CrosshairType.CROSSHAIR_LARGE:
+                ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[2]);
+                break;
+            case CrosshairType.CROSSHAIR_MEDIUM:
+                ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[1]);
+                break;
+            case CrosshairType.CROSSHAIR_SMALL:
+                ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[0]);
+                break;
+        }
+    }
+
+    public CrosshairType GetCurrentCrosshairType() {
+        return currentCrosshair.type;
     }
 
     private void DisplayTime() {

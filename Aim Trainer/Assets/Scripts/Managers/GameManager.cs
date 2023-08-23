@@ -17,6 +17,12 @@ public enum GamemodeScenes {
     Tracking
 }
 
+public enum CrosshairType {
+    CROSSHAIR_LARGE,
+    CROSSHAIR_MEDIUM,
+    CROSSHAIR_SMALL
+}
+
 public class GameManager : MonoBehaviour {
     public static GameManager Instance { get; private set; }
 

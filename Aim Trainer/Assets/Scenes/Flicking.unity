@@ -1125,6 +1125,14 @@ PrefabInstance:
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: PlayButtonHoverSound
       objectReference: {fileID: 0}
+    - target: {fileID: 8027426019616357623, guid: b1ec0a7ad49b3ae4eac6e3eaaf7621fa, type: 3}
+      propertyPath: crosshairSprite
+      value: 
+      objectReference: {fileID: 1324557991}
+    - target: {fileID: 8027426019616357623, guid: b1ec0a7ad49b3ae4eac6e3eaaf7621fa, type: 3}
+      propertyPath: crosshairTypeList
+      value: 
+      objectReference: {fileID: 11400000, guid: 0808d3462e7d7394c8288fed9aefe382, type: 2}
     - target: {fileID: 8426388792662343370, guid: b1ec0a7ad49b3ae4eac6e3eaaf7621fa, type: 3}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1483,6 +1491,11 @@ MonoBehaviour:
   obstacle: {fileID: 7724134444984671335, guid: 6f080c72eab74d94b97ad1b81e4f2758, type: 3}
   movingObstacle: {fileID: 7724134444984671335, guid: 68525245aa00c09439ae8834c0312ad3, type: 3}
   countdownTimer: {fileID: 760807758}
+--- !u!224 &1324557991 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3899647877476234201, guid: b1ec0a7ad49b3ae4eac6e3eaaf7621fa, type: 3}
+  m_PrefabInstance: {fileID: 967590143}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1359587805 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7101875953968207655, guid: c5a3b1ae6132f3a439afe3737104fc79, type: 3}
