@@ -2,13 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.IO;
 
 public class SaveManager : MonoBehaviour {
 
     public static SaveManager Instance { get; private set; }
+
+    private static readonly string SAVE_FOLDER = Application.dataPath + "/Saves/";
+
+    [SerializeField]private GameObject unitGameObject;
+    private IUnit unit;
     
     private void Awake() {
         Instance = this;
+        unit = unitGameObject.GetComponent<IUnit>();
+
+        if (!Directory.Exists(SAVE_FOLDER)) {
+            Directory.CreateDirectory(SAVE_FOLDER);
+        }
+
+        LoadSensibleData();
     }
 
     private void Start() {
@@ -56,4 +69,30 @@ public class SaveManager : MonoBehaviour {
 
         return Gamemode.NULL;
     }
+
+    public void LoadSensibleData() { 
+        if(File.Exists(SAVE_FOLDER + "/save.txt")) {
+            string saveString = File.ReadAllText(SAVE_FOLDER + "/save.txt");
+
+            SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
+
+            unit.SetHighscore(saveObject.highscore);
+        }
+    }
+
+    public void SaveSensibleData() {
+        float currentScore = unit.GetScore();
+
+        SaveObject saveObject = new SaveObject {
+            highscore = currentScore
+        };
+
+        string json = JsonUtility.ToJson(saveObject);
+        File.WriteAllText(SAVE_FOLDER + "/save.txt", json);
+    }
+
+    private class SaveObject {
+        public float highscore;
+    }
 }
+

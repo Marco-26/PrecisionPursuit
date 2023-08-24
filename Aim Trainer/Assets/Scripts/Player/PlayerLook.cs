@@ -25,7 +25,6 @@ public class PlayerLook : MonoBehaviour {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         camCenter = cams.localRotation;
-
     }
 
     private void PlayerInput_OnSensitivityChanged(object sender, PlayerInput.SensitivityArgs e) {
@@ -71,5 +70,4 @@ public class PlayerLook : MonoBehaviour {
             Cursor.visible = true;
         }
     }
-
 }

@@ -3,35 +3,36 @@ using System;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UIElements;
 
-public class PlayerGun : MonoBehaviour {
+public class PlayerGun : MonoBehaviour, IUnit {
     private const int BASE_SCORE = 10;
 
     [SerializeField] private float range = 150f;
     [SerializeField] private Camera cams;
-    
+
     private int totalShotsFired = 0;
     private int totalShotsHit = 0;
     private float timeTrackingObstacle = 0f;
     private float timeNotTrackingObstacle = 0f;
     private float score = 0;
+    private float highscore;
     private Transform obstacle = null;
 
     public event EventHandler<FireEventArgs> OnShotsFired;
     public event EventHandler<FireEventArgs> OnTrackedObstacle;
-        
 
-    public class FireEventArgs : EventArgs{
+
+    public class FireEventArgs : EventArgs {
         public float score;
         public float accuracy;
     }
 
-    private void Update(){
-        if(GameManager.Instance.GetCurrentGamemode() == Gamemode.MOTION_SHOT) {
+    private void Update() {
+        if (GameManager.Instance.GetCurrentGamemode() == Gamemode.MOTION_SHOT) {
             Track();
             return;
         }
 
-        if(Input.GetButtonDown("Fire1")) {
+        if (Input.GetButtonDown("Fire1")) {
             SoundManager.Instance.PlaySound(SoundManager.Sound.WeaponShoot);
             Shoot();
         }
@@ -40,11 +41,11 @@ public class PlayerGun : MonoBehaviour {
     private void Shoot() {
         totalShotsFired++;
         float tempScore = score;
-        OnShotsFired?.Invoke(this, new FireEventArgs() { score = CalculateScore(false), accuracy = CalculateAccuracy() }) ;
+        OnShotsFired?.Invoke(this, new FireEventArgs() { score = CalculateScore(false), accuracy = CalculateAccuracy() });
 
-        if(Physics.Raycast(cams.transform.position, cams.transform.forward, out RaycastHit hit, range)) {
+        if (Physics.Raycast(cams.transform.position, cams.transform.forward, out RaycastHit hit, range)) {
             Obstacle target = hit.transform.GetComponent<Obstacle>();
-            if (target != null){
+            if (target != null) {
                 SoundManager.Instance.PlaySound(SoundManager.Sound.ObstacleHit);
                 target.Destroy();
                 totalShotsHit++;
@@ -87,7 +88,7 @@ public class PlayerGun : MonoBehaviour {
                 return ((float)totalShotsHit / totalShotsFired) * 100;
             case Gamemode.MOTION_SHOT:
                 float totalTime = timeTrackingObstacle + timeNotTrackingObstacle;
-                if(totalTime <=0) {
+                if (totalTime <= 0) {
                     return 0;
                 }
 
@@ -98,7 +99,7 @@ public class PlayerGun : MonoBehaviour {
 
     private float CalculateScore(bool hit) {
         if (hit) {
-            if(GameManager.Instance.GetCurrentGamemode() == Gamemode.GRIDSHOT) {
+            if (GameManager.Instance.GetCurrentGamemode() == Gamemode.GRIDSHOT) {
                 score += (BASE_SCORE * CalculateAccuracy()) / 2;
                 return score;
             }
@@ -118,5 +119,19 @@ public class PlayerGun : MonoBehaviour {
             score -= (CalculateAccuracy()) / 40;
             return score;
         }
+    }
+
+    public float GetScore() {
+        return score;
+    }
+
+    public void SetHighscore(float score) {
+        highscore = score;
+        Debug.Log("Loaded highscore: " + score);
+    }
+
+    public float GetHighscore() {
+        Debug.Log("Get highscore: "+ highscore);
+        return highscore;
     }
 }

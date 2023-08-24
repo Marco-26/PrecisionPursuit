@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour {
 
     private float playerAccuracy = 0;
     private float playerScore = 0;
-    private float playerHighscore = 0;
+
     private bool isGamePaused = false;
     private bool isGameStarted = false;
 
@@ -53,7 +53,6 @@ public class GameManager : MonoBehaviour {
         countdownTimer.OnCountdownTimerStopped += CountdownTimer_OnTimerEnd;
 
         currentGamemode = SaveManager.Instance.LoadGamemodePref();
-        Debug.Log(currentGamemode);
 
         if (playerGun != null)
         {
@@ -82,6 +81,9 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Timer_OnTimerEnd(object sender, EventArgs e) {
+        if (IsHighscoreBeaten()) {
+            SaveManager.Instance.SaveSensibleData();
+        }
         PauseGame();
         OnGameEnd?.Invoke(this, EventArgs.Empty);
     }
@@ -100,7 +102,7 @@ public class GameManager : MonoBehaviour {
 
     public Gamemode GetCurrentGamemode() { return currentGamemode; }
 
-    public float GetPlayerHighscore() { return playerHighscore; }
+    public float GetPlayerHighscore() { return playerGun.GetHighscore(); }
 
     public void SetCurrentGamemode(Gamemode gamemode) {
         currentGamemode = gamemode;
@@ -148,6 +150,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public bool IsHighscoreBeaten() {
-        return playerScore > playerHighscore;
+        return playerScore > GetPlayerHighscore();
     }
 }
