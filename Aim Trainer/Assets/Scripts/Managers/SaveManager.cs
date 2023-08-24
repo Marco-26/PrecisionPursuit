@@ -1,34 +1,98 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.IO;
 
-public static class SaveManager {
+public class SaveManager : MonoBehaviour {
 
-    public static void Load(Gamemode gamemode, out float savedHighscore) {
-        if(gamemode == Gamemode.FLICKING) {
-            savedHighscore = PlayerPrefs.GetFloat("flickingGamemodeHighscore", 0);
+    public static SaveManager Instance { get; private set; }
+
+    private static readonly string SAVE_FOLDER = Application.dataPath + "/Saves/";
+
+    [SerializeField]private GameObject unitGameObject;
+    private IUnit unit;
+    
+    private void Awake() {
+        Instance = this;
+        unit = unitGameObject.GetComponent<IUnit>();
+
+        if (!Directory.Exists(SAVE_FOLDER)) {
+            Directory.CreateDirectory(SAVE_FOLDER);
+        }
+
+        LoadSensibleData();
+    }
+
+    private void Start() {
+        LoadPlayerPreferences();
+    }
+
+    public void LoadPlayerPreferences() {
+        if(!HasPlayerPrefsSave()) {
+            Debug.Log("No saves found");
             return;
         }
-        savedHighscore = PlayerPrefs.GetFloat("targetingGamemodeHighscore", 0);
+
+        Vector2 storedSensitivity = new Vector2(PlayerPrefs.GetFloat("sensitivityX"), PlayerPrefs.GetFloat("sensitivityY"));
+        float storeSoundEffectsVolume = PlayerPrefs.GetFloat("soundEffectsVolume");
+        string crosshairTypeString = PlayerPrefs.GetString("crosshairType");
+        Enum.TryParse(crosshairTypeString, out CrosshairType crosshairType);
+
+        PlayerInput.Instance.SetSensitivity(storedSensitivity);
+        SoundManager.Instance.ChangeVolume(storeSoundEffectsVolume);
+        UIManager.Instance.ChangeCrosshairUIByType(crosshairType);
+
+        OptionsUI.Instance.ChangeSlidersValues(storedSensitivity.x, storedSensitivity.y, storeSoundEffectsVolume);
+
+        Debug.Log("Loaded Player Prefs");
     }
 
-    public static void Save(Gamemode gamemode, float highscoreRecord) {
-        if (gamemode == Gamemode.FLICKING) {
-            PlayerPrefs.SetFloat("flickingGamemodeHighscore", highscoreRecord);
-        } else {
-            PlayerPrefs.SetFloat("targetingGamemodeHighscore", highscoreRecord);
-        }
+    public void SavePlayerPreferences(float soundEffectsVolume, Vector2 sensitivity, CrosshairType crosshairType) {
+        PlayerPrefs.SetFloat("soundEffectsVolume", soundEffectsVolume);
+        PlayerPrefs.SetFloat("sensitivityX", sensitivity.x);
+        PlayerPrefs.SetFloat("sensitivityY", sensitivity.y);
+        PlayerPrefs.SetString("crosshairType", crosshairType.ToString());
+
         PlayerPrefs.Save();
+        Debug.Log("Saved player prefs");
     }
 
-    public static void SaveChosenGamemode(Gamemode gamemode) {
-        PlayerPrefs.SetString("gamemode", gamemode.ToString());
+    public bool HasPlayerPrefsSave() {
+        return PlayerPrefs.HasKey("soundEffectsVolume");
     }
 
-    public static Gamemode GetChosenGamemode() {
-        if(PlayerPrefs.GetString("gamemode") == "FLICKING") {
-            return Gamemode.FLICKING;
+    public Gamemode LoadGamemodePref() {
+        if(PlayerPrefs.GetString("gamemode") == Gamemode.GRIDSHOT.ToString()) {
+            return Gamemode.GRIDSHOT;
         }
-        return Gamemode.TRACKING;
+
+        return Gamemode.NULL;
+    }
+
+    public void LoadSensibleData() { 
+        if(File.Exists(SAVE_FOLDER + "/save.txt")) {
+            string saveString = File.ReadAllText(SAVE_FOLDER + "/save.txt");
+            Debug.Log(GameManager.Instance.GetCurrentGamemode());
+            SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
+            
+            unit.SetHighscore(saveObject.gridshotHighscore);
+        }
+    }
+
+    public void SaveSensibleData() {
+        float currentScore = unit.GetScore();
+
+        SaveObject saveObject = new SaveObject {
+            gridshotHighscore = currentScore
+        };
+
+        string json = JsonUtility.ToJson(saveObject);
+        File.WriteAllText(SAVE_FOLDER + "/save.txt", json);
+    }
+
+    private class SaveObject {
+        public float gridshotHighscore;
     }
 }
+

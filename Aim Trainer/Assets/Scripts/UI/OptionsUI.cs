@@ -22,7 +22,6 @@ public class OptionsUI : MonoBehaviour{
     [SerializeField] private Slider yAxisSensitivitySlider;
     [SerializeField] private Slider soundEffectsSlider;
 
-    private float defaultSliderValue = .5f;
     private float maxSliderValue = 100f;
 
     private void Awake() {
@@ -32,16 +31,11 @@ public class OptionsUI : MonoBehaviour{
     private void Start(){
         gameObject.SetActive(false);
 
-        xAxisSensitivitySlider.value  = defaultSliderValue;
-        yAxisSensitivitySlider.value = defaultSliderValue;
-        soundEffectsSlider.value = defaultSliderValue;
-        ManipulateXAxisSensitivitySliderPercentage(defaultSliderValue);
-        ManipulateYAxisSensitivitySliderPercentage(defaultSliderValue);
-        ManipulateSoundEffectsSliderPercentage(defaultSliderValue);
-        
         transform.Find("resumeBtn").GetComponent<Button>().onClick.AddListener(() => {
             SetSensitivityBasedOnSlider();
             SetAudioBasedOnSlider();
+            SaveManager.Instance.SavePlayerPreferences(soundEffectsSlider.value, new Vector2(xAxisSensitivitySlider.value, yAxisSensitivitySlider.value), UIManager.Instance.GetCurrentCrosshairType());
+            
             GameManager.Instance.TogglePauseGame();
         });
 
@@ -53,18 +47,24 @@ public class OptionsUI : MonoBehaviour{
     }
 
     public void ManipulateXAxisSensitivitySliderPercentage(float value) {
-        float final = value * 100;
+        float final = value * maxSliderValue;
         xAxisSensitivitySliderPercentage.text = final.ToString("0") + "%";
     }
 
     public void ManipulateYAxisSensitivitySliderPercentage(float value) {
-        float final = value * 100;
+        float final = value * maxSliderValue;
         yAxisSensitivitySliderPercentage.text = final.ToString("0") + "%";
     }
 
     public void ManipulateSoundEffectsSliderPercentage(float value) {
-        float final = value * 100;
+        float final = value * maxSliderValue;
         soundEffectsSliderPercentage.text = final.ToString("0") + "%";
+    }
+
+    public void ChangeSlidersValues(float sensitivityX, float sensitivityY, float soundEffectsVolume) {
+        xAxisSensitivitySlider.value = sensitivityX;
+        yAxisSensitivitySlider.value = sensitivityY;
+        soundEffectsSlider.value = soundEffectsVolume;
     }
 
     public void ShowOptionsMenu() {
@@ -77,13 +77,13 @@ public class OptionsUI : MonoBehaviour{
 
     private void HandleCrosshairButtons() {
         crosshairSmallBtn.onClick.AddListener(() => {
-            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[0].crosshairImage, crosshairTypeList.crosshairTypeList[0].width, crosshairTypeList.crosshairTypeList[0].height);
+            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[0]);
         });
         crosshairMediumBtn.onClick.AddListener(() => {
-            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[1].crosshairImage, crosshairTypeList.crosshairTypeList[1].width, crosshairTypeList.crosshairTypeList[1].height);
+            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[1]);
         });
         crosshairLargeBtn.onClick.AddListener(() => {
-            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[2].crosshairImage, crosshairTypeList.crosshairTypeList[2].width, crosshairTypeList.crosshairTypeList[2].height);
+            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[2]);
         });
     }
 

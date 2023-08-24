@@ -7,14 +7,20 @@ using UnityEditor;
 using TMPro;
 
 public enum Gamemode {
-    FLICKING,
-    TRACKING,
+    GRIDSHOT,
+    MOTION_SHOT,
     NULL
 }
 
 public enum GamemodeScenes {
-    Flicking,
-    Tracking
+    Gridshot,
+    Motionshot
+}
+
+public enum CrosshairType {
+    CROSSHAIR_LARGE,
+    CROSSHAIR_MEDIUM,
+    CROSSHAIR_SMALL
 }
 
 public class GameManager : MonoBehaviour {
@@ -26,11 +32,11 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private Timer timer;
     [SerializeField] private CountdownTimer countdownTimer;
 
-    private Gamemode currentGamemode = Gamemode.FLICKING;
+    private Gamemode currentGamemode = Gamemode.GRIDSHOT;
 
     private float playerAccuracy = 0;
     private float playerScore = 0;
-    private float playerHighscore = 0;
+
     private bool isGamePaused = false;
     private bool isGameStarted = false;
 
@@ -38,8 +44,6 @@ public class GameManager : MonoBehaviour {
 
     private void Awake() {
         Instance = this;
-        
-        SaveManager.Load(currentGamemode, out playerHighscore);
     }
 
     private void Start() {
@@ -48,9 +52,11 @@ public class GameManager : MonoBehaviour {
         timer.OnTimerEnd += Timer_OnTimerEnd;
         countdownTimer.OnCountdownTimerStopped += CountdownTimer_OnTimerEnd;
 
+        currentGamemode = SaveManager.Instance.LoadGamemodePref();
+
         if (playerGun != null)
         {
-            if(currentGamemode == Gamemode.FLICKING) {
+            if(currentGamemode == Gamemode.GRIDSHOT) {
                 playerGun.OnShotsFired += PlayerGun_OnShotsFired;
             } else {
                 playerGun.OnTrackedObstacle += PlayerGun_OnTrackedObstacle;
@@ -75,8 +81,8 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Timer_OnTimerEnd(object sender, EventArgs e) {
-        if(isHighscoreBeaten()) {
-            SaveManager.Save(currentGamemode, playerScore);
+        if (IsHighscoreBeaten()) {
+            SaveManager.Instance.SaveSensibleData();
         }
         PauseGame();
         OnGameEnd?.Invoke(this, EventArgs.Empty);
@@ -96,7 +102,7 @@ public class GameManager : MonoBehaviour {
 
     public Gamemode GetCurrentGamemode() { return currentGamemode; }
 
-    public float GetPlayerHighscore() { return playerHighscore; }
+    public float GetPlayerHighscore() { return playerGun.GetHighscore(); }
 
     public void SetCurrentGamemode(Gamemode gamemode) {
         currentGamemode = gamemode;
@@ -143,7 +149,7 @@ public class GameManager : MonoBehaviour {
         return playerGun;
     }
 
-    public bool isHighscoreBeaten() {
-        return playerScore > playerHighscore;
+    public bool IsHighscoreBeaten() {
+        return playerScore > GetPlayerHighscore();
     }
 }

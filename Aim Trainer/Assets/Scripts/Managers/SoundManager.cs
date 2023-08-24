@@ -26,7 +26,6 @@ public class SoundManager : MonoBehaviour{
         soundAudioClipDictionary = new Dictionary<Sound, AudioClip>();
 
         foreach(Sound sound in System.Enum.GetValues(typeof(Sound))) {
-            Debug.Log(sound.ToString());
             soundAudioClipDictionary[sound] = Resources.Load<AudioClip>(sound.ToString());
         }
     }
@@ -40,7 +39,6 @@ public class SoundManager : MonoBehaviour{
     }
 
     public void ChangeVolume(float audioLevel) {
-        Debug.Log("New audio level: " + audioLevel);
         _audioSource.volume = audioLevel;
     }
 }
