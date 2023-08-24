@@ -73,10 +73,10 @@ public class SaveManager : MonoBehaviour {
     public void LoadSensibleData() { 
         if(File.Exists(SAVE_FOLDER + "/save.txt")) {
             string saveString = File.ReadAllText(SAVE_FOLDER + "/save.txt");
-
+            Debug.Log(GameManager.Instance.GetCurrentGamemode());
             SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
-
-            unit.SetHighscore(saveObject.highscore);
+            
+            unit.SetHighscore(saveObject.gridshotHighscore);
         }
     }
 
@@ -84,7 +84,7 @@ public class SaveManager : MonoBehaviour {
         float currentScore = unit.GetScore();
 
         SaveObject saveObject = new SaveObject {
-            highscore = currentScore
+            gridshotHighscore = currentScore
         };
 
         string json = JsonUtility.ToJson(saveObject);
@@ -92,7 +92,7 @@ public class SaveManager : MonoBehaviour {
     }
 
     private class SaveObject {
-        public float highscore;
+        public float gridshotHighscore;
     }
 }
 
