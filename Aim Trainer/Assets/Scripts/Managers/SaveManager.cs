@@ -12,6 +12,8 @@ public class SaveManager : MonoBehaviour {
 
     [SerializeField]private GameObject unitGameObject;
     private IUnit unit;
+
+    private SaveObject loadedData;
     
     private void Awake() {
         Instance = this;
@@ -20,7 +22,6 @@ public class SaveManager : MonoBehaviour {
         if (!Directory.Exists(SAVE_FOLDER)) {
             Directory.CreateDirectory(SAVE_FOLDER);
         }
-
         LoadSensibleData();
     }
 
@@ -62,37 +63,45 @@ public class SaveManager : MonoBehaviour {
         return PlayerPrefs.HasKey("soundEffectsVolume");
     }
 
-    public Gamemode LoadGamemodePref() {
-        if(PlayerPrefs.GetString("gamemode") == Gamemode.GRIDSHOT.ToString()) {
-            return Gamemode.GRIDSHOT;
-        }
-
-        return Gamemode.NULL;
-    }
-
     public void LoadSensibleData() { 
         if(File.Exists(SAVE_FOLDER + "/save.txt")) {
             string saveString = File.ReadAllText(SAVE_FOLDER + "/save.txt");
             Debug.Log(GameManager.Instance.GetCurrentGamemode());
-            SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
-            
-            unit.SetHighscore(saveObject.gridshotHighscore);
+            loadedData = JsonUtility.FromJson<SaveObject>(saveString);
+
+            if (GameManager.Instance.GetCurrentGamemode() == Gamemode.GRIDSHOT) {
+                unit.SetHighscore(loadedData.gridshotHighscore);
+            } else {
+                unit.SetHighscore(loadedData.motionshotHighscore);
+            }
+
+            Debug.Log("Loaded object: " + saveString);
         }
     }
 
     public void SaveSensibleData() {
         float currentScore = unit.GetScore();
-
-        SaveObject saveObject = new SaveObject {
-            gridshotHighscore = currentScore
-        };
-
+        SaveObject saveObject;
+        
+        if(GameManager.Instance.GetCurrentGamemode() == Gamemode.GRIDSHOT) {
+            saveObject = new SaveObject {
+                gridshotHighscore = currentScore,
+                motionshotHighscore = loadedData != null ?  loadedData.motionshotHighscore : 0
+            };
+        } else {
+            saveObject = new SaveObject {
+                gridshotHighscore = loadedData != null ? loadedData.gridshotHighscore : 0,
+                motionshotHighscore = currentScore
+            };
+        }
+        
         string json = JsonUtility.ToJson(saveObject);
         File.WriteAllText(SAVE_FOLDER + "/save.txt", json);
     }
 
     private class SaveObject {
         public float gridshotHighscore;
+        public float motionshotHighscore;
     }
 }
 

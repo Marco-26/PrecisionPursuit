@@ -59,6 +59,7 @@ public class UIManager : MonoBehaviour
             additionalOptionsContainer.SetActive(true);
             highscoreText.text = GameManager.Instance.GetPlayerHighscore().ToString();
             gamemodeText.text = GameManager.Instance.GetCurrentGamemode().ToString();
+            Debug.Log(GameManager.Instance.GetCurrentGamemode().ToString());
         }
         
         HandleButtonListeners();
