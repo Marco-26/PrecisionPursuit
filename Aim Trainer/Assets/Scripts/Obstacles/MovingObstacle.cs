@@ -3,20 +3,26 @@ using UnityEngine;
 
 public class MovingObstacle : MonoBehaviour, IDestroyable {
     
-    private int moveSpeed;
     private Transform myTransform;
     private MovingObstacleDestroyTimer destroyTimer;
 
-    int y,x;
-
-    private void Start() {
-        //moveSpeed = Random.Range(2, 5);
-        moveSpeed = 1;
+    private int moveSpeed;
+    private int positionY,positionX;
+    private float reverseProbability = 0.5f;
+    
+    private void Start()
+    {
+        moveSpeed = Random.Range(2, 5);
+        if (Random.value < reverseProbability)
+        {
+            moveSpeed *= -1;
+        }
+        
         myTransform = GetComponent<Transform>();
         destroyTimer = GetComponent <MovingObstacleDestroyTimer>();
 
-        x = Mathf.RoundToInt(transform.position.x);
-        y = Mathf.RoundToInt(transform.position.y);
+        positionX = Mathf.RoundToInt(transform.position.x);
+        positionY = Mathf.RoundToInt(transform.position.y);
 
         destroyTimer.OnDestroy += DestroyTimer_OnDestroy;
     }
@@ -26,7 +32,7 @@ public class MovingObstacle : MonoBehaviour, IDestroyable {
     }
 
     private void OnTriggerEnter(Collider other) {
-        ReverseDirection();
+        Destroy();
     }
 
     private void Update() {
@@ -36,7 +42,7 @@ public class MovingObstacle : MonoBehaviour, IDestroyable {
 
         Vector3 moveVector = new Vector3(inputVector.x, 0, inputVector.y);
 
-        myTransform.position += moveVector * moveSpeed * Time.deltaTime;
+        myTransform.position += moveVector * (moveSpeed * Time.deltaTime);
     }
 
     private void ReverseDirection() {
@@ -45,7 +51,7 @@ public class MovingObstacle : MonoBehaviour, IDestroyable {
 
     public void Destroy() {
         GridManager.Instance.SpawnObstacle();
-        GridManager.Instance.RemoveFromGrid(x, y);
+        GridManager.Instance.RemoveFromGrid(positionX, positionY);
         Destroy(gameObject);
     }
 
