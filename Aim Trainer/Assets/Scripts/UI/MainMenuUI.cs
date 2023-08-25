@@ -22,7 +22,7 @@ public class MainMenuController : MonoBehaviour {
 
         motionshotGamemodeButton.onClick.AddListener(() => {
             SceneManager.LoadScene(GamemodeScenes.Motionshot.ToString());
-            PlayerPrefs.SetString("gamemode", Gamemode.MOTION_SHOT.ToString());
+            PlayerPrefs.SetString("gamemode", Gamemode.MOTIONSHOT.ToString());
         });
 
         playButton.onClick.AddListener(() => {

@@ -12,7 +12,12 @@ public class SaveManager : MonoBehaviour {
 
     [SerializeField]private GameObject unitGameObject;
     private IUnit unit;
-    
+
+    private SaveObject loadedData;
+    private Dictionary<Gamemode, float> highScores;
+    private Gamemode currentGamemode;
+
+
     private void Awake() {
         Instance = this;
         unit = unitGameObject.GetComponent<IUnit>();
@@ -20,6 +25,13 @@ public class SaveManager : MonoBehaviour {
         if (!Directory.Exists(SAVE_FOLDER)) {
             Directory.CreateDirectory(SAVE_FOLDER);
         }
+        currentGamemode = GameManager.Instance.GetCurrentGamemode();
+
+        highScores = new Dictionary<Gamemode, float>
+        {
+            { Gamemode.GRIDSHOT, 0 },
+            { Gamemode.MOTIONSHOT, 0 },
+        };
 
         LoadSensibleData();
     }
@@ -62,37 +74,44 @@ public class SaveManager : MonoBehaviour {
         return PlayerPrefs.HasKey("soundEffectsVolume");
     }
 
-    public Gamemode LoadGamemodePref() {
-        if(PlayerPrefs.GetString("gamemode") == Gamemode.GRIDSHOT.ToString()) {
-            return Gamemode.GRIDSHOT;
-        }
-
-        return Gamemode.NULL;
-    }
-
     public void LoadSensibleData() { 
         if(File.Exists(SAVE_FOLDER + "/save.txt")) {
             string saveString = File.ReadAllText(SAVE_FOLDER + "/save.txt");
-            Debug.Log(GameManager.Instance.GetCurrentGamemode());
-            SaveObject saveObject = JsonUtility.FromJson<SaveObject>(saveString);
+            loadedData = JsonUtility.FromJson<SaveObject>(saveString);
             
-            unit.SetHighscore(saveObject.gridshotHighscore);
+            highScores = new Dictionary<Gamemode, float>
+            {
+                { Gamemode.GRIDSHOT, loadedData != null ? loadedData.gridshotHighscore : 0 },
+                { Gamemode.MOTIONSHOT, loadedData != null ? loadedData.motionshotHighscore : 0 },
+            };
+            
+            unit.SetHighscore(highScores[currentGamemode]);
+
+            Debug.Log("Loaded sensible data");
         }
     }
 
     public void SaveSensibleData() {
         float currentScore = unit.GetScore();
+        Debug.Log(currentScore);
+        SaveObject saveObject = new SaveObject();
 
-        SaveObject saveObject = new SaveObject {
-            gridshotHighscore = currentScore
-        };
+        // Update the high score based on the current gamemode
+        highScores[currentGamemode] = currentScore;
+
+        saveObject.gridshotHighscore = highScores[Gamemode.GRIDSHOT];
+        saveObject.motionshotHighscore = highScores[Gamemode.MOTIONSHOT];
 
         string json = JsonUtility.ToJson(saveObject);
+        Debug.Log(json);
         File.WriteAllText(SAVE_FOLDER + "/save.txt", json);
+    
+        Debug.Log("Saved sensible data");
     }
 
     private class SaveObject {
         public float gridshotHighscore;
+        public float motionshotHighscore;
     }
 }
 

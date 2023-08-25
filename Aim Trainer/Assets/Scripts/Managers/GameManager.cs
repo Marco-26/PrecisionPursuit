@@ -8,7 +8,7 @@ using TMPro;
 
 public enum Gamemode {
     GRIDSHOT,
-    MOTION_SHOT,
+    MOTIONSHOT,
     NULL
 }
 
@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private Timer timer;
     [SerializeField] private CountdownTimer countdownTimer;
 
-    private Gamemode currentGamemode = Gamemode.GRIDSHOT;
+    private Gamemode currentGamemode = Gamemode.NULL;
 
     private float playerAccuracy = 0;
     private float playerScore = 0;
@@ -44,6 +44,11 @@ public class GameManager : MonoBehaviour {
 
     private void Awake() {
         Instance = this;
+
+        string gamemodeSaved = PlayerPrefs.GetString("gamemode");
+        if(!Enum.TryParse(gamemodeSaved, out currentGamemode)) {
+            Debug.LogError("Error parsing gamemode string into enum!");
+        }
     }
 
     private void Start() {
@@ -52,27 +57,12 @@ public class GameManager : MonoBehaviour {
         timer.OnTimerEnd += Timer_OnTimerEnd;
         countdownTimer.OnCountdownTimerStopped += CountdownTimer_OnTimerEnd;
 
-        currentGamemode = SaveManager.Instance.LoadGamemodePref();
-
-        if (playerGun != null)
-        {
-            if(currentGamemode == Gamemode.GRIDSHOT) {
-                playerGun.OnShotsFired += PlayerGun_OnShotsFired;
-            } else {
-                playerGun.OnTrackedObstacle += PlayerGun_OnTrackedObstacle;
-            }
-
-            playerInput.OnPauseKeyPressed += PlayerGun_OnPauseKeyPressed;
-        }
+        playerGun.OnShotsFired += PlayerGun_OnShotsFired;
+        playerInput.OnPauseKeyPressed += PlayerGun_OnPauseKeyPressed;
     }
 
     private void PlayerGun_OnPauseKeyPressed(object sender, EventArgs e) {
         TogglePauseGame();
-    }
-
-    private void PlayerGun_OnTrackedObstacle(object sender, PlayerGun.FireEventArgs e) {
-        playerScore = e.score;
-        playerAccuracy = e.accuracy;
     }
 
     private void PlayerGun_OnShotsFired(object sender, PlayerGun.FireEventArgs e){

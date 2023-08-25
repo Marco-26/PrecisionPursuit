@@ -57,8 +57,8 @@ public class UIManager : MonoBehaviour
             additionalOptionsContainer.SetActive(false);
         } else {
             additionalOptionsContainer.SetActive(true);
-            highscoreText.text = GameManager.Instance.GetPlayerHighscore().ToString();
-            gamemodeText.text = GameManager.Instance.GetCurrentGamemode().ToString();
+            highscoreText.text = "Highscore: " + GameManager.Instance.GetPlayerHighscore().ToString();
+            gamemodeText.text = "Gamemode: " + GameManager.Instance.GetCurrentGamemode().ToString();
         }
         
         HandleButtonListeners();

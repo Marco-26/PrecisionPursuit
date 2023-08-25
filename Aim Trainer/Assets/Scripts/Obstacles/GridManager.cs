@@ -7,10 +7,7 @@ public class GridManager : MonoBehaviour {
     public static GridManager Instance { get; private set; }
 
     [SerializeField] private Transform obstacle;
-    [SerializeField] private Transform movingObstacle;
     [SerializeField] private CountdownTimer countdownTimer;
-
-    private const int MAX_TARGETS = 3;
 
     private GridMap grid;
     private Vector3Int spawnPos = Vector3Int.zero;
@@ -23,9 +20,15 @@ public class GridManager : MonoBehaviour {
     }
 
     private void CountdownTimer_OnCountdownTimerStopped(object sender, System.EventArgs e) {
-        for(int i = 0; i < MAX_TARGETS; i++) {
-            SpawnObstacle();
+        if(GameManager.Instance.GetCurrentGamemode() == Gamemode.GRIDSHOT) {
+            Debug.Log("Aqui");
+            for(int i = 0; i < 3; i++) {
+                SpawnObstacle();
+            }
+            return;
         }
+
+        SpawnObstacle();
     }
 
     public void SpawnObstacle() {
@@ -42,14 +45,9 @@ public class GridManager : MonoBehaviour {
             temp = grid.GetValue(spawnPos.x, spawnPos.y);
         }
 
-        if (GameManager.Instance.GetCurrentGamemode() == Gamemode.GRIDSHOT) { 
-            grid.SetValue(spawnPos.x, spawnPos.y, obstacle);
-            Instantiate(obstacle, spawnPos, Quaternion.identity);
-            return;
-        }
-
-        grid.SetValue(spawnPos.x, spawnPos.y, movingObstacle);
-        Instantiate(movingObstacle, spawnPos, Quaternion.identity);
+        //Depending on the scene, the obstacle can be static or not
+        grid.SetValue(spawnPos.x, spawnPos.y, obstacle);
+        Instantiate(obstacle, spawnPos, Quaternion.identity);
     }
 
     public void RemoveFromGrid(int x, int y) {

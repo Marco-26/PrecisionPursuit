@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
-public class Obstacle : MonoBehaviour {
+public class Obstacle : MonoBehaviour, IDestroyable {
 
     private Grid grid;
     private int x;

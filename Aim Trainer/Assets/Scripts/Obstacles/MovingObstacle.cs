@@ -1,34 +1,38 @@
 using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
-public class MovingObstacle : MonoBehaviour {
+public class MovingObstacle : MonoBehaviour, IDestroyable {
     
-    private int moveSpeed;
     private Transform myTransform;
     private MovingObstacleDestroyTimer destroyTimer;
-    private Renderer myRenderer;
 
-    private Color trackedColor = Color.blue;
-    private Color defaultColor = Color.red;
-
-    private bool isBeingTracked = false;
-
-    private void Start() {
+    private int moveSpeed;
+    private int positionY,positionX;
+    private float reverseProbability = 0.5f;
+    
+    private void Start()
+    {
         moveSpeed = Random.Range(2, 5);
-        myRenderer = GetComponent<Renderer>();
+        if (Random.value < reverseProbability)
+        {
+            moveSpeed *= -1;
+        }
+        
         myTransform = GetComponent<Transform>();
         destroyTimer = GetComponent <MovingObstacleDestroyTimer>();
+
+        positionX = Mathf.RoundToInt(transform.position.x);
+        positionY = Mathf.RoundToInt(transform.position.y);
 
         destroyTimer.OnDestroy += DestroyTimer_OnDestroy;
     }
 
     private void DestroyTimer_OnDestroy(object sender, System.EventArgs e) {
-        Destroy(gameObject);
-        GridManager.Instance.SpawnObstacle();
+        Destroy();
     }
 
     private void OnTriggerEnter(Collider other) {
-        ReverseDirection();
+        Destroy();
     }
 
     private void Update() {
@@ -38,33 +42,17 @@ public class MovingObstacle : MonoBehaviour {
 
         Vector3 moveVector = new Vector3(inputVector.x, 0, inputVector.y);
 
-        myTransform.position += moveVector * moveSpeed * Time.deltaTime;
-    }
-
-    private void ChangeColorWhenTracked() {
-        myRenderer.material.SetColor("_Color", trackedColor);
-    }
-
-    private void ResetColor() {
-        myRenderer.material.SetColor("_Color", defaultColor);
+        myTransform.position += moveVector * (moveSpeed * Time.deltaTime);
     }
 
     private void ReverseDirection() {
         moveSpeed *= -1;
     }
 
-    public void SetIsBeingTracked() {
-        ChangeColorWhenTracked();
-        isBeingTracked = true;
-    }
-
-    public void SetIsNotBeingTracked() {
-        ResetColor();
-        isBeingTracked = false;
-    }
-
-    public bool GetIsBeingTracked() {
-        return isBeingTracked;
+    public void Destroy() {
+        GridManager.Instance.SpawnObstacle();
+        GridManager.Instance.RemoveFromGrid(positionX, positionY);
+        Destroy(gameObject);
     }
 
 }
