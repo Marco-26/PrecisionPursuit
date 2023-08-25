@@ -8,7 +8,7 @@ using TMPro;
 
 public enum Gamemode {
     GRIDSHOT,
-    MOTION_SHOT,
+    MOTIONSHOT,
     NULL
 }
 

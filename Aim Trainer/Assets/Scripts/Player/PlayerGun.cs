@@ -1,7 +1,5 @@
 using UnityEngine;
 using System;
-using UnityEngine.SocialPlatforms.Impl;
-using UnityEngine.UIElements;
 
 public class PlayerGun : MonoBehaviour, IUnit {
     private const int BASE_SCORE = 10;
@@ -23,12 +21,12 @@ public class PlayerGun : MonoBehaviour, IUnit {
 
     private void Update() {
         if (Input.GetButtonDown("Fire1")) {
-            SoundManager.Instance.PlaySound(SoundManager.Sound.WeaponShoot);
             Shoot();
         }
     }
 
     private void Shoot() {
+        SoundManager.Instance.PlaySound(SoundManager.Sound.WeaponShoot);
         totalShotsFired++;
         float tempScore = score;
         OnShotsFired?.Invoke(this, new FireEventArgs() { score = DecreaseScore(), accuracy = CalculateAccuracy() });
@@ -39,9 +37,6 @@ public class PlayerGun : MonoBehaviour, IUnit {
                 SoundManager.Instance.PlaySound(SoundManager.Sound.ObstacleHit);
                 target.Destroy();
                 totalShotsHit++;
-
-                Debug.Log(CalculateAccuracy());
-                Debug.Log(IncreaseScore());
 
                 OnShotsFired?.Invoke(this, new FireEventArgs() { score = IncreaseScore(), accuracy = CalculateAccuracy() });
             }

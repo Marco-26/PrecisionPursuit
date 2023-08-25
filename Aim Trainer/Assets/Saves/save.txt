@@ -1,1 +1,1 @@
-{"gridshotHighscore":4423.39453125,"motionshotHighscore":2977.1826171875}
+{"gridshotHighscore":1296.4285888671875,"motionshotHighscore":750.0}
