@@ -1,16 +1,13 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInput : MonoBehaviour{
+public class PlayerManager : MonoBehaviour{
 
-    public static PlayerInput Instance { get; private set; }    
+    public static PlayerManager Instance { get; private set; }    
 
     public event EventHandler OnPauseKeyPressed;
-
     private Vector2 sensitivity;
-
+    
     public event EventHandler<SensitivityArgs> OnSensitivityChanged;
 
     public class SensitivityArgs : EventArgs {
@@ -31,4 +28,5 @@ public class PlayerInput : MonoBehaviour{
         sensitivity = newSensitivity;
         OnSensitivityChanged?.Invoke(this, new SensitivityArgs() { newSensitivity = sensitivity });
     }
+
 }

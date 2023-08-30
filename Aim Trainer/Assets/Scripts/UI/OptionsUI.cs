@@ -88,7 +88,7 @@ public class OptionsUI : MonoBehaviour{
     }
 
     private void SetSensitivityBasedOnSlider() {
-        PlayerInput.Instance.SetSensitivity(new Vector2(xAxisSensitivitySlider.value, yAxisSensitivitySlider.value));
+        PlayerManager.Instance.SetSensitivity(new Vector2(xAxisSensitivitySlider.value, yAxisSensitivitySlider.value));
     }
 
     private void SetAudioBasedOnSlider() {

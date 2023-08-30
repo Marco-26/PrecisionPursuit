@@ -1,10 +1,12 @@
 using System.ComponentModel;
 using System;
+using Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using UnityEngine.Serialization;
 
 public enum Gamemode {
     GRIDSHOT,
@@ -27,7 +29,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private PlayerGun playerGun;
-    [SerializeField] private PlayerInput playerInput;
+    [FormerlySerializedAs("playerInput")] [SerializeField] private PlayerManager playerManager;
     [SerializeField] private PlayerLook playerLook;
     [SerializeField] private Timer timer;
     [SerializeField] private CountdownTimer countdownTimer;
@@ -58,7 +60,7 @@ public class GameManager : MonoBehaviour {
         countdownTimer.OnCountdownTimerStopped += CountdownTimer_OnTimerEnd;
 
         playerGun.OnShotsFired += PlayerGun_OnShotsFired;
-        playerInput.OnPauseKeyPressed += PlayerGun_OnPauseKeyPressed;
+        playerManager.OnPauseKeyPressed += PlayerGun_OnPauseKeyPressed;
     }
 
     private void PlayerGun_OnPauseKeyPressed(object sender, EventArgs e) {
@@ -71,9 +73,7 @@ public class GameManager : MonoBehaviour {
     }
 
     private void Timer_OnTimerEnd(object sender, EventArgs e) {
-        if (IsHighscoreBeaten()) {
-            SaveManager.Instance.SaveSensibleData();
-        }
+        SaveManager.Instance.SaveData();
         PauseGame();
         OnGameEnd?.Invoke(this, EventArgs.Empty);
     }
@@ -93,10 +93,6 @@ public class GameManager : MonoBehaviour {
     public Gamemode GetCurrentGamemode() { return currentGamemode; }
 
     public float GetPlayerHighscore() { return playerGun.GetHighscore(); }
-
-    public void SetCurrentGamemode(Gamemode gamemode) {
-        currentGamemode = gamemode;
-    }
 
     public void TogglePauseGame() {
         isGamePaused = !isGamePaused;
@@ -140,6 +136,6 @@ public class GameManager : MonoBehaviour {
     }
 
     public bool IsHighscoreBeaten() {
-        return playerScore > GetPlayerHighscore();
+        return playerGun.IsHighscoreBeaten();
     }
 }

@@ -14,7 +14,7 @@ public class PlayerLook : MonoBehaviour {
     private float defaultSensitivityValue = 0.5f;
 
     private void Awake() {
-        PlayerInput.Instance.OnSensitivityChanged += PlayerInput_OnSensitivityChanged;
+        PlayerManager.Instance.OnSensitivityChanged += PlayerInput_OnSensitivityChanged;
     }
 
     void Start()
@@ -27,7 +27,7 @@ public class PlayerLook : MonoBehaviour {
         camCenter = cams.localRotation;
     }
 
-    private void PlayerInput_OnSensitivityChanged(object sender, PlayerInput.SensitivityArgs e) {
+    private void PlayerInput_OnSensitivityChanged(object sender, PlayerManager.SensitivityArgs e) {
         xSensitivity = e.newSensitivity.x * sensitivityMultiplier;
         ySensitivity = e.newSensitivity.y * sensitivityMultiplier;
     }
