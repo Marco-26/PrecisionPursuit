@@ -1,16 +1,15 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInput : MonoBehaviour{
+public class PlayerManager : MonoBehaviour{
 
-    public static PlayerInput Instance { get; private set; }    
+    public static PlayerManager Instance { get; private set; }    
 
     public event EventHandler OnPauseKeyPressed;
-
     private Vector2 sensitivity;
-
+    private PlayerGun playerGun;
+    private PlayerLook playerLook;
+    
     public event EventHandler<SensitivityArgs> OnSensitivityChanged;
 
     public class SensitivityArgs : EventArgs {
@@ -19,6 +18,8 @@ public class PlayerInput : MonoBehaviour{
 
     private void Awake() {
         Instance = this;
+        playerGun = GetComponent<PlayerGun>();
+        playerLook = GetComponent<PlayerLook>();
     }
 
     void Update(){

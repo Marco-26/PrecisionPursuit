@@ -21,7 +21,6 @@ public class GridManager : MonoBehaviour {
 
     private void CountdownTimer_OnCountdownTimerStopped(object sender, System.EventArgs e) {
         if(GameManager.Instance.GetCurrentGamemode() == Gamemode.GRIDSHOT) {
-            Debug.Log("Aqui");
             for(int i = 0; i < 3; i++) {
                 SpawnObstacle();
             }

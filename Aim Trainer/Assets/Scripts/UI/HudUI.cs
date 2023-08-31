@@ -1,57 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
-using System;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using TMPro;
 using UnityEngine.UI;
-using static GameManager;
 
-public class UIManager : MonoBehaviour
+public class HudUI : MonoBehaviour
 {
-    public static UIManager Instance { get; private set; }  
-
+    public static HudUI Instance { get; private set; }
+    
     [Header("In Game UI")]
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI accuracyText;
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private RectTransform crosshairSprite;
-
-    [Header("Game Over UI")]
-    [SerializeField] private GameObject gameOverScreen;
-    [SerializeField] private GameObject recordBeatenMessage;
-    [SerializeField] private TextMeshProUGUI scoreTextGameOver;
-    [SerializeField] private TextMeshProUGUI accuracyTextGameOver;
-    [SerializeField] private Button restartButton;
-    [SerializeField] private Button mainMenuButton;
-
+    
     [Header("Additional Options UI")]
     [SerializeField] private bool aditionalOptions;
     [SerializeField] private GameObject additionalOptionsContainer;
     [SerializeField] private TextMeshProUGUI highscoreText;
     [SerializeField] private TextMeshProUGUI gamemodeText;
-
-
+    
+    [Header("Scripts")]
     [SerializeField] private CrosshairTypeListSO crosshairTypeList;
-
-    private Timer timer;
+    [SerializeField] private Timer timer;
+    [SerializeField] private PlayerGun playerGun;
     private CrosshairTypeSO currentCrosshair;
 
-    private void Awake() {
+    private void Awake()
+    {
         Instance = this;
     }
-
-    private void Start() {
-        gameOverScreen.SetActive(false);
-        recordBeatenMessage.SetActive(false);
-
+    
+    private void Start()
+    {
         if (!SaveManager.Instance.HasPlayerPrefsSave()) {
             currentCrosshair = crosshairTypeList.crosshairTypeList[0];
         }
-
-        timer = GetComponent<Timer>();
-
-        GameManager.Instance.OnGameEnd += GameManager_OnGameEnd;
         
         if (!aditionalOptions) {
             additionalOptionsContainer.SetActive(false);
@@ -61,19 +43,25 @@ public class UIManager : MonoBehaviour
             gamemodeText.text = "Gamemode: " + GameManager.Instance.GetCurrentGamemode().ToString();
         }
         
-        HandleButtonListeners();
-    }
-    
-    private void Update() {
-        HandleUI();
+        playerGun.OnShotsFired += PlayerGun_OnShotsFired;
     }
 
+    private void PlayerGun_OnShotsFired(object sender, PlayerGun.FireEventArgs e)
+    {
+        DisplayScore((int)e.score);
+        DisplayAccuracy((int)e.accuracy);
+    }
+
+    private void Update() {
+        DisplayTime();
+    }
+    
     public void ChangeCrosshairUI(CrosshairTypeSO crosshair) {
         currentCrosshair = crosshair;
         crosshairSprite.sizeDelta = new Vector2 (currentCrosshair.width, currentCrosshair.height);
         crosshairSprite.GetComponent<Image>().sprite = currentCrosshair.sprite;
     }
-
+    
     public void ChangeCrosshairUIByType(CrosshairType crosshairType) {
         switch (crosshairType) {
             case CrosshairType.CROSSHAIR_LARGE:
@@ -87,11 +75,11 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
-
+    
     public CrosshairType GetCurrentCrosshairType() {
         return currentCrosshair.type;
     }
-
+    
     private void DisplayTime() {
         float timeRemaining = timer.GetTimeRemaining();
         float minutes = Mathf.FloorToInt(timeRemaining / 60);
@@ -100,38 +88,11 @@ public class UIManager : MonoBehaviour
         timerText.text = string.Format("{0}:{1:00}", minutes, seconds);
     }
 
-    private void DisplayAccuracy() {
-        accuracyText.text = GameManager.Instance.GetAccuracy().ToString();
+    private void DisplayAccuracy(int accuracy) {
+        accuracyText.text = accuracy.ToString();
     }
 
-    private void DisplayPoints() {
-        scoreText.text = GameManager.Instance.GetScore().ToString();
-    }
-
-    private void HandleUI() {
-        DisplayAccuracy();
-        DisplayPoints();
-        DisplayTime();
-    }
-
-    private void HandleButtonListeners() {
-        restartButton.onClick.AddListener(() => {
-            gameOverScreen.SetActive(false);
-            GameManager.Instance.RestartGame();
-        });
-
-        mainMenuButton.onClick.AddListener(() => {
-            gameOverScreen.SetActive(false);
-            SceneManager.LoadScene("MainMenu");
-        });
-    }
-
-    private void GameManager_OnGameEnd(object sender, EventArgs e) {
-        gameOverScreen.SetActive(true);
-        if (GameManager.Instance.IsHighscoreBeaten()) {
-            recordBeatenMessage.SetActive(true);
-        }
-        scoreTextGameOver.text = "Score: " + GameManager.Instance.GetScore().ToString();
-        accuracyTextGameOver.text = "Accuracy: " + GameManager.Instance.GetAccuracy().ToString()+"%";
+    private void DisplayScore(int score) {
+        scoreText.text = score.ToString();
     }
 }

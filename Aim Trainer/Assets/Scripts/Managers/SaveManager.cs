@@ -3,43 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.IO;
+using System.Linq;
+using Data;
+using Managers;
 
 public class SaveManager : MonoBehaviour {
 
     public static SaveManager Instance { get; private set; }
-
-    private static readonly string SAVE_FOLDER = Application.dataPath + "/Saves/";
-
-    [SerializeField]private GameObject unitGameObject;
-    private IUnit unit;
-
-    private SaveObject loadedData;
-    private Dictionary<Gamemode, float> highScores;
-    private Gamemode currentGamemode;
+    
+    private SaveData data;
+    private FileDataManager fileDataManager;
+    private List<ISaveable> saveableObjects;
 
 
     private void Awake() {
         Instance = this;
-        unit = unitGameObject.GetComponent<IUnit>();
 
-        if (!Directory.Exists(SAVE_FOLDER)) {
-            Directory.CreateDirectory(SAVE_FOLDER);
-        }
-        currentGamemode = GameManager.Instance.GetCurrentGamemode();
-
-        highScores = new Dictionary<Gamemode, float>
-        {
-            { Gamemode.GRIDSHOT, 0 },
-            { Gamemode.MOTIONSHOT, 0 },
-        };
-
-        LoadSensibleData();
+        fileDataManager = new FileDataManager();
+        saveableObjects = FindSaveableObjects();
+        LoadData();
     }
-
+    
     private void Start() {
         LoadPlayerPreferences();
     }
-
+    
     public void LoadPlayerPreferences() {
         if(!HasPlayerPrefsSave()) {
             Debug.Log("No saves found");
@@ -51,9 +39,9 @@ public class SaveManager : MonoBehaviour {
         string crosshairTypeString = PlayerPrefs.GetString("crosshairType");
         Enum.TryParse(crosshairTypeString, out CrosshairType crosshairType);
 
-        PlayerInput.Instance.SetSensitivity(storedSensitivity);
+        PlayerManager.Instance.SetSensitivity(storedSensitivity);
         SoundManager.Instance.ChangeVolume(storeSoundEffectsVolume);
-        UIManager.Instance.ChangeCrosshairUIByType(crosshairType);
+        HudUI.Instance.ChangeCrosshairUIByType(crosshairType);
 
         OptionsUI.Instance.ChangeSlidersValues(storedSensitivity.x, storedSensitivity.y, storeSoundEffectsVolume);
 
@@ -74,44 +62,37 @@ public class SaveManager : MonoBehaviour {
         return PlayerPrefs.HasKey("soundEffectsVolume");
     }
 
-    public void LoadSensibleData() { 
-        if(File.Exists(SAVE_FOLDER + "/save.txt")) {
-            string saveString = File.ReadAllText(SAVE_FOLDER + "/save.txt");
-            loadedData = JsonUtility.FromJson<SaveObject>(saveString);
-            
-            highScores = new Dictionary<Gamemode, float>
-            {
-                { Gamemode.GRIDSHOT, loadedData != null ? loadedData.gridshotHighscore : 0 },
-                { Gamemode.MOTIONSHOT, loadedData != null ? loadedData.motionshotHighscore : 0 },
-            };
-            
-            unit.SetHighscore(highScores[currentGamemode]);
+    public void LoadData()
+    {
+        data = fileDataManager.LoadData();
 
-            Debug.Log("Loaded sensible data");
+        if (data == null)
+        {
+            Debug.Log("No data was found. Initializing data to defaults.");
+            data = new SaveData();
+        }
+
+        foreach (ISaveable saveable in saveableObjects)
+        {
+            saveable.LoadData(data);
         }
     }
 
-    public void SaveSensibleData() {
-        float currentScore = unit.GetScore();
-        Debug.Log(currentScore);
-        SaveObject saveObject = new SaveObject();
+    public void SaveData() {
+        foreach (ISaveable saveable in saveableObjects)
+        {
+            saveable.SaveData(data);
+        }
 
-        // Update the high score based on the current gamemode
-        highScores[currentGamemode] = currentScore;
-
-        saveObject.gridshotHighscore = highScores[Gamemode.GRIDSHOT];
-        saveObject.motionshotHighscore = highScores[Gamemode.MOTIONSHOT];
-
-        string json = JsonUtility.ToJson(saveObject);
-        Debug.Log(json);
-        File.WriteAllText(SAVE_FOLDER + "/save.txt", json);
-    
-        Debug.Log("Saved sensible data");
+        fileDataManager.SaveData(data);
     }
-
-    private class SaveObject {
-        public float gridshotHighscore;
-        public float motionshotHighscore;
+    
+    private List<ISaveable> FindSaveableObjects()
+    {
+        IEnumerable<ISaveable> saveableObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveable>();
+        return new List<ISaveable>(saveableObjects);
     }
 }
+
+
 

@@ -16,8 +16,4 @@ public class MainMenuManager : MonoBehaviour{
             Destroy(gameObject);
         }
     }
-
-    public void SetGamemode(Gamemode gamemode){
-        GameManager.Instance.SetCurrentGamemode(gamemode);
-    }
 }

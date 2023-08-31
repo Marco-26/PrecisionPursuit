@@ -1,7 +1,9 @@
 using UnityEngine;
 using System;
+using System.Collections.Generic;
+using Data;
 
-public class PlayerGun : MonoBehaviour, IUnit {
+public class PlayerGun : MonoBehaviour, ISaveable {
     private const int BASE_SCORE = 10;
 
     [SerializeField] private float range = 150f;
@@ -10,7 +12,8 @@ public class PlayerGun : MonoBehaviour, IUnit {
     private int totalShotsFired = 0;
     private int totalShotsHit = 0;
     private float score = 0;
-    private float highscore;
+    private float highscore = 0;
+    private Dictionary<Gamemode, float> highScores;
 
     public event EventHandler<FireEventArgs> OnShotsFired;
 
@@ -28,7 +31,6 @@ public class PlayerGun : MonoBehaviour, IUnit {
     private void Shoot() {
         SoundManager.Instance.PlaySound(SoundManager.Sound.WeaponShoot);
         totalShotsFired++;
-        float tempScore = score;
         OnShotsFired?.Invoke(this, new FireEventArgs() { score = DecreaseScore(), accuracy = CalculateAccuracy() });
 
         if (Physics.Raycast(cams.transform.position, cams.transform.forward, out RaycastHit hit, range)) {
@@ -53,10 +55,7 @@ public class PlayerGun : MonoBehaviour, IUnit {
     private float IncreaseScore() {
         float accuracyModifier = CalculateAccuracy();
         float scoreChange = (BASE_SCORE * accuracyModifier);
-
         
-        scoreChange /= 2;
-
         score += scoreChange;
         return score;
     }
@@ -79,12 +78,47 @@ public class PlayerGun : MonoBehaviour, IUnit {
         return score;
     }
 
-    public void SetHighscore(float score) {
-        Debug.Log("Record carregado: " + score);
-        highscore = score;
+    public float GetAccuracy()
+    {
+        return CalculateAccuracy();
     }
 
-    public float GetHighscore() {
+    public void LoadData(SaveData data)
+    {
+        this.totalShotsHit = data.totalShotsHit;
+        this.totalShotsFired = data.totalShotsFired;
+        
+        highScores = new Dictionary<Gamemode, float>
+        {
+            { Gamemode.GRIDSHOT, data.gridshotHighscore },
+            { Gamemode.MOTIONSHOT, data.motionshotHighscore },
+        };
+            
+        this.highscore = highScores[GameManager.Instance.GetCurrentGamemode()];
+    }
+
+    public void SaveData(SaveData data)
+    {
+        data.totalShotsHit = this.totalShotsHit;
+        data.totalShotsFired = this.totalShotsFired;
+
+        if (IsHighscoreBeaten())
+        {
+            highScores[GameManager.Instance.GetCurrentGamemode()] = score;
+        }
+        
+        data.gridshotHighscore = highScores[Gamemode.GRIDSHOT];
+        data.motionshotHighscore = highScores[Gamemode.MOTIONSHOT];
+    }
+
+    public bool IsHighscoreBeaten()
+    {
+        return score > highscore;
+    }
+    
+
+    public float GetHighscore()
+    {
         return highscore;
     }
 }
