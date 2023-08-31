@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour {
 
     private void Timer_OnTimerEnd(object sender, EventArgs e) {
         SaveManager.Instance.SaveData();
+        PlayerManager.Instance.enabled = false;
         PauseGame();
         OnGameEnd?.Invoke(this, EventArgs.Empty);
     }
