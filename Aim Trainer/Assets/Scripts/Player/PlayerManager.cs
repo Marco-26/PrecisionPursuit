@@ -7,6 +7,8 @@ public class PlayerManager : MonoBehaviour{
 
     public event EventHandler OnPauseKeyPressed;
     private Vector2 sensitivity;
+    private PlayerGun playerGun;
+    private PlayerLook playerLook;
     
     public event EventHandler<SensitivityArgs> OnSensitivityChanged;
 
@@ -16,6 +18,8 @@ public class PlayerManager : MonoBehaviour{
 
     private void Awake() {
         Instance = this;
+        playerGun = GetComponent<PlayerGun>();
+        playerLook = GetComponent<PlayerLook>();
     }
 
     void Update(){
@@ -28,5 +32,4 @@ public class PlayerManager : MonoBehaviour{
         sensitivity = newSensitivity;
         OnSensitivityChanged?.Invoke(this, new SensitivityArgs() { newSensitivity = sensitivity });
     }
-
 }

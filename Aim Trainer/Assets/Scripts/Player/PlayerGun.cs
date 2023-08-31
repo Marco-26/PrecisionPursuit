@@ -78,6 +78,11 @@ public class PlayerGun : MonoBehaviour, ISaveable {
         return score;
     }
 
+    public float GetAccuracy()
+    {
+        return CalculateAccuracy();
+    }
+
     public void LoadData(SaveData data)
     {
         this.totalShotsHit = data.totalShotsHit;
@@ -90,7 +95,6 @@ public class PlayerGun : MonoBehaviour, ISaveable {
         };
             
         this.highscore = highScores[GameManager.Instance.GetCurrentGamemode()];
-        Debug.Log("Dicionario Highscore: " + highScores[Gamemode.GRIDSHOT] + "\n" + highScores[Gamemode.MOTIONSHOT]);
     }
 
     public void SaveData(SaveData data)
@@ -102,8 +106,6 @@ public class PlayerGun : MonoBehaviour, ISaveable {
         {
             highScores[GameManager.Instance.GetCurrentGamemode()] = score;
         }
-        
-        Debug.Log("Dicionario Highscore: " + highScores[Gamemode.GRIDSHOT] + "\n" + highScores[Gamemode.MOTIONSHOT]);
         
         data.gridshotHighscore = highScores[Gamemode.GRIDSHOT];
         data.motionshotHighscore = highScores[Gamemode.MOTIONSHOT];

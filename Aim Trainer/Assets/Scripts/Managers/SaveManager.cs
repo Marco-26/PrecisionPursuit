@@ -41,7 +41,7 @@ public class SaveManager : MonoBehaviour {
 
         PlayerManager.Instance.SetSensitivity(storedSensitivity);
         SoundManager.Instance.ChangeVolume(storeSoundEffectsVolume);
-        UIManager.Instance.ChangeCrosshairUIByType(crosshairType);
+        HudUI.Instance.ChangeCrosshairUIByType(crosshairType);
 
         OptionsUI.Instance.ChangeSlidersValues(storedSensitivity.x, storedSensitivity.y, storeSoundEffectsVolume);
 

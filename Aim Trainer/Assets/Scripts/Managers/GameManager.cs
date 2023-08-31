@@ -29,15 +29,12 @@ public class GameManager : MonoBehaviour {
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private PlayerGun playerGun;
-    [FormerlySerializedAs("playerInput")] [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private PlayerManager playerManager;
     [SerializeField] private PlayerLook playerLook;
     [SerializeField] private Timer timer;
     [SerializeField] private CountdownTimer countdownTimer;
 
     private Gamemode currentGamemode = Gamemode.NULL;
-
-    private float playerAccuracy = 0;
-    private float playerScore = 0;
 
     private bool isGamePaused = false;
     private bool isGameStarted = false;
@@ -59,17 +56,11 @@ public class GameManager : MonoBehaviour {
         timer.OnTimerEnd += Timer_OnTimerEnd;
         countdownTimer.OnCountdownTimerStopped += CountdownTimer_OnTimerEnd;
 
-        playerGun.OnShotsFired += PlayerGun_OnShotsFired;
         playerManager.OnPauseKeyPressed += PlayerGun_OnPauseKeyPressed;
     }
 
     private void PlayerGun_OnPauseKeyPressed(object sender, EventArgs e) {
         TogglePauseGame();
-    }
-
-    private void PlayerGun_OnShotsFired(object sender, PlayerGun.FireEventArgs e){
-        playerScore = e.score;
-        playerAccuracy = e.accuracy;
     }
 
     private void Timer_OnTimerEnd(object sender, EventArgs e) {
@@ -80,14 +71,6 @@ public class GameManager : MonoBehaviour {
 
     private void CountdownTimer_OnTimerEnd(object sender, EventArgs e) {
         isGameStarted = true;
-    }
-
-    public int GetAccuracy() {
-        return Mathf.FloorToInt(playerAccuracy);
-    }
-
-    public int GetScore() {
-        return Mathf.FloorToInt(playerScore);
     }
 
     public Gamemode GetCurrentGamemode() { return currentGamemode; }

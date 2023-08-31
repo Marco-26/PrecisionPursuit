@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -7,7 +5,7 @@ using TMPro;
 
 public class OptionsUI : MonoBehaviour{
 
-    public static OptionsUI Instance;
+    public static OptionsUI Instance { get; private set; }
 
     [SerializeField] private CrosshairTypeListSO crosshairTypeList;
     [SerializeField] private Button crosshairSmallBtn;
@@ -34,11 +32,11 @@ public class OptionsUI : MonoBehaviour{
         transform.Find("resumeBtn").GetComponent<Button>().onClick.AddListener(() => {
             SetSensitivityBasedOnSlider();
             SetAudioBasedOnSlider();
-            SaveManager.Instance.SavePlayerPreferences(soundEffectsSlider.value, new Vector2(xAxisSensitivitySlider.value, yAxisSensitivitySlider.value), UIManager.Instance.GetCurrentCrosshairType());
+            SaveManager.Instance.SavePlayerPreferences(soundEffectsSlider.value, new Vector2(xAxisSensitivitySlider.value, yAxisSensitivitySlider.value), HudUI.Instance.GetCurrentCrosshairType());
             
             GameManager.Instance.TogglePauseGame();
         });
-
+        
         transform.Find("quitBtn").GetComponent<Button>().onClick.AddListener(() => {
             SceneManager.LoadScene("MainMenu");
         });
@@ -77,13 +75,13 @@ public class OptionsUI : MonoBehaviour{
 
     private void HandleCrosshairButtons() {
         crosshairSmallBtn.onClick.AddListener(() => {
-            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[0]);
+            HudUI.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[0]);
         });
         crosshairMediumBtn.onClick.AddListener(() => {
-            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[1]);
+            HudUI.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[1]);
         });
         crosshairLargeBtn.onClick.AddListener(() => {
-            UIManager.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[2]);
+            HudUI.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[2]);
         });
     }
 

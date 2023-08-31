@@ -711,6 +711,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9021629135290340591}
+  - component: {fileID: 453210634583829191}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -744,6 +745,28 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &453210634583829191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1675295619416777947}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d6ae06f55a85394098649ece3f8b3e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timerText: {fileID: 6464395520792243360}
+  accuracyText: {fileID: 7641078937097911363}
+  scoreText: {fileID: 940991106745131606}
+  crosshairSprite: {fileID: 3899647877476234201}
+  aditionalOptions: 1
+  additionalOptionsContainer: {fileID: 2258683351735976284}
+  highscoreText: {fileID: 2319760151525778365}
+  gamemodeText: {fileID: 1273632903704055238}
+  crosshairTypeList: {fileID: 11400000, guid: 0808d3462e7d7394c8288fed9aefe382, type: 2}
+  timer: {fileID: 7227392257893428900}
 --- !u!1 &1718875277057666038
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +967,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8027426019616357623}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: RestartGame
         m_Mode: 1
@@ -1012,7 +1035,6 @@ GameObject:
   - component: {fileID: 318054468441881451}
   - component: {fileID: 1137588437496732499}
   - component: {fileID: 1312239000072656801}
-  - component: {fileID: 8027426019616357623}
   - component: {fileID: 675405866429853509}
   - component: {fileID: 7227392257893428900}
   m_Layer: 5
@@ -1108,33 +1130,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &8027426019616357623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1923792600224080029}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bba16596522d4e4388ec0fdf6cbfa5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  timerText: {fileID: 6464395520792243360}
-  accuracyText: {fileID: 7641078937097911363}
-  scoreText: {fileID: 940991106745131606}
-  crosshairSprite: {fileID: 3899647877476234201}
-  gameOverScreen: {fileID: 8361505774792601960}
-  recordBeatenMessage: {fileID: 6938130362945097458}
-  scoreTextGameOver: {fileID: 3093460461251759092}
-  accuracyTextGameOver: {fileID: 3174915852006182485}
-  restartButton: {fileID: 3536758057449019944}
-  mainMenuButton: {fileID: 7159327175069195148}
-  aditionalOptions: 1
-  additionalOptionsContainer: {fileID: 2258683351735976284}
-  highscoreText: {fileID: 2319760151525778365}
-  gamemodeText: {fileID: 1273632903704055238}
-  crosshairTypeList: {fileID: 11400000, guid: 0808d3462e7d7394c8288fed9aefe382, type: 2}
 --- !u!114 &675405866429853509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6370,13 +6365,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2713110290604181209}
+  - component: {fileID: 4533673063115342008}
   m_Layer: 5
   m_Name: GameOverScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2713110290604181209
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6404,6 +6400,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &4533673063115342008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8361505774792601960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30ba22c615b94f1f96964ea6f409858d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  recordBeatenMessage: {fileID: 6938130362945097458}
+  scoreTextGameOver: {fileID: 3093460461251759092}
+  accuracyTextGameOver: {fileID: 3174915852006182485}
+  restartButton: {fileID: 3536758057449019944}
+  mainMenuButton: {fileID: 7777819534994072339}
 --- !u!1 &8395738896926844196
 GameObject:
   m_ObjectHideFlags: 0
