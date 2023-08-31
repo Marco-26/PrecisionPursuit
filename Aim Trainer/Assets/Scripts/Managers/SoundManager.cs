@@ -41,4 +41,9 @@ public class SoundManager : MonoBehaviour{
     public void ChangeVolume(float audioLevel) {
         _audioSource.volume = audioLevel;
     }
+
+    public void MuteAudio()
+    {
+        _audioSource.volume = 0.0f;
+    }
 }

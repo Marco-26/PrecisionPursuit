@@ -16,7 +16,8 @@ public enum Gamemode {
 
 public enum GamemodeScenes {
     Gridshot,
-    Motionshot
+    Motionshot,
+    MainMenu
 }
 
 public enum CrosshairType {

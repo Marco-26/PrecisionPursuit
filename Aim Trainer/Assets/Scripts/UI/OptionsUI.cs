@@ -2,23 +2,29 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.Assertions.Must;
 
 public class OptionsUI : MonoBehaviour{
 
     public static OptionsUI Instance { get; private set; }
 
+    [Header("Crosshair")]
     [SerializeField] private CrosshairTypeListSO crosshairTypeList;
     [SerializeField] private Button crosshairSmallBtn;
     [SerializeField] private Button crosshairMediumBtn;
     [SerializeField] private Button crosshairLargeBtn;
-
+    
+    [Header("Sensitivity")]
     [SerializeField] private TextMeshProUGUI xAxisSensitivitySliderPercentage;
     [SerializeField] private TextMeshProUGUI yAxisSensitivitySliderPercentage;
-    [SerializeField] private TextMeshProUGUI soundEffectsSliderPercentage;
-
     [SerializeField] private Slider xAxisSensitivitySlider;
     [SerializeField] private Slider yAxisSensitivitySlider;
+    [SerializeField] private Toggle toggleMatchBothAxis;
+    
+    [Header("Sound")]
+    [SerializeField] private TextMeshProUGUI soundEffectsSliderPercentage;
     [SerializeField] private Slider soundEffectsSlider;
+    [SerializeField] private Toggle toggleMute;
 
     private float maxSliderValue = 100f;
 
@@ -38,10 +44,12 @@ public class OptionsUI : MonoBehaviour{
         });
         
         transform.Find("quitBtn").GetComponent<Button>().onClick.AddListener(() => {
-            SceneManager.LoadScene("MainMenu");
+            SceneManager.LoadScene(GamemodeScenes.MainMenu.ToString());
         });
-
-        HandleCrosshairButtons();
+        
+        HandleCrosshairSection();
+        HandleSensitivitySection();
+        HandleAudioSection();
     }
 
     public void ManipulateXAxisSensitivitySliderPercentage(float value) {
@@ -73,7 +81,7 @@ public class OptionsUI : MonoBehaviour{
         gameObject.SetActive(false);
     }
 
-    private void HandleCrosshairButtons() {
+    private void HandleCrosshairSection() {
         crosshairSmallBtn.onClick.AddListener(() => {
             HudUI.Instance.ChangeCrosshairUI(crosshairTypeList.crosshairTypeList[0]);
         });
@@ -85,11 +93,99 @@ public class OptionsUI : MonoBehaviour{
         });
     }
 
+    private void HandleSensitivitySection()
+    {
+        // Add initial listeners for X and Y sliders
+        xAxisSensitivitySlider.onValueChanged.AddListener(delegate
+        {
+            ManipulateXAxisSensitivitySliderPercentage(xAxisSensitivitySlider.value);
+        });
+
+        yAxisSensitivitySlider.onValueChanged.AddListener(delegate
+        {
+            ManipulateYAxisSensitivitySliderPercentage(yAxisSensitivitySlider.value);
+        });
+
+        // Add listener for the toggle
+        toggleMatchBothAxis.onValueChanged.AddListener(delegate
+        {
+            ToggleMatchBothAxis();
+        });
+    }
+    
+    private void ToggleMatchBothAxis()
+    {
+        bool matchAxis = toggleMatchBothAxis.isOn;
+
+        if (matchAxis)
+        {
+            Debug.Log("Toggle match axis is on");
+
+            // Add listeners to both sliders that match their values
+            xAxisSensitivitySlider.onValueChanged.AddListener(delegate
+            {
+                ManipulateXAxisSensitivitySliderPercentage(xAxisSensitivitySlider.value);
+                ManipulateYAxisSensitivitySliderPercentage(xAxisSensitivitySlider.value);
+                yAxisSensitivitySlider.value = xAxisSensitivitySlider.value;
+            });
+
+            yAxisSensitivitySlider.onValueChanged.AddListener(delegate
+            {
+                ManipulateYAxisSensitivitySliderPercentage(yAxisSensitivitySlider.value);
+                ManipulateXAxisSensitivitySliderPercentage(yAxisSensitivitySlider.value);
+                xAxisSensitivitySlider.value = yAxisSensitivitySlider.value;
+            });
+        }
+        else
+        {
+            Debug.Log("Toggle match axis is off");
+
+            // Remove all listeners from both sliders
+            xAxisSensitivitySlider.onValueChanged.RemoveAllListeners();
+            yAxisSensitivitySlider.onValueChanged.RemoveAllListeners();
+
+            // Re-add the initial listeners for X and Y sliders
+            xAxisSensitivitySlider.onValueChanged.AddListener(delegate
+            {
+                ManipulateXAxisSensitivitySliderPercentage(xAxisSensitivitySlider.value);
+            });
+
+            yAxisSensitivitySlider.onValueChanged.AddListener(delegate
+            {
+                ManipulateYAxisSensitivitySliderPercentage(yAxisSensitivitySlider.value);
+            });
+        }
+    }
+
+    private void HandleAudioSection()
+    {
+        soundEffectsSlider.onValueChanged.AddListener(delegate
+        {
+            ManipulateSoundEffectsSliderPercentage(soundEffectsSlider.value);
+        });
+        
+        toggleMute.onValueChanged.AddListener(delegate
+        {
+            if (toggleMute.isOn)
+            {
+                soundEffectsSlider.interactable = false;
+                SoundManager.Instance.MuteAudio();
+                return;
+            }
+            
+            soundEffectsSlider.interactable = true;
+            SoundManager.Instance.ChangeVolume(soundEffectsSlider.value);
+        });
+    }
+
     private void SetSensitivityBasedOnSlider() {
         PlayerManager.Instance.SetSensitivity(new Vector2(xAxisSensitivitySlider.value, yAxisSensitivitySlider.value));
     }
 
     private void SetAudioBasedOnSlider() {
-        SoundManager.Instance.ChangeVolume(soundEffectsSlider.value);
+        if (!toggleMute.isOn)
+        {
+            SoundManager.Instance.ChangeVolume(soundEffectsSlider.value);
+        }
     }
 }
